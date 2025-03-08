@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.screens
 
+import android.view.LayoutInflater
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,17 +32,22 @@ import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.common.utils.DataUtils
 import co.yml.charts.ui.barchart.models.BarChartData
+import com.example.healthtrackingapp.R
 
 @Composable
 fun GraphScreen() {
-
+    AndroidView(
+        modifier = Modifier.fillMaxSize(),
+        factory = { context ->
+            LayoutInflater.from(context).inflate(R.layout.activity_main, null, false)
+        }
+    )
 }
 
 @Preview(showSystemUi = true)
 @Composable
-fun HealthTrackingHomeScreenPreview() {
-
+fun HealthTrackingHomeScreen() {
+    GraphScreen()
 }
-
 
 

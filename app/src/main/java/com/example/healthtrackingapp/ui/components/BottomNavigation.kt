@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.AutoGraph
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlusOne
 import androidx.compose.material.icons.outlined.AutoGraph
 import androidx.compose.material.icons.outlined.Category
@@ -130,7 +131,10 @@ fun BottomNavigation(navController: NavHostController) {
                 )
             }
             IconButton(
-                onClick = { position = 3 },
+                onClick = {
+                    position = 3
+                    navController.navigate("notification")
+                },
                 modifier = Modifier.size(70.dp)
             ) {
                 Column(
@@ -155,7 +159,10 @@ fun BottomNavigation(navController: NavHostController) {
                 }
             }
             IconButton(
-                onClick = { position = 4 },
+                onClick = {
+                    position = 4
+                    navController.navigate("user")
+                },
                 modifier = Modifier.size(70.dp)
             ) {
                 Column(
@@ -163,7 +170,7 @@ fun BottomNavigation(navController: NavHostController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
-                        if (position == 4) Icons.Filled.PlusOne else Icons.Outlined.Person,
+                        if (position == 4) Icons.Filled.Person else Icons.Outlined.Person,
                         contentDescription = "Home",
                         tint = if (position == 4) Color.Black else Color.Gray,
                         modifier = Modifier.size(40.dp)

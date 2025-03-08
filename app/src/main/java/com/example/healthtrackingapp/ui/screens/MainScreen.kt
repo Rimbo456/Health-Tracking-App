@@ -37,6 +37,8 @@ fun MainScreen() {
         ) {
             composable("dashboard") { DashboardScreen() }
             composable("graph") { GraphScreen() }
+            composable("notification") { NotificationScreen() }
+            composable("user") { UserScreen() }
         }
     }
 }
