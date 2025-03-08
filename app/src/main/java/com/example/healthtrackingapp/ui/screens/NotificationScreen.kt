@@ -15,7 +15,10 @@ fun NotificationScreen() {
             modifier = Modifier
                 .weight(0.6f)
         ) {
-            ItemNof()
+            ItemNof(modifier = Modifier)
+            ItemNof(modifier = Modifier)
+            ItemNof(modifier = Modifier)
+            ItemNof(modifier = Modifier)
         }
     }
 }
