@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Health Tracking App</string>
+    <string name="welcome_text">Welcome to your personal Health Tracking App</string>
+    <string name="giveinfor">Give us some basic information</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="heartrate">Heart Rate</string>
+    <string name="exercise">Exercise</string>
+    <string name="walking">Walking</string>
+    <string name="sleep">Sleep</string>
+    <string name="overview">Overview</string>
+    <string name="goal">Goal</string>
+    <string name="notarget">You don\'t have any goals yet</string>"
+</resources>
