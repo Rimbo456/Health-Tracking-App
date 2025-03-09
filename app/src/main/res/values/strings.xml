@@ -12,5 +12,6 @@
     <string name="sleep">Sleep</string>
     <string name="overview">Overview</string>
     <string name="goal">Goal</string>
-    <string name="notarget">You don\'t have any goals yet</string>"
+    <string name="notarget">You don\'t have any goals yet</string>
+    <string name="notification">Notification Center</string>"
 </resources>

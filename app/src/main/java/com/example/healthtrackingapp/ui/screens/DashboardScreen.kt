@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -19,6 +21,8 @@ import androidx.compose.material.icons.filled.ElectricBolt
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Hotel
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,7 +56,7 @@ fun DashboardScreen(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxHeight(0.2f)
+                .fillMaxHeight(0.15f)
                 .fillMaxWidth(),
         ){
             val calendar = Calendar.getInstance()
@@ -78,6 +82,63 @@ fun DashboardScreen(
                 )
             }
         }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .padding(vertical = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.goal),
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.List,
+                        contentDescription = null,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.95f),
+                verticalArrangement = Arrangement.Top
+            ) {
+                Card(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier.padding(15.dp)
+                    ) {
+                        Text(
+                            text = "Tittle",
+                            fontSize = 25.sp,
+                            modifier = Modifier.padding(bottom = 10.dp)
+                        )
+                        Text(
+                            text = "Content",
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(bottom = 10.dp)
+                        )
+                        Text(
+                            text = "Date",
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(bottom = 10.dp)
+                        )
+                    }
+                }
+//                Text(text = stringResource(id = R.string.notarget))
+            }
+        }
         Text(
             text = stringResource(id = R.string.overview),
             fontSize = 26.sp,
@@ -89,7 +150,7 @@ fun DashboardScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
-                .fillMaxHeight(0.4f),
+                .fillMaxHeight(0.6f),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Row(
@@ -161,53 +222,7 @@ fun DashboardScreen(
                 )
             }
         }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .fillMaxHeight(1f)
-                .padding(top = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(id = R.string.goal),
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = null,
-                        modifier = Modifier.size(30.dp)
-                    )
-                }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(0.95f)
-                    .fillMaxHeight()
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.Top
-            ) {
 
-//                Text(text = stringResource(id = R.string.notarget))
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-                ItemGoal(content = "Chay the duc 30p", isChecked = false, modifier = Modifier.fillMaxWidth())
-            }
-        }
     }
 }
 
