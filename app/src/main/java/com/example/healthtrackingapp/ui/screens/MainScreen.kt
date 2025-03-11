@@ -24,12 +24,19 @@ import androidx.navigation.compose.rememberNavController
 import com.example.healthtrackingapp.ui.components.BottomNavigation
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    mainNavController: NavHostController
+) {
     val navController = rememberNavController()
 
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
-        bottomBar = { BottomNavigation(navController = navController) }
+        bottomBar = {
+            BottomNavigation(
+                navController = navController,
+                mainNavController = mainNavController
+            )
+        }
     ) { innerPadding ->
         NavHost(
             navController = navController,

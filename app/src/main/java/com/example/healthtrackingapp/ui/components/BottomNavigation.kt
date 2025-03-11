@@ -46,7 +46,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun BottomNavigation(navController: NavHostController) {
+fun BottomNavigation(
+    navController: NavHostController,
+    mainNavController: NavHostController,
+) {
 
     var position by remember { mutableStateOf(1) }
 
@@ -120,12 +123,15 @@ fun BottomNavigation(navController: NavHostController) {
                 }
             }
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    position = 5
+                    mainNavController.navigate("healthbook")
+                },
                 colors = IconButtonDefaults.iconButtonColors(Color.Black),
                 modifier = Modifier.size(65.dp)
             ) {
                 Icon(
-                    Icons.Filled.ChatBubble,
+                    Icons.Filled.Add,
                     contentDescription = "Scan",
                     tint = Color.LightGray,
                     modifier = Modifier.size(35.dp)
