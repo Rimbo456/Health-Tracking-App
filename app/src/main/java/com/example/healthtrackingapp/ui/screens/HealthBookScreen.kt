@@ -78,19 +78,41 @@ fun HealthBookScreen(navController: NavHostController) {
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
                         title = "Buoc chan",
-                        image = R.drawable.reshot_icon_running_shoes_nfc659ujds
+                        image = R.drawable.reshot_icon_running_shoes_nfc659ujds,
+                        navController = navController,
+                        route = ""
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
                         title = "Can nang",
-                        image = R.drawable.reshot_icon_weighing_scale_pzrhsgv7y6
+                        image = R.drawable.reshot_icon_weighing_scale_pzrhsgv7y6,
+                        navController = navController,
+                        route = "weighingscreen"
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
                         title = "Giac ngu",
-                        image = R.drawable.reshot_icon_sleeping_x2ekjbl3yq
+                        image = R.drawable.reshot_icon_sleeping_x2ekjbl3yq,
+                        navController = navController,
+                        route = ""
+                    )
+                    ItemBook(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.White,
+                        title = "Luong nuoc tieu thu",
+                        image = R.drawable.reshot_icon_water_bottle_pzw3g8afsq,
+                        navController = navController,
+                        route = ""
+                    )
+                    ItemBook(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.White,
+                        title = "Huyet ap",
+                        image = R.drawable.reshot_icon_blood_pressure_zvjhstxe8u,
+                        navController = navController,
+                        route = ""
                     )
                 }
             }

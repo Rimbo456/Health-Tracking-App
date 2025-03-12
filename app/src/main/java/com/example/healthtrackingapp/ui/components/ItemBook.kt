@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
 
 @Composable
@@ -38,6 +39,8 @@ fun ItemBook(
     color: Color,
     image: Int,
     title: String,
+    navController: NavHostController,
+    route: String
 ) {
     Card(
         colors = CardDefaults.cardColors(color),
@@ -49,7 +52,7 @@ fun ItemBook(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { },
+                .clickable { navController.navigate(route) },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(

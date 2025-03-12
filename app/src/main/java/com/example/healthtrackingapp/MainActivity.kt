@@ -23,6 +23,7 @@ import com.example.healthtrackingapp.ui.screens.GetInformationScreen
 import com.example.healthtrackingapp.ui.screens.HealthBookScreen
 import com.example.healthtrackingapp.ui.screens.MainScreen
 import com.example.healthtrackingapp.ui.screens.StartScreen
+import com.example.healthtrackingapp.ui.screens.WeighingScreen
 import com.example.healthtrackingapp.ui.theme.HealthTrackingAppTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
@@ -111,6 +112,7 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { MainScreen(navController) }
                     composable("healthbook") { HealthBookScreen(navController) }
+                    composable("weighingscreen") { WeighingScreen(navController) }
                 }
             }
         }
