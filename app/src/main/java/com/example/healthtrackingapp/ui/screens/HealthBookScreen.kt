@@ -112,7 +112,7 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Huyet ap",
                         image = R.drawable.reshot_icon_blood_pressure_zvjhstxe8u,
                         navController = navController,
-                        route = ""
+                        route = "bloodpressurescreen"
                     )
                 }
             }

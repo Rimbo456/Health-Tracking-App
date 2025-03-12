@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.healthtrackingapp.ui.screens.BloodPressureScreen
 import com.example.healthtrackingapp.ui.screens.GetInformationScreen
 import com.example.healthtrackingapp.ui.screens.HealthBookScreen
 import com.example.healthtrackingapp.ui.screens.MainScreen
@@ -112,7 +113,36 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { MainScreen(navController) }
                     composable("healthbook") { HealthBookScreen(navController) }
-                    composable("weighingscreen") { WeighingScreen(navController) }
+                    composable(
+                        "weighingscreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { WeighingScreen(navController) }
+                    composable(
+                        "bloodpressurescreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { BloodPressureScreen(navController) }
                 }
             }
         }
