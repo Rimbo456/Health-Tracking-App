@@ -36,18 +36,7 @@ import com.example.healthtrackingapp.R
 
 @Composable
 fun GraphScreen() {
-    AndroidView(
-        modifier = Modifier.fillMaxSize(),
-        factory = { context ->
-            LayoutInflater.from(context).inflate(R.layout.activity_main, null, false)
-        }
-    )
-}
 
-@Preview(showSystemUi = true)
-@Composable
-fun HealthTrackingHomeScreen() {
-    GraphScreen()
 }
 
 
