@@ -49,7 +49,7 @@ import com.example.healthtrackingapp.ui.components.ItemBook
 fun HealthBookScreen(navController: NavHostController) {
     Scaffold(
         modifier = Modifier.padding(WindowInsets.systemBars.asPaddingValues()),
-        topBar = { TopBar(navController) }
+        topBar = { TopBar(navController, title = "Suc khoe cua ban") }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -121,7 +121,10 @@ fun HealthBookScreen(navController: NavHostController) {
 }
 
 @Composable
-fun TopBar(navController: NavHostController) {
+fun TopBar(
+    navController: NavHostController,
+    title: String
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -141,7 +144,7 @@ fun TopBar(navController: NavHostController) {
                 Icon(imageVector = Icons.Default.ArrowBackIosNew, contentDescription = null)
             }
             Text(
-                text = "Suc khoe cua ban",
+                text = title,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )

@@ -45,8 +45,8 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            composable("dashboard") { DashboardScreen() }
-            composable("graph") { GraphScreen() }
+            composable("dashboard") { DashboardScreen(mainNavController) }
+            composable("graph") { ModelScreen(mainNavController) }
             composable("notification") { NotificationScreen() }
             composable("user") { UserScreen() }
         }

@@ -31,7 +31,7 @@ fun ItemNof(
 ) {
     Card(
         modifier = modifier,
-        colors = CardDefaults.cardColors(Color(red = 207, green = 223, blue = 255, alpha = 255))
+        colors = CardDefaults.cardColors(Color(red = 30, green = 144, blue = 255, alpha = 255))
     ) {
         Column(
             modifier = Modifier

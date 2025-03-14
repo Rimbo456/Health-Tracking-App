@@ -1,5 +1,8 @@
 package com.example.healthtrackingapp.ui.screens
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,11 +12,13 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -22,45 +27,83 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Hotel
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.CardDashboard
 import com.example.healthtrackingapp.ui.components.ItemGoal
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 @Composable
 fun DashboardScreen(
-    modifier: Modifier? = null
+    navController: NavHostController,
+    modifier: Modifier? = null,
 ) {
+    var textToShow by remember { mutableStateOf("") }
+    val fullText = "Hôm nay bạn cảm thấy thế nào?"
+    val coroutineScope = rememberCoroutineScope()
+    var showDialog by remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            fullText.forEachIndexed { index, _ ->
+                textToShow = fullText.substring(0, index + 1)
+                delay(50)
+            }
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.nen_app),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
     ) {
         Box(
             modifier = Modifier
                 .fillMaxHeight(0.15f)
                 .fillMaxWidth(),
-        ){
+        ) {
             val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy",Locale.getDefault())
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val currentDate = dateFormat.format(calendar.time)
             Row(
                 modifier = Modifier
@@ -81,6 +124,30 @@ fun DashboardScreen(
                     fontWeight = FontWeight.SemiBold,
                 )
             }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(56.dp)
+                .background(Color.LightGray, shape = RoundedCornerShape(12.dp))
+                .padding(horizontal = 16.dp)
+                .clickable { showDialog = true },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Thêm",
+                tint = Color.Black,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = textToShow,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black,
+                modifier = Modifier.weight(1f)
+            )
         }
         Column(
             modifier = Modifier
@@ -112,7 +179,7 @@ fun DashboardScreen(
                 verticalArrangement = Arrangement.Top
             ) {
                 Card(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("goalscreen") },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
@@ -224,10 +291,53 @@ fun DashboardScreen(
         }
 
     }
+    if (showDialog) {
+        FeelingDialog(onDismiss = { showDialog = false })
+    }
+}
+
+@Composable
+fun FeelingDialog(onDismiss: () -> Unit) {
+    Dialog(onDismissRequest = onDismiss) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .background(Color.White, shape = RoundedCornerShape(16.dp))
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Hôm nay bạn cảm thấy thế nào?",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    listOf("😃", "😊", "😐", "😞", "😢").forEach { emoji ->
+                        Text(
+                            text = emoji,
+                            fontSize = 32.sp,
+                            modifier = Modifier.clickable { onDismiss() }
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = onDismiss) {
+                    Text("Đóng")
+                }
+            }
+        }
+    }
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun DashboardScreenPreview() {
-    DashboardScreen()
 }
