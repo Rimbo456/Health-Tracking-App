@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="350dp"
+    android:layout_margin="20dp"
+    android:layout_gravity="center"
+    android:padding="6dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginStart="35dp"
+            android:text="Số điện thoại của tôi"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText"/>
+
+        <ImageView
+            android:id="@+id/imgDong"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_close_90"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center">
+        <Spinner
+            android:id="@+id/spnMaVung"
+            android:layout_marginStart="20dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/edtNhapSDT"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0395511743"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/light_gray"
+            android:background="@null"
+            tools:ignore="HardcodedText"/>
+
+        <ImageView
+            android:id="@+id/imgXoaChu"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_close_90"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@color/black"/>
+
+    <Button
+        android:id="@+id/btnLuuSDT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Tiếp tục"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/custom_button"
+        tools:ignore="HardcodedText" />
+</LinearLayout>

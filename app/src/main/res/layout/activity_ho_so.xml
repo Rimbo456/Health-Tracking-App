@@ -14,6 +14,7 @@
         android:layout_height="70dp"
         android:orientation="horizontal">
         <ImageView
+            android:id="@+id/imgQuayLai"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -36,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:text="Thông tin cơ bản"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -46,22 +47,21 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:text="@string/cam_ket_bao_mat_info"
         android:textSize="18sp"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="30dp">
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corner"
             android:stretchColumns="1">
-            <TableRow
-                android:id="@+id/tbrHoSo">
+            <TableRow android:id="@+id/tbrTen">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -80,10 +80,10 @@
                 <TextView
                     android:id="@+id/txtTen"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/profile"
-                    android:layout_gravity="center|end"/>
+                    android:layout_height="20dp"
+                    android:layout_gravity="center|end"
+                    android:text="Tên"
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -100,7 +100,7 @@
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
-            <TableRow>
+            <TableRow android:id="@+id/tbrEmail">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -114,7 +114,7 @@
                     android:id="@+id/txtEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="33dp"
                     android:textSize="18sp"
                     android:text="email"
                     android:layout_gravity="center|start"
@@ -128,8 +128,7 @@
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
-            <TableRow
-                android:id="@+id/tbrBaoMat">
+            <TableRow android:id="@+id/tbrSDT">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -167,8 +166,7 @@
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
-            <TableRow
-                android:id="@+id/tbrHoTro">
+            <TableRow android:id="@+id/tbrGioiTinh">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -185,11 +183,12 @@
                     android:layout_weight="1"/>
 
                 <TextView
+                    android:id="@+id/txtGioiTinh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:text="Chưa nhập"
-                    android:layout_gravity="center|start"/>
+                    android:layout_gravity="center|end"/>
 
                 <ImageView
                     android:layout_width="20dp"
@@ -205,14 +204,13 @@
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
-            <TableRow
-                android:id="@+id/tbrChuDe">
+            <TableRow android:id="@+id/tbrChieuCao">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Tên"
+                    android:text="Chiều cao"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     tools:ignore="HardcodedText" />
@@ -223,11 +221,12 @@
                     android:layout_weight="1"/>
 
                 <TextView
+                    android:id="@+id/txtChieuCao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="@string/profile"
-                    android:layout_gravity="center|start"/>
+                    android:text="Chưa nhập"
+                    android:layout_gravity="center|end"/>
 
                 <ImageView
                     android:layout_width="20dp"
@@ -243,14 +242,13 @@
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
-            <TableRow
-                android:id="@+id/tbrNgonNgu">
+            <TableRow android:id="@+id/tbrNamSinh">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Tên"
+                    android:text="Năm sinh"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     tools:ignore="HardcodedText" />
@@ -261,11 +259,12 @@
                     android:layout_weight="1"/>
 
                 <TextView
+                    android:id="@+id/txtNamSinh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="@string/profile"
-                    android:layout_gravity="center|start"/>
+                    android:text="Chưa Nhập"
+                    android:layout_gravity="center|end"/>
 
                 <ImageView
                     android:layout_width="20dp"
@@ -281,14 +280,13 @@
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
-            <TableRow
-                android:id="@+id/tbrNhatKyHD">
+            <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Tên"
+                    android:text="Hmmm"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     tools:ignore="HardcodedText" />
@@ -302,46 +300,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="@string/profile"
-                    android:layout_gravity="center|start"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="40dp"
-                    android:padding="4dp"
-                    android:src="@drawable/ic_arrow_right_96"/>
-            </TableRow>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray"
-                android:layout_marginVertical="3dp"
-                android:layout_marginHorizontal="12dp"/>
-
-            <TableRow
-                android:id="@+id/tbrLuuTru">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="12dp"
-                    android:text="Tên"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:ignore="HardcodedText" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/profile"
-                    android:layout_gravity="center|start"/>
+                    android:text="hazz"
+                    android:layout_gravity="center|end"/>
 
                 <ImageView
                     android:layout_width="20dp"

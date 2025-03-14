@@ -14,7 +14,7 @@
     <string name="goal">Goal</string>
     <string name="notarget">You don\'t have any goals yet</string>"
     <string name="username">Tên đăng nhập</string>
-    <string name="bacham">…</string>
+    <string name="email">email</string>
     <string name="profile">Hồ sơ</string>
     <string name="notification_settings">Cài đặt thông báo</string>
     <string name="data_security">Quản lý dữ liệu và bảo mật</string>
@@ -23,6 +23,7 @@
     <string name="language">Ngôn ngữ</string>
     <string name="activity_log">Nhật ký hoạt động</string>
     <string name="cloud">Lưu trữ</string>
+    <string name="introduction">Về chúng tôi</string>
     <string name="cam_ket_bao_mat_info">Chúng tôi cam kết bảo mật thông tin cá nhân của bạn. Dữ liệu chỉ được sử dụng để hỗ trợ theo dõi sức khỏe và cải thiện trải nghiệm của bạn.</string>
     <string name="notification">Notification Center</string>
 </resources>
