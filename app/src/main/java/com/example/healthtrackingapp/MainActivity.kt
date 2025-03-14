@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.healthtrackingapp.ui.screens.BloodPressureScreen
 import com.example.healthtrackingapp.ui.screens.GetInformationScreen
+import com.example.healthtrackingapp.ui.screens.GoalScreen
 import com.example.healthtrackingapp.ui.screens.HealthBookScreen
 import com.example.healthtrackingapp.ui.screens.MainScreen
 import com.example.healthtrackingapp.ui.screens.StartScreen
@@ -143,6 +144,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) { BloodPressureScreen(navController) }
+                    composable("goalscreen") { GoalScreen(navController = navController)}
                 }
             }
         }
