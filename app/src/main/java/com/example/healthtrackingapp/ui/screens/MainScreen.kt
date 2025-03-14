@@ -46,7 +46,7 @@ fun MainScreen(
                 .padding(innerPadding)
         ) {
             composable("dashboard") { DashboardScreen(mainNavController) }
-            composable("graph") { GraphScreen() }
+            composable("graph") { ModelScreen(mainNavController) }
             composable("notification") { NotificationScreen() }
             composable("user") { UserScreen() }
         }
