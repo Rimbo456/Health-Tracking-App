@@ -26,4 +26,7 @@
     <string name="introduction">Về chúng tôi</string>
     <string name="cam_ket_bao_mat_info">Chúng tôi cam kết bảo mật thông tin cá nhân của bạn. Dữ liệu chỉ được sử dụng để hỗ trợ theo dõi sức khỏe và cải thiện trải nghiệm của bạn.</string>
     <string name="notification">Notification Center</string>
+    <string name="nuandiet">Nutrition and Diet</string>
+    <string name="phyacaworkout"><![CDATA[Physical Activity & Workout]]></string>
+    <string name="moodaemo">Mood and emotions</string>
 </resources>

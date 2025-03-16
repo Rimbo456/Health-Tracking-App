@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.isCaptionBarVisible
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +25,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -149,13 +153,14 @@ fun TopBar(
                 fontWeight = FontWeight.Bold
             )
             IconButton(
-                onClick = { /*TODO*/ },
-                colors = IconButtonDefaults.iconButtonColors(Color.Black)
+                onClick = { navController.navigate("overviewscreen") },
+                colors = IconButtonDefaults.iconButtonColors(Color.White),
+                modifier = Modifier.size(55.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
+                Image(
+                    painter = painterResource(id = R.drawable.sotay),
                     contentDescription = null,
-                    tint = Color.White
+                    modifier = Modifier.padding(10.dp)
                 )
             }
         }

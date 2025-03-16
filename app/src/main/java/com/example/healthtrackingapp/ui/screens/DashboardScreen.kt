@@ -165,7 +165,7 @@ fun DashboardScreen(
                     fontSize = 26.sp,
                     fontWeight = FontWeight.SemiBold,
                 )
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate("goalscreen") }) {
                     Icon(
                         imageVector = Icons.Filled.List,
                         contentDescription = null,

@@ -54,8 +54,7 @@ public class HoSoActivity extends Activity {
         imgQuayLai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HoSoActivity.this, MainActivity2.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -76,7 +75,7 @@ public class HoSoActivity extends Activity {
         });
     }
 
-    public void showEnterNameDialog(String ten){
+    public void showEnterNameDialog(String ten) {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.cus_dialog_nhap_ten);
 
@@ -84,7 +83,7 @@ public class HoSoActivity extends Activity {
         ImageView imgXoaChu = dialog.findViewById(R.id.imgXoaChu);
         EditText edtNhapTen = dialog.findViewById(R.id.edtNhapTen);
         Button btnLuuTen = dialog.findViewById(R.id.btnLuuTen);
-        
+
         edtNhapTen.setText(ten);
 
         imgDong.setOnClickListener(view -> dialog.dismiss());
@@ -97,9 +96,9 @@ public class HoSoActivity extends Activity {
         dialog.show();
     }
 
-    public void showSelectGenderDialog(boolean gioiTinh, GenderSelectListener listener){
+    public void showSelectGenderDialog(boolean gioiTinh, GenderSelectListener listener) {
         //false: female       true: male
-        AtomicBoolean gt= new AtomicBoolean(gioiTinh);
+        AtomicBoolean gt = new AtomicBoolean(gioiTinh);
 
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.cus_dialog_chon_gioi_tinh);
@@ -109,11 +108,10 @@ public class HoSoActivity extends Activity {
         LinearLayout btnMale = dialog.findViewById(R.id.btnMale);
         Button btnLuuGioiTinh = dialog.findViewById(R.id.btnLuuGioiTinh);
 
-        if (gt.get()){
+        if (gt.get()) {
             btnFemale.setBackgroundResource(R.drawable.rounded_corner);
             btnMale.setBackgroundResource(R.drawable.btn_selected_male);
-        }
-        else{
+        } else {
             btnFemale.setBackgroundResource(R.drawable.btn_selected_female);
             btnMale.setBackgroundResource(R.drawable.rounded_corner);
         }
