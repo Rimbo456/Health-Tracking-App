@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main_xac_nhan_sdt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -40,7 +40,7 @@
         android:id="@+id/txtSDTXacThuc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+84 395511743"
+        android:text="0395511743"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -127,4 +127,17 @@
         android:textSize="18sp"
         android:textColor="@color/red"
         android:paddingTop="20dp"/>
+
+    <Button
+        android:id="@+id/btnXacNhanOTP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:text="Xác nhận"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/custom_button"/>
 </LinearLayout>
