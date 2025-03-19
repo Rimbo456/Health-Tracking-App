@@ -137,7 +137,7 @@ fun OverviewScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(text = "Sáng: ")
-                                    CircularCheckboxWithIcon()
+//                                    //CircularCheckboxWithIcon()
                                 }
                                 Row(
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -145,7 +145,7 @@ fun OverviewScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(text = "Phụ sáng: ")
-                                    CircularCheckboxWithIcon()
+                                    //CircularCheckboxWithIcon()
                                 }
                             }
                             Column(
@@ -158,7 +158,7 @@ fun OverviewScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(text = "Trưa: ")
-                                    CircularCheckboxWithIcon()
+                                    //CircularCheckboxWithIcon()
                                 }
                                 Row(
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -166,7 +166,7 @@ fun OverviewScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(text = "Phụ trưa: ")
-                                    CircularCheckboxWithIcon()
+                                    //CircularCheckboxWithIcon()
                                 }
                             }
                             Column(
@@ -179,7 +179,7 @@ fun OverviewScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(text = "Chiều: ")
-                                    CircularCheckboxWithIcon()
+                                    //CircularCheckboxWithIcon()
                                 }
                                 Row(
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -187,7 +187,7 @@ fun OverviewScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(text = "Phụ chiều: ")
-                                    CircularCheckboxWithIcon()
+                                    //CircularCheckboxWithIcon()
                                 }
                             }
                         }

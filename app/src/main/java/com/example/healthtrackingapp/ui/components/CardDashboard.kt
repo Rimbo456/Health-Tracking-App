@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,11 +33,13 @@ fun CardDashboard(
     unit: String,
     icon: ImageVector,
     color: CardColors,
-    textColor: Color
+    textColor: Color,
+    border: BorderStroke? = null
 ) {
     Card(
         colors = color,
         modifier = modifier,
+        elevation = CardDefaults.cardElevation(5.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

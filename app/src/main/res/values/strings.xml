@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">Health Tracking App</string>
-    <string name="welcome_text">Welcome to your personal Health Tracking App</string>
-    <string name="giveinfor">Give us some basic information</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="height">Height</string>
-    <string name="weight">Weight</string>
-    <string name="heartrate">Heart Rate</string>
-    <string name="exercise">Exercise</string>
-    <string name="walking">Walking</string>
-    <string name="sleep">Sleep</string>
-    <string name="overview">Overview</string>
-    <string name="goal">Goal</string>
-    <string name="notarget">You don\'t have any goals yet</string>"
+    <string name="welcome_text">Chào mừng bạn đến với ứng dụng theo dõi sức khỏe cá nhân</string>
+    <string name="giveinfor">Cho chúng tôi một vài thông tin cơ bản</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="height">Chiều cao</string>
+    <string name="weight">Cân nặng</string>
+    <string name="heartrate">Nhịp tim</string>
+    <string name="exercise">Tập luyện</string>
+    <string name="walking">Chạy bộ</string>
+    <string name="sleep">Giấc ngủ</string>
+    <string name="overview">Tổng quan</string>
+    <string name="goal">Mục tiêu</string>
+    <string name="notarget">Bạn chưa có mục tiêu nào cả</string>"
     <string name="username">Tên đăng nhập</string>
     <string name="email">email</string>
     <string name="profile">Hồ sơ</string>
@@ -25,10 +25,10 @@
     <string name="cloud">Lưu trữ</string>
     <string name="introduction">Về chúng tôi</string>
     <string name="cam_ket_bao_mat_info">Chúng tôi cam kết bảo mật thông tin cá nhân của bạn. Dữ liệu chỉ được sử dụng để hỗ trợ theo dõi sức khỏe và cải thiện trải nghiệm của bạn.</string>
-    <string name="notification">Notification Center</string>
+    <string name="notification">Trung tâm thông báo</string>
     <string name="chieu_cao">%d cm</string>
     <string name="can_nang">%d Kg</string>
-    <string name="nuandiet">Nutrition and Diet</string>
-    <string name="phyacaworkout"><![CDATA[Physical Activity & Workout]]></string>
-    <string name="moodaemo">Mood and emotions</string>
+    <string name="nuandiet">Dinh dưỡng và chế độ ăn uống</string>
+    <string name="phyacaworkout">Vận động và tập luyện</string>
+    <string name="moodaemo">Tâm trạng và cảm xúc</string>
 </resources>

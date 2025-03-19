@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -47,6 +48,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,6 +57,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.CardDashboard
+import com.example.healthtrackingapp.ui.components.CircularCheckboxWithIcon
 import com.example.healthtrackingapp.ui.components.ItemGoal
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -298,6 +301,9 @@ fun DashboardScreen(
 
 @Composable
 fun FeelingDialog(onDismiss: () -> Unit) {
+    var indexx by remember { mutableStateOf(-1) }
+
+
     Dialog(onDismissRequest = onDismiss) {
         Box(
             modifier = Modifier
@@ -310,27 +316,62 @@ fun FeelingDialog(onDismiss: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Hôm nay bạn cảm thấy thế nào?",
+                    text = "Mức độ căng thẳng (Stress) của bạn hiện tại là?",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    listOf("😃", "😊", "😐", "😞", "😢").forEach { emoji ->
+                    listOf(
+                        "Thư giãn",
+                        "Hơi áp lực",
+                        "Căng thẳng trung bình",
+                        "Căng thẳng cao",
+                        "Rất căng thẳng"
+                    ).forEachIndexed { index, emoji ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    indexx = index
+                                },
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = emoji,
+                                fontSize = 15.sp,
+                                modifier = Modifier
+                            )
+                            CircularCheckboxWithIcon(
+                                isChecked = indexx == index,
+                                onCheckedChange = { indexx = index }
+                            )
+                        }
+                    }
+                    if (indexx > -1){
                         Text(
-                            text = emoji,
-                            fontSize = 32.sp,
-                            modifier = Modifier.clickable { onDismiss() }
+                            text = when (indexx) {
+                                0 -> "Mọi thứ đều ổn, tôi cảm thấy thoải mái và kiểm soát tốt cuộc sống."
+                                1 -> "Có một chút căng thẳng, nhưng tôi vẫn có thể kiểm soát được và tập trung vào công việc."
+                                2 -> "Tôi đang cảm thấy áp lực, nhưng vẫn có thể đối mặt và tìm cách giải quyết."
+                                3 -> "Mọi thứ bắt đầu trở nên quá tải, tôi cảm thấy kiệt sức và khó tập trung."
+                                4 -> "Tôi bị choáng ngợp, không thể suy nghĩ rõ ràng và cần một khoảng thời gian để lấy lại bình tĩnh."
+                                else -> ""
+                            },
+                            fontSize = 13.sp,
+                            fontStyle = FontStyle.Italic
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = onDismiss) {
-                    Text("Đóng")
+                    Text("Lưu")
                 }
             }
         }

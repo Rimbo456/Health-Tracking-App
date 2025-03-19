@@ -49,7 +49,7 @@ fun ItemGoal(
                     modifier = Modifier.padding(bottom = 10.dp)
                 )
             }
-            CircularCheckboxWithIcon()
+//            CircularCheckboxWithIcon()
         }
 
     }
