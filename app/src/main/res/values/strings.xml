@@ -28,4 +28,7 @@
     <string name="notification">Notification Center</string>
     <string name="chieu_cao">%d cm</string>
     <string name="can_nang">%d Kg</string>
+    <string name="nuandiet">Nutrition and Diet</string>
+    <string name="phyacaworkout"><![CDATA[Physical Activity & Workout]]></string>
+    <string name="moodaemo">Mood and emotions</string>
 </resources>
