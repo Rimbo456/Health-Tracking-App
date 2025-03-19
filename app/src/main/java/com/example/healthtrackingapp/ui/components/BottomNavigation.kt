@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -45,13 +46,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun BottomNavigation(navController: NavHostController) {
+fun BottomNavigation(
+    navController: NavHostController,
+    mainNavController: NavHostController,
+) {
 
     var position by remember { mutableStateOf(1) }
 
     Box(
         modifier = Modifier
-            .windowInsetsPadding(WindowInsets.systemBars)
+            .windowInsetsPadding(WindowInsets.navigationBars)
             .fillMaxWidth()
 
     ) {
@@ -119,12 +123,15 @@ fun BottomNavigation(navController: NavHostController) {
                 }
             }
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    position = 5
+                    mainNavController.navigate("healthbook")
+                },
                 colors = IconButtonDefaults.iconButtonColors(Color.Black),
                 modifier = Modifier.size(65.dp)
             ) {
                 Icon(
-                    Icons.Filled.ChatBubble,
+                    Icons.Filled.Add,
                     contentDescription = "Scan",
                     tint = Color.LightGray,
                     modifier = Modifier.size(35.dp)

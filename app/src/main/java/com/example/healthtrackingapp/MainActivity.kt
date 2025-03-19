@@ -19,9 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.healthtrackingapp.ui.screens.BloodPressureScreen
 import com.example.healthtrackingapp.ui.screens.GetInformationScreen
+import com.example.healthtrackingapp.ui.screens.GoalScreen
+import com.example.healthtrackingapp.ui.screens.HealthBookScreen
 import com.example.healthtrackingapp.ui.screens.MainScreen
 import com.example.healthtrackingapp.ui.screens.StartScreen
+import com.example.healthtrackingapp.ui.screens.WeighingScreen
 import com.example.healthtrackingapp.ui.theme.HealthTrackingAppTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
@@ -38,9 +42,19 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable(
                         "start",
-                        enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(1000)) },
-                        exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(1000)) }
-                    ) { StartScreen(navController)}
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Right,
+                                tween(1000)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Left,
+                                tween(1000)
+                            )
+                        }
+                    ) { StartScreen(navController) }
                     composable(
                         "getinfor",
                         enterTransition = {
@@ -62,13 +76,14 @@ class MainActivity : ComponentActivity() {
                                     AnimatedContentTransitionScope.SlideDirection.Right,
                                     tween(1000)
                                 ) { it }
+
                                 else -> slideOutOfContainer(
                                     AnimatedContentTransitionScope.SlideDirection.Left,
                                     tween(1000)
                                 )
                             }
                         }
-                    ) { GetInformationScreen(navController)}
+                    ) { GetInformationScreen(navController) }
                     composable(
                         "main",
                         enterTransition = {
@@ -90,13 +105,46 @@ class MainActivity : ComponentActivity() {
                                     AnimatedContentTransitionScope.SlideDirection.Right,
                                     tween(500)
                                 ) { it }
+
                                 else -> slideOutOfContainer(
                                     AnimatedContentTransitionScope.SlideDirection.Left,
                                     tween(500)
                                 )
                             }
                         }
-                    ) { MainScreen()}
+                    ) { MainScreen(navController) }
+                    composable("healthbook") { HealthBookScreen(navController) }
+                    composable(
+                        "weighingscreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { WeighingScreen(navController) }
+                    composable(
+                        "bloodpressurescreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { BloodPressureScreen(navController) }
+                    composable("goalscreen") { GoalScreen(navController = navController)}
                 }
             }
         }

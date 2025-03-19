@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
@@ -23,20 +24,29 @@ import androidx.navigation.compose.rememberNavController
 import com.example.healthtrackingapp.ui.components.BottomNavigation
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    mainNavController: NavHostController
+) {
     val navController = rememberNavController()
 
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars,
-        bottomBar = { BottomNavigation(navController = navController) }
+        bottomBar = {
+            BottomNavigation(
+                navController = navController,
+                mainNavController = mainNavController
+            )
+        }
     ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = "dashboard",
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
-            composable("dashboard") { DashboardScreen() }
-            composable("graph") { GraphScreen() }
+            composable("dashboard") { DashboardScreen(mainNavController) }
+            composable("graph") { ModelScreen(mainNavController) }
             composable("notification") { NotificationScreen() }
             composable("user") { UserScreen() }
         }
