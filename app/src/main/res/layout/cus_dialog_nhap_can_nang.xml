@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
-    android:layout_height="350dp"
+    android:layout_height="330dp"
     android:layout_margin="20dp"
     android:layout_gravity="center"
     android:padding="6dp"
@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:layout_marginStart="35dp"
-            android:text="Số điện thoại của tôi"
+            android:text="Cân nặng của tôi"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -35,24 +35,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="90dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:gravity="center">
-
         <EditText
-            android:id="@+id/edtNhapSDT"
-            android:layout_width="0dp"
+            android:id="@+id/edtNhapCanNang"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:inputType="phone"
-            android:paddingStart="35dp"
+            android:inputType="number"
             android:gravity="center"
-            android:text="0395511743"
-            android:textSize="30sp"
+            android:layout_marginStart="80dp"
+            android:text="Nhập cân nặng"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/Gray"
             android:background="@null"
             tools:ignore="HardcodedText"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="Kg"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/Gray"/>
 
         <ImageView
             android:id="@+id/imgXoaChu"
@@ -65,21 +71,29 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:background="@color/black"/>
-
-    <Button
-        android:id="@+id/btnLuuSDT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:text="Tiếp tục"
+        android:background="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cân nặng không hợp lệ"
+        android:textSize="12sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/red"/>
+
+    <Button
+        android:id="@+id/btnLuuCanNang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Lưu"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:background="@drawable/custom_button"
-        tools:ignore="HardcodedText" />
+        android:background="@drawable/custom_button"/>
 </LinearLayout>
