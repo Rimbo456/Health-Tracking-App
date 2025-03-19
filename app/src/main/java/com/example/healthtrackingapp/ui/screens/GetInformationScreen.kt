@@ -120,14 +120,14 @@ fun GetInformationScreen(navController: NavHostController) {
                     }
                 }
                 SliderCustom(
-                    sliderPosition = height,
+                    sliderPosition = String.format("%.2f",height).toFloat(),
                     onValueChange = { height = it },
                     valueRange = 50f..300f,
                     unit = "cm",
                     title = stringResource(id = R.string.height)
                 )
                 SliderCustom(
-                    sliderPosition = weighth,
+                    sliderPosition = String.format("%.2f",weighth).toFloat(),
                     onValueChange = { weighth = it },
                     valueRange = 20f..80f,
                     unit = "kg",

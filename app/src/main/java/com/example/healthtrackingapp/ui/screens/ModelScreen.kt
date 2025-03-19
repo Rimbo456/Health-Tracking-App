@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.healthtrackingapp.ui.components.LineChart
 
 //@Composable
 //fun ModelScreen() {
@@ -209,6 +210,7 @@ fun ModelScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(12.dp))
         }
     }
+    LineChart()
 }
 
 @Composable

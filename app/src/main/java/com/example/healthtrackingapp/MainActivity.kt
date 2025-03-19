@@ -5,17 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -24,10 +14,10 @@ import com.example.healthtrackingapp.ui.screens.GetInformationScreen
 import com.example.healthtrackingapp.ui.screens.GoalScreen
 import com.example.healthtrackingapp.ui.screens.HealthBookScreen
 import com.example.healthtrackingapp.ui.screens.MainScreen
+import com.example.healthtrackingapp.ui.screens.OverviewScreen
 import com.example.healthtrackingapp.ui.screens.StartScreen
 import com.example.healthtrackingapp.ui.screens.WeighingScreen
 import com.example.healthtrackingapp.ui.theme.HealthTrackingAppTheme
-import com.google.accompanist.navigation.animation.AnimatedNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,7 +134,22 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) { BloodPressureScreen(navController) }
-                    composable("goalscreen") { GoalScreen(navController = navController)}
+                    composable("goalscreen") { GoalScreen(navController = navController) }
+                    composable(
+                        "overviewscreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { OverviewScreen(navController) }
                 }
             }
         }
