@@ -210,7 +210,6 @@ fun ModelScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(12.dp))
         }
     }
-    LineChart()
 }
 
 @Composable
