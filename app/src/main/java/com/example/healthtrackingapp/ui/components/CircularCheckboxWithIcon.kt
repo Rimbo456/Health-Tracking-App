@@ -13,12 +13,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun CircularCheckboxWithIcon() {
-    var isChecked by remember { mutableStateOf(false) }
-
+fun CircularCheckboxWithIcon(
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
     IconToggleButton(
         checked = isChecked,
-        onCheckedChange = { isChecked = it }
+        onCheckedChange = { onCheckedChange }
     ) {
         Icon(
             imageVector = if (isChecked) Icons.Filled.CheckCircle else Icons.Outlined.RadioButtonUnchecked,

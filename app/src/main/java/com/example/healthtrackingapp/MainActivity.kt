@@ -13,15 +13,19 @@ import com.example.healthtrackingapp.ui.screens.BloodPressureScreen
 import com.example.healthtrackingapp.ui.screens.GetInformationScreen
 import com.example.healthtrackingapp.ui.screens.GoalScreen
 import com.example.healthtrackingapp.ui.screens.HealthBookScreen
+import com.example.healthtrackingapp.ui.screens.LoginScreen
 import com.example.healthtrackingapp.ui.screens.MainScreen
 import com.example.healthtrackingapp.ui.screens.OverviewScreen
 import com.example.healthtrackingapp.ui.screens.StartScreen
 import com.example.healthtrackingapp.ui.screens.WeighingScreen
 import com.example.healthtrackingapp.ui.theme.HealthTrackingAppTheme
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
         setContent {
             HealthTrackingAppTheme {
@@ -45,6 +49,35 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) { StartScreen(navController) }
+                    composable(
+                        "login",
+                        enterTransition = {
+                            when (targetState.destination.route) {
+                                "start" -> slideIntoContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Right,
+                                    tween(1000)
+                                ) { it }
+
+                                else -> slideIntoContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Left,
+                                    tween(1000)
+                                )
+                            }
+                        },
+                        exitTransition = {
+                            when (targetState.destination.route) {
+                                "start" -> slideOutOfContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Right,
+                                    tween(1000)
+                                ) { it }
+
+                                else -> slideOutOfContainer(
+                                    AnimatedContentTransitionScope.SlideDirection.Left,
+                                    tween(1000)
+                                )
+                            }
+                        }
+                    ) { LoginScreen(navController) }
                     composable(
                         "getinfor",
                         enterTransition = {

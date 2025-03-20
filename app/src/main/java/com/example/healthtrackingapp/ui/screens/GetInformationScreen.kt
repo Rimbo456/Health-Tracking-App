@@ -40,12 +40,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
+import com.example.healthtrackingapp.ui.components.CircularCheckboxWithIcon
 import com.example.healthtrackingapp.ui.components.SliderCustom
 
 @Composable
 fun GetInformationScreen(navController: NavHostController) {
     var height by remember { mutableStateOf(50f) }
     var weighth by remember { mutableStateOf(20f) }
+    var gender by remember { mutableStateOf(true) }
     Scaffold() { innerPadding ->
         Box(
             modifier = Modifier
@@ -72,21 +74,32 @@ fun GetInformationScreen(navController: NavHostController) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Card(
-                            onClick = { /*TODO*/ }, colors = CardDefaults.cardColors(
-                                Color(
-                                    red = 216, green = 216, blue = 216, alpha = 255
+                            onClick = { gender = true },
+                            colors = if (gender) {
+                                CardDefaults.cardColors(
+                                    Color(
+                                        red = 216, green = 216, blue = 216, alpha = 255
+                                    )
                                 )
-                            ), border = BorderStroke(
+                            } else CardDefaults.cardColors(Color.White),
+                            border = BorderStroke(
                                 width = 2.dp, color = Color(
                                     red = 216, green = 216, blue = 216, alpha = 255
                                 )
                             )
                         ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.businessman_man_business_1),
-                                contentDescription = null,
-                                modifier = Modifier.size(120.dp)
-                            )
+                            Box(
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.businessman_man_business_1),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(120.dp)
+                                )
+                                CircularCheckboxWithIcon(
+                                    isChecked = gender,
+                                    onCheckedChange = { gender = true })
+                            }
                         }
                         Text(
                             text = stringResource(id = R.string.male),
@@ -98,19 +111,32 @@ fun GetInformationScreen(navController: NavHostController) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Card(
-                            onClick = { /*TODO*/ }, colors = CardDefaults.cardColors(
-                                Color.White
-                            ), border = BorderStroke(
+                            onClick = { gender = false },
+                            colors = if (!gender) {
+                                CardDefaults.cardColors(
+                                    Color(
+                                        red = 216, green = 216, blue = 216, alpha = 255
+                                    )
+                                )
+                            } else CardDefaults.cardColors(Color.White),
+                            border = BorderStroke(
                                 width = 2.dp, color = Color(
                                     red = 216, green = 216, blue = 216, alpha = 255
                                 )
                             )
                         ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.businesswoman_business_woman_working_girl_1),
-                                contentDescription = null,
-                                modifier = Modifier.size(120.dp)
-                            )
+                            Box(
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.businesswoman_business_woman_working_girl_1),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(120.dp)
+                                )
+                                CircularCheckboxWithIcon(
+                                    isChecked = gender == false,
+                                    onCheckedChange = { gender = false })
+                            }
                         }
                         Text(
                             text = stringResource(id = R.string.female),
@@ -120,14 +146,14 @@ fun GetInformationScreen(navController: NavHostController) {
                     }
                 }
                 SliderCustom(
-                    sliderPosition = String.format("%.2f",height).toFloat(),
+                    sliderPosition = String.format("%.2f", height).toFloat(),
                     onValueChange = { height = it },
                     valueRange = 50f..300f,
                     unit = "cm",
                     title = stringResource(id = R.string.height)
                 )
                 SliderCustom(
-                    sliderPosition = String.format("%.2f",weighth).toFloat(),
+                    sliderPosition = String.format("%.2f", weighth).toFloat(),
                     onValueChange = { weighth = it },
                     valueRange = 20f..80f,
                     unit = "kg",
@@ -135,12 +161,12 @@ fun GetInformationScreen(navController: NavHostController) {
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.End,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    IconButton(
+                    /*IconButton(
                         onClick = { navController.navigate("start") },
                         colors = IconButtonDefaults.iconButtonColors(Color.Black),
                         modifier = Modifier.size(56.dp)
@@ -150,7 +176,7 @@ fun GetInformationScreen(navController: NavHostController) {
                             contentDescription = null,
                             tint = Color.White
                         )
-                    }
+                    }*/
                     IconButton(
                         onClick = {
                             navController.navigate("main") {
