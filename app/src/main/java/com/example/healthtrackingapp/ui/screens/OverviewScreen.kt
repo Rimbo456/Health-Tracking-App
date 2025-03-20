@@ -3,6 +3,7 @@ package com.example.healthtrackingapp.ui.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForward
@@ -65,6 +68,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
+import com.example.healthtrackingapp.ui.components.BodyTemperatureChart
 import com.example.healthtrackingapp.ui.components.CircularCheckboxWithIcon
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -101,21 +105,173 @@ fun OverviewScreen(
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(0.9f),
-                horizontalAlignment = Alignment.Start,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Text(
                     text = "Daily Health Notes",
-                    fontSize = 20.sp,
+                    fontSize = 29.sp,
                     fontWeight = FontWeight.Bold
                 )
-                OutlinedTextField(
-                    value = ghichu,
-                    onValueChange = { ghichu = it },
-                    placeholder = { Text(text = "Ghi chú về triệu chứng và bệnh lý") },
-                    readOnly = true
-                )
-                ExpandableCard(
+                Card(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(0.9f)
+                                .padding(vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                "Triệu chứng",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.SemiBold,
+                            )
+                            IconButton(
+                                onClick = {  },
+
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.AddCircle,
+                                    contentDescription = null,
+                                    tint = Color.Black,
+                                    modifier = Modifier.size(30.dp)
+                                )
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .height(2.dp)
+                                .fillMaxWidth(0.9f)
+                                .background(Color.Gray)
+                        )
+                        ExpandableCard(
+                            title = "Trieu chung 1",
+                            width = 0.5f,
+                            content = {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Mô tả triệu chứng: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Thời gian xuất hiện triệu chứng: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Mức độ nặng nhẹ: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Hướng xử lý: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Thuốc đã dùng: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                        Box(
+                            modifier = Modifier
+                                .height(1.dp)
+                                .fillMaxWidth(0.7f)
+                                .background(Color.Gray)
+                        )
+                        ExpandableCard(
+                            title = "Trieu chung 2",
+                            width = 0.5f,
+                            content = {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Mô tả triệu chứng: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Thời gian xuất hiện triệu chứng: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Mức độ nặng nhẹ: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Hướng xử lý: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                    Text(
+                                        text = buildAnnotatedString {
+                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                append("Thuốc đã dùng: ")
+                                            }
+                                            append("")
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                        Box(
+                            modifier = Modifier
+                                .height(2.dp)
+                                .fillMaxWidth(0.9f)
+                                .background(Color.Gray)
+                        )
+                        ExpandableCard(
+                            title = "Nhiet do: 37.5 độ C",
+                            width = 1f,
+                            content = {
+                                BodyTemperatureChart(LocalDate.now().dayOfMonth)
+                            }
+                        )
+                    }
+                }
+                /*ExpandableCard(
                     title = stringResource(id = R.string.nuandiet),
                     content = {
                         Text(
@@ -215,7 +371,8 @@ fun OverviewScreen(
                                 append("Không có, nhưng có chơi đồ")
                             }
                         )
-                    }
+                    },
+                    width = 1f
                 )
                 ExpandableCard(
                     title = stringResource(id = R.string.phyacaworkout),
@@ -252,7 +409,8 @@ fun OverviewScreen(
                                 append("")
                             }
                         )
-                    }
+                    },
+                    width = 1f
                 )
                 ExpandableCard(
                     title = stringResource(id = R.string.moodaemo),
@@ -281,8 +439,9 @@ fun OverviewScreen(
                                 append("")
                             }
                         )
-                    }
-                )
+                    },
+                    width = 1f
+                )*/
             }
         }
     }
@@ -325,9 +484,13 @@ private fun TopBarDate(navController: NavHostController) {
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 }
-                IconButton(onClick = { selectedDate = selectedDate.plusDays(1) }) {
+                IconButton(
+                    onClick = { selectedDate = selectedDate.plusDays(1) },
+                    enabled = if (selectedDate.dayOfMonth == LocalDate.now().dayOfMonth) false else true
+                ) {
                     Icon(Icons.Default.ArrowForward, contentDescription = "Ngày sau")
                 }
+
             }
             Box(
                 modifier = Modifier.weight(0.4f),
@@ -350,7 +513,7 @@ private fun TopBarDate(navController: NavHostController) {
 }
 
 @Composable
-fun ExpandableCard(title: String, content: @Composable () -> Unit) {
+fun ExpandableCard(title: String, content: @Composable () -> Unit, width: Float) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -358,14 +521,18 @@ fun ExpandableCard(title: String, content: @Composable () -> Unit) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { expanded = !expanded },
-        colors = CardDefaults.cardColors(Color.LightGray),
+//        colors = CardDefaults.cardColors(Color.LightGray),
         shape = RoundedCornerShape(10.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+//        elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth(width),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -387,12 +554,12 @@ fun ExpandableCard(title: String, content: @Composable () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Box(
+                    /*Box(
                         modifier = Modifier
                             .height(1.dp)
                             .fillMaxWidth()
                             .background(Color.Gray)
-                    )
+                    )*/
                     content()
                 }
             }

@@ -48,7 +48,7 @@ fun StartScreen(navController: NavHostController? = null) {
             IconButton(
                 onClick = {
                     if (navController != null) {
-                        navController.navigate("getinfor")
+                        navController.navigate("login")
                     }
                 },
                 colors = IconButtonDefaults.iconButtonColors(Color.Black),
