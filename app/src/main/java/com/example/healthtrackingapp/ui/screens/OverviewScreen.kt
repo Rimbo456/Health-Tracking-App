@@ -1,3 +1,4 @@
+/*
 package com.example.healthtrackingapp.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
@@ -70,6 +71,8 @@ import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.BodyTemperatureChart
 import com.example.healthtrackingapp.ui.components.CircularCheckboxWithIcon
+import com.example.healthtrackingapp.ui.components.SymptomData
+import com.example.healthtrackingapp.ui.components.SymptomEntryDialog
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -78,6 +81,8 @@ fun OverviewScreen(
     navController: NavHostController
 ) {
     var ghichu by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+    var lastSymptomData by remember { mutableStateOf<SymptomData?>(null) }
 
     Scaffold(
         modifier = Modifier.padding(WindowInsets.systemBars.asPaddingValues()),
@@ -133,9 +138,9 @@ fun OverviewScreen(
                                 fontWeight = FontWeight.SemiBold,
                             )
                             IconButton(
-                                onClick = {  },
+                                onClick = { showDialog = true },
 
-                            ) {
+                                ) {
                                 Icon(
                                     imageVector = Icons.Default.AddCircle,
                                     contentDescription = null,
@@ -150,112 +155,74 @@ fun OverviewScreen(
                                 .fillMaxWidth(0.9f)
                                 .background(Color.Gray)
                         )
-                        ExpandableCard(
-                            title = "Trieu chung 1",
-                            width = 0.5f,
-                            content = {
-                                Column(
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Mô tả triệu chứng: ")
+                        lastSymptomData?.let { data ->
+                            ExpandableCard(
+                                title = "Trieu chung 1",
+                                width = 0.5f,
+                                content = {
+                                    Column(
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                    append("Mô tả triệu chứng: ")
+                                                }
+                                                append(data.description)
                                             }
-                                            append("")
-                                        }
-                                    )
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Thời gian xuất hiện triệu chứng: ")
+                                        )
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                    append("Thời gian xuất hiện triệu chứng: ")
+                                                }
+                                                append(data.time)
                                             }
-                                            append("")
-                                        }
-                                    )
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Mức độ nặng nhẹ: ")
+                                        )
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                    append("Mức độ nặng nhẹ: ")
+                                                }
+                                                append(
+                                                    "${data.severity} - ${
+                                                        when {
+                                                            data.severity < 2 -> "Rất nhẹ"
+                                                            data.severity < 3 -> "Nhẹ"
+                                                            data.severity < 4 -> "Trung bình"
+                                                            data.severity < 5 -> "Nặng"
+                                                            else -> "Rất nặng"
+                                                        }
+                                                    }"
+                                                )
                                             }
-                                            append("")
-                                        }
-                                    )
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Hướng xử lý: ")
+                                        )
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                    append("Hướng xử lý: ")
+                                                }
+                                                append("")
                                             }
-                                            append("")
-                                        }
-                                    )
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Thuốc đã dùng: ")
+                                        )
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                                                    append("Thuốc đã dùng: ")
+                                                }
+                                                append(data.medications.joinToString(", "))
                                             }
-                                            append("")
-                                        }
-                                    )
+                                        )
+                                    }
                                 }
-                            }
-                        )
-                        Box(
-                            modifier = Modifier
-                                .height(1.dp)
-                                .fillMaxWidth(0.7f)
-                                .background(Color.Gray)
-                        )
-                        ExpandableCard(
-                            title = "Trieu chung 2",
-                            width = 0.5f,
-                            content = {
-                                Column(
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Mô tả triệu chứng: ")
-                                            }
-                                            append("")
-                                        }
-                                    )
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Thời gian xuất hiện triệu chứng: ")
-                                            }
-                                            append("")
-                                        }
-                                    )
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Mức độ nặng nhẹ: ")
-                                            }
-                                            append("")
-                                        }
-                                    )
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Hướng xử lý: ")
-                                            }
-                                            append("")
-                                        }
-                                    )
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
-                                                append("Thuốc đã dùng: ")
-                                            }
-                                            append("")
-                                        }
-                                    )
-                                }
-                            }
-                        )
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .height(1.dp)
+                                    .fillMaxWidth(0.7f)
+                                    .background(Color.Gray)
+                            )
+                        }
                         Box(
                             modifier = Modifier
                                 .height(2.dp)
@@ -271,7 +238,8 @@ fun OverviewScreen(
                         )
                     }
                 }
-                /*ExpandableCard(
+                */
+/*ExpandableCard(
                     title = stringResource(id = R.string.nuandiet),
                     content = {
                         Text(
@@ -441,8 +409,18 @@ fun OverviewScreen(
                         )
                     },
                     width = 1f
-                )*/
+                )*//*
+
             }
+        }
+        if (showDialog) {
+            SymptomEntryDialog(
+                onDismiss = { showDialog = false },
+                onSubmit = { symptomData ->
+                    lastSymptomData = symptomData
+                    showDialog = false
+                }
+            )
         }
     }
 }
@@ -526,7 +504,9 @@ fun ExpandableCard(title: String, content: @Composable () -> Unit, width: Float)
 //        elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -554,16 +534,627 @@ fun ExpandableCard(title: String, content: @Composable () -> Unit, width: Float)
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    /*Box(
+                    */
+/*Box(
                         modifier = Modifier
                             .height(1.dp)
                             .fillMaxWidth()
                             .background(Color.Gray)
-                    )*/
+                    )*//*
+
                     content()
+                }
+            }
+        }
+    }
+}*/
+
+package com.example.healthtrackingapp.ui.screens
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.rounded.AddCircle
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.healthtrackingapp.R
+import com.example.healthtrackingapp.ui.components.BodyTemperatureChart
+import com.example.healthtrackingapp.ui.components.SymptomData
+import com.example.healthtrackingapp.ui.components.SymptomEntryDialog
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+// Define theme colors for consistent style
+private val primaryColor = Color(0xFF4E7DFF)
+private val secondaryColor = Color(0xFFFF7D7D)
+private val backgroundColor = Color(0xFFF5F7FF)
+private val cardBackgroundColor = Color.White
+private val textPrimaryColor = Color(0xFF2D3142)
+private val textSecondaryColor = Color(0xFF9095A7)
+private val accentGradient = Brush.linearGradient(
+    colors = listOf(Color(0xFF4E7DFF), Color(0xFF56CCF2))
+)
+
+@Composable
+fun OverviewScreen(
+    navController: NavHostController
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    var lastSymptomData by remember { mutableStateOf<SymptomData?>(null) }
+
+    Scaffold(
+        modifier = Modifier.padding(WindowInsets.systemBars.asPaddingValues()),
+        topBar = { TopBarDate(navController) },
+        containerColor = backgroundColor
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            // Subtle background image with overlay gradient for better readability
+            Image(
+                painter = painterResource(id = R.drawable.nen_app),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+            )
+
+            // Main content column
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Header with fancy gradient
+                HeaderSection()
+
+                // Card for Symptoms
+                SymptomsSection(
+                    lastSymptomData = lastSymptomData,
+                    onAddSymptom = { showDialog = true }
+                )
+
+                // Card for Temperature
+                TemperatureSection()
+
+                // Spacer for bottom padding
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+
+        // Symptom entry dialog
+        if (showDialog) {
+            SymptomEntryDialog(
+                onDismiss = { showDialog = false },
+                onSubmit = { symptomData ->
+                    lastSymptomData = symptomData
+                    showDialog = false
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun HeaderSection() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Daily Health Notes",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            color = textPrimaryColor,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.4f)
+                .height(4.dp)
+                .background(
+                    brush = accentGradient,
+                    shape = RoundedCornerShape(2.dp)
+                )
+        )
+    }
+}
+
+@Composable
+fun SymptomsSection(
+    lastSymptomData: SymptomData?,
+    onAddSymptom: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 6.dp,
+                shape = RoundedCornerShape(16.dp),
+                spotColor = primaryColor
+            ),
+        colors = CardDefaults.cardColors(
+            containerColor = cardBackgroundColor
+        ),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // Section header with add button
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    "Triệu chứng",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = textPrimaryColor
+                )
+
+                IconButton(
+                    onClick = onAddSymptom,
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(
+                            brush = accentGradient,
+                            shape = CircleShape
+                        )
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.AddCircle,
+                        contentDescription = "Add symptom",
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+
+            // Divider
+            Box(
+                modifier = Modifier
+                    .height(2.dp)
+                    .fillMaxWidth()
+                    .background(
+                        color = Color(0xFFF0F0F0),
+                        shape = RoundedCornerShape(1.dp)
+                    )
+            )
+
+            // Symptoms display
+            lastSymptomData?.let { data ->
+                SymptomCard(data)
+            } ?: run {
+                // Empty state
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Chưa có triệu chứng nào được ghi nhận",
+                        color = textSecondaryColor,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }
     }
 }
 
+@Composable
+fun SymptomCard(data: SymptomData) {
+    var expanded by remember { mutableStateOf(false) }
+    val rotationState by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "rotation"
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF9FAFF)
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // Header (always visible)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .background(
+                        color = Color.Transparent
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Severity indicator
+                    Box(
+                        modifier = Modifier
+                            .size(12.dp)
+                            .background(
+                                color = when {
+                                    data.severity < 2 -> Color(0xFF66BB6A)  // Green
+                                    data.severity < 3 -> Color(0xFFFFEB3B)  // Yellow
+                                    data.severity < 4 -> Color(0xFFFFA726)  // Orange
+                                    else -> Color(0xFFEF5350)  // Red
+                                },
+                                shape = CircleShape
+                            )
+                    )
+
+                    Text(
+                        text = data.description.take(25) + if (data.description.length > 25) "..." else "",
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 16.sp,
+                        color = textPrimaryColor
+                    )
+                }
+
+                IconButton(
+                    onClick = { expanded = !expanded },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ExpandMore,
+                        contentDescription = if (expanded) "Show less" else "Show more",
+                        tint = primaryColor,
+                        modifier = Modifier.rotate(rotationState)
+                    )
+                }
+            }
+
+            // Expandable content
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    SymptomDetailRow(
+                        label = "Mô tả triệu chứng:",
+                        value = data.description
+                    )
+
+                    SymptomDetailRow(
+                        label = "Thời gian xuất hiện:",
+                        value = data.time
+                    )
+
+                    SymptomDetailRow(
+                        label = "Mức độ:",
+                        value = "${data.severity} - ${
+                            when {
+                                data.severity < 2 -> "Rất nhẹ"
+                                data.severity < 3 -> "Nhẹ"
+                                data.severity < 4 -> "Trung bình"
+                                data.severity < 5 -> "Nặng"
+                                else -> "Rất nặng"
+                            }
+                        }"
+                    )
+
+                    if (data.medications.isNotEmpty()) {
+                        SymptomDetailRow(
+                            label = "Thuốc đã dùng:",
+                            value = data.medications.joinToString(", ")
+                        )
+                    }
+
+                    // Action buttons
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Button(
+                            onClick = { /* Edit action */ },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = primaryColor
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.padding(end = 8.dp)
+                        ) {
+                            Text("Chỉnh sửa")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SymptomDetailRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top
+    ) {
+        Text(
+            text = label,
+            fontWeight = FontWeight.SemiBold,
+            color = textPrimaryColor,
+            modifier = Modifier.padding(end = 4.dp)
+        )
+        Text(
+            text = value,
+            color = textSecondaryColor
+        )
+    }
+}
+
+@Composable
+fun TemperatureSection() {
+    var expanded by remember { mutableStateOf(false) }
+    val rotationState by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "rotation"
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 6.dp,
+                shape = RoundedCornerShape(16.dp),
+                spotColor = secondaryColor
+            ),
+        colors = CardDefaults.cardColors(
+            containerColor = cardBackgroundColor
+        ),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // Header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .background(Color.Transparent),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Nhiệt độ cơ thể: 37.5°C",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp,
+                    color = textPrimaryColor
+                )
+
+                IconButton(
+                    onClick = { expanded = !expanded },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ExpandMore,
+                        contentDescription = if (expanded) "Show less" else "Show more",
+                        tint = secondaryColor,
+                        modifier = Modifier.rotate(rotationState)
+                    )
+                }
+            }
+
+            // Expandable content
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                BodyTemperatureChart(LocalDate.now().dayOfMonth)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarDate(navController: NavHostController? = null) {
+    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+    val today = LocalDate.now()
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp)
+            .shadow(8.dp),
+        shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+        ) {
+            // Date navigation
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(0.9f)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth(0.7f)
+                ) {
+                    // Previous day button
+                    IconButton(
+                        onClick = { selectedDate = selectedDate.minusDays(1) },
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFF0F4FF))
+                    ) {
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "Previous day",
+                            tint = primaryColor
+                        )
+                    }
+
+                    // Current date
+                    Card(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color(0xFFEEF2FF)
+                        ),
+                        shape = RoundedCornerShape(20.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = selectedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = textPrimaryColor
+                            )
+                        }
+                    }
+
+                    // Next day button
+                    IconButton(
+                        onClick = { selectedDate = selectedDate.plusDays(1) },
+                        enabled = selectedDate.isBefore(today),
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(
+                                if (selectedDate.isBefore(today)) Color(0xFFF0F4FF)
+                                else Color(0xFFEEEEEE)
+                            )
+                    ) {
+                        Icon(
+                            Icons.Default.ArrowForward,
+                            contentDescription = "Next day",
+                            tint = if (selectedDate.isBefore(today)) primaryColor else Color.Gray
+                        )
+                    }
+                }
+                // Close button
+                IconButton(
+                    onClick = {
+                        if (navController != null) {
+                            navController.popBackStack()
+                        }
+                    },
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape),
+                    colors = IconButtonDefaults.iconButtonColors(secondaryColor)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close",
+                        tint = Color.White
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun a() {
+    TopBarDate()
+}
