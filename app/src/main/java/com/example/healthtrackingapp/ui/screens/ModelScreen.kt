@@ -31,6 +31,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.healthtrackingapp.ui.components.LineChart
+import com.example.healthtrackingapp.ui.components.TopBarForAdd
 
 //@Composable
 //fun ModelScreen() {
@@ -196,7 +198,9 @@ fun ModelScreen(navController: NavController) {
     val models = listOf(
         "ChatGPT", "Bard", "Claude", "Gemini", "Llama"
     )
-
+    TopBar(
+        title = "AI Models"
+    )
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

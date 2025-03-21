@@ -126,7 +126,7 @@ fun HealthBookScreen(navController: NavHostController) {
 
 @Composable
 fun TopBar(
-    navController: NavHostController,
+    navController: NavHostController? = null,
     title: String
 ) {
     Column(
@@ -144,7 +144,11 @@ fun TopBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            IconButton(onClick = { navController.navigate("main") }) {
+            IconButton(onClick = {
+                if (navController != null) {
+                    navController.navigate("main")
+                }
+            }) {
                 Icon(imageVector = Icons.Default.ArrowBackIosNew, contentDescription = null)
             }
             Text(
@@ -153,7 +157,11 @@ fun TopBar(
                 fontWeight = FontWeight.Bold
             )
             IconButton(
-                onClick = { navController.navigate("overviewscreen") },
+                onClick = {
+                    if (navController != null) {
+                        navController.navigate("overviewscreen")
+                    }
+                },
                 colors = IconButtonDefaults.iconButtonColors(Color.White),
                 modifier = Modifier.size(55.dp)
             ) {

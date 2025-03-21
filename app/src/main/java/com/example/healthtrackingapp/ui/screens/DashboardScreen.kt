@@ -178,7 +178,7 @@ fun DashboardScreen(
             }
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f),
+                    .fillMaxWidth(),
                 verticalArrangement = Arrangement.Top
             ) {
                 Card(
@@ -219,7 +219,7 @@ fun DashboardScreen(
         )
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.8f)
+                .fillMaxWidth(0.9f)
                 .fillMaxHeight(0.6f),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
