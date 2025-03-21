@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,10 +41,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.healthtrackingapp.R
 
 @Composable
 fun BottomNavigation(
@@ -77,10 +82,10 @@ fun BottomNavigation(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        if (position == 1) Icons.Filled.Category else Icons.Outlined.Category,
+                    Image(
+                        painter = if (position == 1) painterResource(R.drawable.dashboard_icon_filled) else painterResource(R.drawable.dashboard_icon_outlined),
                         contentDescription = "Home",
-                        tint = if (position == 1) Color.Black else Color.Gray,
+
                         modifier = Modifier.size(30.dp)
                     )
                     if (position == 1) {
@@ -89,7 +94,7 @@ fun BottomNavigation(
                                 .padding(top = 5.dp)
                                 .size(7.dp)
                                 .clip(shape = CircleShape)
-                                .background(Color.Black)
+                                .background(Color(red = 87, green = 35, blue = 220))
                         )
                     }
                 }
@@ -99,16 +104,16 @@ fun BottomNavigation(
                     position = 2
                     navController.navigate("graph")
                 },
-                modifier = Modifier.size(70.dp)
+                modifier = Modifier.size(70.dp).padding(end = 10.dp)
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        if (position == 2) Icons.Filled.AutoGraph else Icons.Outlined.AutoGraph,
+                    Image(
+                        painter = if (position == 2) painterResource(R.drawable.ic_bot_touch_96) else painterResource(R.drawable.ic_bot_no_touch_96),
                         contentDescription = "ShoppingBag",
-                        tint = if (position == 2) Color.Black else Color.Gray,
+
                         modifier = Modifier.size(30.dp)
                     )
                     if (position == 2) {
@@ -117,7 +122,7 @@ fun BottomNavigation(
                                 .padding(top = 5.dp)
                                 .size(7.dp)
                                 .clip(shape = CircleShape)
-                                .background(Color.Black)
+                                .background(Color(red = 87, green = 35, blue = 220))
                         )
                     }
                 }
@@ -127,14 +132,15 @@ fun BottomNavigation(
                     position = 5
                     mainNavController.navigate("healthbook")
                 },
-                colors = IconButtonDefaults.iconButtonColors(Color.Black),
-                modifier = Modifier.size(65.dp)
+                modifier = Modifier
+                    .size(65.dp)
+                    .offset(y = -15.dp)
+                    .scale(1.15f)
             ) {
-                Icon(
-                    Icons.Filled.Add,
+                Image(
+                    painter = painterResource(R.drawable.overview),
                     contentDescription = "Scan",
-                    tint = Color.LightGray,
-                    modifier = Modifier.size(35.dp)
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
             IconButton(
@@ -142,16 +148,16 @@ fun BottomNavigation(
                     position = 3
                     navController.navigate("notification")
                 },
-                modifier = Modifier.size(70.dp)
+                modifier = Modifier.size(70.dp).padding(start = 10.dp)
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        if (position == 3) Icons.Filled.Notifications else Icons.Outlined.Notifications,
+                    Image(
+                        painter = if (position == 3) painterResource(R.drawable.ic_exercise_touch_96) else painterResource(R.drawable.ic_exercise_no_touch_96),
                         contentDescription = "Home",
-                        tint = if (position == 3) Color.Black else Color.Gray,
+
                         modifier = Modifier.size(30.dp)
                     )
                     if (position == 3) {
@@ -160,7 +166,7 @@ fun BottomNavigation(
                                 .padding(top = 5.dp)
                                 .size(7.dp)
                                 .clip(shape = CircleShape)
-                                .background(Color.Black)
+                                .background(Color(red = 87, green = 35, blue = 220))
                         )
                     }
                 }
@@ -176,10 +182,10 @@ fun BottomNavigation(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        if (position == 4) Icons.Filled.Person else Icons.Outlined.Person,
+                    Image(
+                        painter = if (position == 4) painterResource(R.drawable.ic_account_touch_96) else painterResource(R.drawable.ic_account_no_touch_96),
                         contentDescription = "Home",
-                        tint = if (position == 4) Color.Black else Color.Gray,
+
                         modifier = Modifier.size(40.dp)
                     )
                     if (position == 4) {
@@ -188,7 +194,7 @@ fun BottomNavigation(
                                 .padding(top = 5.dp)
                                 .size(7.dp)
                                 .clip(shape = CircleShape)
-                                .background(Color.Black)
+                                .background(Color(red = 87, green = 35, blue = 220))
                         )
                     }
                 }

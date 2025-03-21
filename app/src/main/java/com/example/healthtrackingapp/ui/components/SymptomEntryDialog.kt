@@ -244,9 +244,9 @@ fun SymptomEntryDialog(
                                 .fillMaxWidth()
                                 .height(120.dp),
                             placeholder = { Text("Vui lòng mô tả chi tiết triệu chứng bạn đang gặp phải...") },
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedBorderColor = Color(0xFF2D5BA8),
-                                unfocusedBorderColor = Color(0xFFADB5BD)
+                            colors = TextFieldDefaults.colors(
+                                Color(0xFF2D5BA8),
+                                Color(0xFFADB5BD)
                             ),
                             keyboardOptions = KeyboardOptions(
                                 imeAction = ImeAction.Next
@@ -392,9 +392,9 @@ fun SymptomEntryDialog(
                                 onValueChange = { symptomData = symptomData.copy(time = it) },
                                 modifier = Modifier.fillMaxWidth(),
                                 placeholder = { Text("Chọn thời gian xuất hiện triệu chứng") },
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    focusedBorderColor = Color(0xFF2D96A8),
-                                    unfocusedBorderColor = Color(0xFFADB5BD)
+                                colors = TextFieldDefaults.colors(
+                                    Color(0xFF2D96A8),
+                                    Color(0xFFADB5BD)
                                 ),
                                 trailingIcon = {
                                     IconButton(onClick = { showTimeOptions = !showTimeOptions }) {
@@ -434,9 +434,9 @@ fun SymptomEntryDialog(
                                 onValueChange = { symptomData = symptomData.copy(time = it) },
                                 modifier = Modifier.fillMaxWidth(),
                                 label = { Text("Thời gian cụ thể") },
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    focusedBorderColor = Color(0xFF2D96A8),
-                                    unfocusedBorderColor = Color(0xFFADB5BD)
+                                colors = TextFieldDefaults.colors(
+                                    Color(0xFF2D96A8),
+                                    Color(0xFFADB5BD)
                                 ),
                                 shape = RoundedCornerShape(12.dp)
                             )
@@ -480,9 +480,9 @@ fun SymptomEntryDialog(
                                 onValueChange = { newMedication = it },
                                 modifier = Modifier.weight(1f),
                                 placeholder = { Text("Nhập tên thuốc") },
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    focusedBorderColor = Color(0xFF2DA8A1),
-                                    unfocusedBorderColor = Color(0xFFADB5BD)
+                                colors = TextFieldDefaults.colors(
+                                    Color(0xFF2DA8A1),
+                                    Color(0xFFADB5BD)
                                 ),
                                 shape = RoundedCornerShape(12.dp),
                                 keyboardOptions = KeyboardOptions(

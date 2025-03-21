@@ -621,7 +621,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
+import com.example.healthtrackingapp.ui.components.BloodGlucoseChart
+import com.example.healthtrackingapp.ui.components.BloodOxygenLevelChart
 import com.example.healthtrackingapp.ui.components.BodyTemperatureChart
+import com.example.healthtrackingapp.ui.components.ExpandCard
+import com.example.healthtrackingapp.ui.components.HeartRateChart
+import com.example.healthtrackingapp.ui.components.JetpackComposeBasicLineChart
 import com.example.healthtrackingapp.ui.components.SymptomData
 import com.example.healthtrackingapp.ui.components.SymptomEntryDialog
 import java.time.LocalDate
@@ -682,7 +687,56 @@ fun OverviewScreen(
                 )
 
                 // Card for Temperature
-                TemperatureSection()
+                ExpandCard(
+                    title = "Nhiệt độ cơ thể",
+                    value = 37.5,
+                    unit = "°C",
+                    content = {
+                        BodyTemperatureChart(LocalDate.now().dayOfMonth)
+                    }
+                )
+
+                // Card for Blood Presure
+                ExpandCard(
+                    title = "Huyết áp",
+                    value = 117.0,
+                    unit = "mmHg",
+                    content = {
+                        JetpackComposeBasicLineChart()
+                    }
+                )
+
+                // Heart Rate
+                ExpandCard(
+                    title = "Bắn tym",
+                    value = 80.0,
+                    unit = "BPM",
+                    content = {
+                        HeartRateChart()
+                    }
+                )
+
+                // blood glucose
+                ExpandCard(
+                    title = "Đường huyết",
+                    value = 140.0,
+                    unit = "mg/dL",
+                    content = {
+                        BloodGlucoseChart()
+                    }
+                )
+
+                //blood oxygen levels
+                ExpandCard(
+                    title = "Nồng độ oxygen trong máu",
+                    value = 95.0,
+                    unit = "%",
+                    content = {
+                        BloodOxygenLevelChart()
+                    }
+                )
+
+                // Chat luong giac ngu
 
                 // Spacer for bottom padding
                 Spacer(modifier = Modifier.height(16.dp))
@@ -977,7 +1031,7 @@ fun SymptomDetailRow(label: String, value: String) {
 }
 
 @Composable
-fun TemperatureSection() {
+fun Temp() {
     var expanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
@@ -1067,6 +1121,24 @@ private fun TopBarDate(navController: NavHostController? = null) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth(0.9f)
             ) {
+                // Close button
+                IconButton(
+                    onClick = {
+                        if (navController != null) {
+                            navController.popBackStack()
+                        }
+                    },
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape),
+                    colors = IconButtonDefaults.iconButtonColors(secondaryColor)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close",
+                        tint = Color.White
+                    )
+                }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -1130,24 +1202,7 @@ private fun TopBarDate(navController: NavHostController? = null) {
                         )
                     }
                 }
-                // Close button
-                IconButton(
-                    onClick = {
-                        if (navController != null) {
-                            navController.popBackStack()
-                        }
-                    },
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape),
-                    colors = IconButtonDefaults.iconButtonColors(secondaryColor)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Close",
-                        tint = Color.White
-                    )
-                }
+
             }
         }
     }

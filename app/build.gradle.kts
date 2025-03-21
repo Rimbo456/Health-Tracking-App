@@ -80,6 +80,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     //Chart
     implementation("co.yml:ycharts:2.1.0")
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m3)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)

@@ -29,7 +29,7 @@
             android:id="@+id/imgAvatar"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/thobaymau"
+            android:src="@drawable/avata_app"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/RoundedImage" />
     </LinearLayout>
