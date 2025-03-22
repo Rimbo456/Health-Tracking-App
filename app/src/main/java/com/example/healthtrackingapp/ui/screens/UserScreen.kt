@@ -3,19 +3,40 @@ package com.example.healthtrackingapp.ui.screens
 import android.content.Intent
 import android.view.LayoutInflater
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.healthtrackingapp.HoSoActivity
 import com.example.healthtrackingapp.R
+import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun UserScreen() {
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { context ->
             val view = LayoutInflater.from(context).inflate(R.layout.activity_main, null, false)
+
+            val tvUserName = view.findViewById<TextView>(R.id.tvUserName)
+            val tvEmail = view.findViewById<TextView>(R.id.tvEmail)
+            val avt = view.findViewById<ShapeableImageView>(R.id.imgAvatar)
+
+            if (user != null) {
+                tvUserName.text = user!!.displayName
+                tvEmail.text = user!!.email
+            }
 
             val tbrHoSo = view.findViewById<TableRow>(R.id.tbrHoSo)
             tbrHoSo.setOnClickListener {
