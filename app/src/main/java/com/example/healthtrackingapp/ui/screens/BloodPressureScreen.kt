@@ -3,6 +3,7 @@ package com.example.healthtrackingapp.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,21 +43,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
-import com.example.healthtrackingapp.ui.components.BottomBarForAdd
 import com.example.healthtrackingapp.ui.components.TopBarForAdd
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun BloodPressureScreen(
     navController: NavHostController,
 ) {
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
     var tamthu by remember { mutableStateOf("") }
     var tamtruong by remember { mutableStateOf("") }
     var nhiptim by remember { mutableStateOf("") }
-    
+
     Scaffold(
         modifier = Modifier.padding(WindowInsets.systemBars.asPaddingValues()),
         topBar = { TopBarForAdd(navController) },
-        bottomBar = { BottomBarForAdd() }
+        bottomBar = {
+            BottomBarForAdd(
+                db = db,
+                user = user!!,
+                tamthu = tamthu,
+                tamtruong = tamtruong,
+                nhiptim = nhiptim,
+                navController = navController
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -92,7 +109,11 @@ fun BloodPressureScreen(
                             .weight(0.3f)
                             .shadow(elevation = 10.dp, shape = RoundedCornerShape(20.dp))
                             .clip(RoundedCornerShape(20.dp))
-                            .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(20.dp))
+                            .border(
+                                width = 1.dp,
+                                color = Color.LightGray,
+                                shape = RoundedCornerShape(20.dp)
+                            )
                             .background(Color.White)
                             .padding(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,7 +130,7 @@ fun BloodPressureScreen(
                             textStyle = TextStyle(fontSize = 30.sp, textAlign = TextAlign.Start),
                             modifier = Modifier
                                 .width(IntrinsicSize.Min)
-                                .padding(vertical = 18.dp,)
+                                .padding(vertical = 18.dp)
                         )
                         Text(text = "Tam thu")
                     }
@@ -118,7 +139,11 @@ fun BloodPressureScreen(
                             .weight(0.3f)
                             .shadow(elevation = 10.dp, shape = RoundedCornerShape(20.dp))
                             .clip(RoundedCornerShape(20.dp))
-                            .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(20.dp))
+                            .border(
+                                width = 1.dp,
+                                color = Color.LightGray,
+                                shape = RoundedCornerShape(20.dp)
+                            )
                             .background(Color.White)
                             .padding(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -144,7 +169,11 @@ fun BloodPressureScreen(
                             .weight(0.3f)
                             .shadow(elevation = 10.dp, shape = RoundedCornerShape(20.dp))
                             .clip(RoundedCornerShape(20.dp))
-                            .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(20.dp))
+                            .border(
+                                width = 1.dp,
+                                color = Color.LightGray,
+                                shape = RoundedCornerShape(20.dp)
+                            )
                             .background(Color.White)
                             .padding(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -168,5 +197,47 @@ fun BloodPressureScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun BottomBarForAdd(
+    db: FirebaseFirestore,
+    user: FirebaseUser,
+    tamthu: String,
+    tamtruong: String,
+    nhiptim: String,
+    navController: NavHostController
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 40.dp, start = 30.dp, end = 30.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color.Black)
+            .clickable {
+                db.collection("users")
+                    .document(user.uid)
+                    .collection("blood_pressure")
+                    .add(
+                        hashMapOf(
+                            "tamthu" to tamthu,
+                            "tamtruong" to tamtruong,
+                            "nhiptim" to nhiptim,
+                            "timestamp" to System.currentTimeMillis()
+                        )
+                    )
+                navController.popBackStack()
+            },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(
+            text = "Save",
+            fontSize = 26.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.padding(vertical = 10.dp)
+        )
     }
 }

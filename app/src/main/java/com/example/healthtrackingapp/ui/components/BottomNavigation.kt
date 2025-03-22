@@ -186,7 +186,7 @@ fun BottomNavigation(
                         painter = if (position == 4) painterResource(R.drawable.ic_account_touch_96) else painterResource(R.drawable.ic_account_no_touch_96),
                         contentDescription = "Home",
 
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(30.dp)
                     )
                     if (position == 4) {
                         Box(

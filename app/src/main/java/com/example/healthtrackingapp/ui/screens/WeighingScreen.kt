@@ -2,6 +2,7 @@ package com.example.healthtrackingapp.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,18 +51,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
-import com.example.healthtrackingapp.ui.components.BottomBarForAdd
 import com.example.healthtrackingapp.ui.components.TopBarForAdd
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun WeighingScreen(navController: NavHostController) {
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
     var chiso by remember { mutableStateOf("") }
     var unitIndex by remember { mutableStateOf(1) }
 
     Scaffold(
         modifier = Modifier.padding(WindowInsets.systemBars.asPaddingValues()),
         topBar = { TopBarForAdd(navController) },
-        bottomBar = { BottomBarForAdd() }
+        bottomBar = {
+            BottomBarForAddWeight(
+                navController = navController,
+                cannang = chiso,
+                db = db,
+                user = user!!
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -115,8 +131,12 @@ fun WeighingScreen(navController: NavHostController) {
                     ) {
                         Card(
                             onClick = { unitIndex = 1 },
-                            colors = if (unitIndex == 1) CardDefaults.cardColors() else CardDefaults.cardColors(Color.White),
-                            modifier = if (unitIndex == 1) Modifier.weight(0.4f) else Modifier.weight(0.3f)
+                            colors = if (unitIndex == 1) CardDefaults.cardColors() else CardDefaults.cardColors(
+                                Color.White
+                            ),
+                            modifier = if (unitIndex == 1) Modifier.weight(0.4f) else Modifier.weight(
+                                0.3f
+                            )
                         ) {
                             Box(
                                 modifier = Modifier
@@ -126,13 +146,18 @@ fun WeighingScreen(navController: NavHostController) {
                                 Text(
                                     text = "kg",
                                     textAlign = TextAlign.Center,
-                                    modifier = Modifier.fillMaxWidth())
+                                    modifier = Modifier.fillMaxWidth()
+                                )
                             }
                         }
                         Card(
                             onClick = { unitIndex = 2 },
-                            colors = if (unitIndex == 2) CardDefaults.cardColors() else CardDefaults.cardColors(Color.White),
-                            modifier = if (unitIndex == 2) Modifier.weight(0.4f) else Modifier.weight(0.3f)
+                            colors = if (unitIndex == 2) CardDefaults.cardColors() else CardDefaults.cardColors(
+                                Color.White
+                            ),
+                            modifier = if (unitIndex == 2) Modifier.weight(0.4f) else Modifier.weight(
+                                0.3f
+                            )
                         ) {
                             Box(
                                 modifier = Modifier
@@ -142,13 +167,18 @@ fun WeighingScreen(navController: NavHostController) {
                                 Text(
                                     text = "lbs",
                                     textAlign = TextAlign.Center,
-                                    modifier = Modifier.fillMaxWidth())
+                                    modifier = Modifier.fillMaxWidth()
+                                )
                             }
                         }
                         Card(
                             onClick = { unitIndex = 3 },
-                            colors = if (unitIndex == 3) CardDefaults.cardColors() else CardDefaults.cardColors(Color.White),
-                            modifier = if (unitIndex == 3) Modifier.weight(0.4f) else Modifier.weight(0.3f)
+                            colors = if (unitIndex == 3) CardDefaults.cardColors() else CardDefaults.cardColors(
+                                Color.White
+                            ),
+                            modifier = if (unitIndex == 3) Modifier.weight(0.4f) else Modifier.weight(
+                                0.3f
+                            )
                         ) {
                             Box(
                                 modifier = Modifier
@@ -158,7 +188,8 @@ fun WeighingScreen(navController: NavHostController) {
                                 Text(
                                     text = "st",
                                     textAlign = TextAlign.Center,
-                                    modifier = Modifier.fillMaxWidth())
+                                    modifier = Modifier.fillMaxWidth()
+                                )
                             }
                         }
                     }
@@ -168,5 +199,40 @@ fun WeighingScreen(navController: NavHostController) {
     }
 }
 
-
+@Composable
+private fun BottomBarForAddWeight(
+    db: FirebaseFirestore,
+    user: FirebaseUser,
+    cannang: String,
+    navController: NavHostController
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 40.dp, start = 30.dp, end = 30.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color.Black)
+            .clickable {
+                db.collection("users")
+                    .document(user.uid)
+                    .set(
+                        hashMapOf(
+                            "weight" to cannang.toInt()
+                        ),
+                        SetOptions.merge()
+                    )
+                navController.popBackStack()
+            },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(
+            text = "Save",
+            fontSize = 26.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.padding(vertical = 10.dp)
+        )
+    }
+}
 

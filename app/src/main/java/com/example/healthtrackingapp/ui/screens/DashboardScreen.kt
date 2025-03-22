@@ -59,6 +59,9 @@ import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.CardDashboard
 import com.example.healthtrackingapp.ui.components.CircularCheckboxWithIcon
 import com.example.healthtrackingapp.ui.components.ItemGoal
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -74,6 +77,12 @@ fun DashboardScreen(
     val fullText = "Hôm nay bạn cảm thấy thế nào?"
     val coroutineScope = rememberCoroutineScope()
     var showDialog by remember { mutableStateOf(false) }
+    var titleGoal by remember { mutableStateOf("") }
+    var contentGoal by remember { mutableStateOf("") }
+    var dateGoal by remember { mutableStateOf("") }
+
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
     LaunchedEffect(Unit) {
         coroutineScope.launch {
@@ -82,6 +91,21 @@ fun DashboardScreen(
                 delay(50)
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("goals")
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    titleGoal = document.getString("title") ?: ""
+                    contentGoal = document.getString("content") ?: ""
+                    dateGoal = document.getString("date") ?: ""
+                }
+            }
     }
 
     Box(
@@ -190,17 +214,18 @@ fun DashboardScreen(
                         modifier = Modifier.padding(15.dp)
                     ) {
                         Text(
-                            text = "Tittle",
+                            text = "Tên mục tiêu: " + titleGoal,
                             fontSize = 25.sp,
+                            fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
-                            text = "Content",
+                            text ="Nội dung: " + contentGoal,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
-                            text = "Date",
+                            text = "Ngày hoàn thành: "+dateGoal,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
@@ -301,6 +326,9 @@ fun DashboardScreen(
 
 @Composable
 fun FeelingDialog(onDismiss: () -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
     var indexx by remember { mutableStateOf(-1) }
 
 
@@ -365,12 +393,40 @@ fun FeelingDialog(onDismiss: () -> Unit) {
                                 else -> ""
                             },
                             fontSize = 13.sp,
-                            fontStyle = FontStyle.Italic
+                            fontStyle = FontStyle.Italic,
+                            modifier = Modifier.padding(bottom = 2.dp)
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = onDismiss) {
+                /*Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Nguyên nhân gây ra căng thẳng?",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )*/
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    onClick = {
+                        db.collection("users")
+                            .document(user!!.uid)
+                            .collection("mood")
+                            .add(
+                                hashMapOf(
+                                    "moodLevel" to when (indexx) {
+                                        0 -> "Thư giãn"
+                                        1 -> "Hơi áp lực"
+                                        2 -> "Căng thẳng trung bình"
+                                        3 -> "Căng thẳng cao"
+                                        4 -> "Rất căng thẳng"
+                                        else -> ""
+                                    },
+                                    "timestamp" to System.currentTimeMillis(),
+                                )
+                            )
+                        onDismiss()
+                    }
+                ) {
                     Text("Lưu")
                 }
             }

@@ -9,6 +9,9 @@ import androidx.compose.animation.core.tween
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.healthtrackingapp.ui.screens.AddFoodScreen
+import com.example.healthtrackingapp.ui.screens.AddSleepScreen
+import com.example.healthtrackingapp.ui.screens.AddWaterScreen
 import com.example.healthtrackingapp.ui.screens.BloodPressureScreen
 import com.example.healthtrackingapp.ui.screens.GetInformationScreen
 import com.example.healthtrackingapp.ui.screens.GoalScreen
@@ -152,6 +155,51 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) { WeighingScreen(navController) }
+                    composable(
+                        "addsleep",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { AddSleepScreen(navController) }
+                    composable(
+                        "addwater",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { AddWaterScreen(navController) }
+                    composable(
+                        "addfood",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { AddFoodScreen(navController) }
                     composable(
                         "bloodpressurescreen",
                         enterTransition = {

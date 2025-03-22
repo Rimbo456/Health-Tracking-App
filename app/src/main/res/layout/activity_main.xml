@@ -52,6 +52,8 @@
                 android:layout_gravity="center"
                 android:text="@string/email"
                 android:textSize="18sp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/Gray"/>
         </LinearLayout>
     </FrameLayout>
