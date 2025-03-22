@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,15 +17,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.healthtrackingapp.data.databases.FirestoreHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HoSoActivity extends Activity {
     boolean gioiTinh = true;
-    String ten = "nhut", sdt = "0395511743", email = "feniknhut151104@gmail.com";
+    String sdt = "0395511743";
     int chieuCao = 165, canNang = 50, namSinh = 2004;
     TextView txtTen, txtEmail, txtSDT, txtGioiTinh, txtChieuCao, txtCanNang, txtNamSinh;
     TableRow tbrTen, tbrSDT, tbrGioiTinh, tbrChieuCao, tbrCanNang, tbrNamSinh;
     ImageView imgQuayLai;
+    FirestoreHelper firestoreHelper = new FirestoreHelper();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = mAuth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +59,22 @@ public class HoSoActivity extends Activity {
         txtCanNang = findViewById(R.id.txtCanNang);
         txtNamSinh = findViewById(R.id.txtNamSinh);
 
-        txtTen.setText(ten);
-        txtEmail.setText(email);
+        if (user != null) {
+            String userId = user.getUid();
+            String email = user.getEmail();
+
+            txtEmail.setText(email);
+
+            firestoreHelper.getUserData(userId, documentSnapshot -> {
+                if (documentSnapshot.exists() && documentSnapshot.contains("username")) {
+                    String username = documentSnapshot.getString("username");
+                    txtTen.setText(username);
+                } else {
+                    String displayName = user.getDisplayName();
+                    txtTen.setText(displayName != null ? displayName : "");
+                }
+            }, e -> Log.e("Firestore", "Lỗi lấy dữ liệu", e));
+        }
         Intent intentSDT = getIntent();
         String SDT = intentSDT.getStringExtra("SDT");
         if (SDT != null && !SDT.isEmpty()) sdt = SDT;
@@ -67,7 +89,7 @@ public class HoSoActivity extends Activity {
 
         imgQuayLai.setOnClickListener(view -> finish());
 
-        tbrTen.setOnClickListener(view -> showEnterNameDialog(ten));
+        tbrTen.setOnClickListener(view -> showEnterNameDialog());
         tbrSDT.setOnClickListener(view -> showEnterPhoneDialog(sdt));
         tbrGioiTinh.setOnClickListener(view -> {
             showSelectGenderDialog(gioiTinh, new GenderSelectListener() {
@@ -87,7 +109,7 @@ public class HoSoActivity extends Activity {
         tbrNamSinh.setOnClickListener(view -> showEnterBirthYearDialog(namSinh));
     }
 
-    public void showEnterNameDialog(String ten){
+    public void showEnterNameDialog(){
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.cus_dialog_nhap_ten);
 
@@ -95,13 +117,34 @@ public class HoSoActivity extends Activity {
         ImageView imgXoaChu = dialog.findViewById(R.id.imgXoaChu);
         EditText edtNhapTen = dialog.findViewById(R.id.edtNhapTen);
         Button btnLuuTen = dialog.findViewById(R.id.btnLuuTen);
-        
-        edtNhapTen.setText(ten);
+
+
+        if (user != null) {
+            String userId = user.getUid();
+            firestoreHelper.getUserData(userId, documentSnapshot -> {
+                if (documentSnapshot.exists() && documentSnapshot.contains("username")) {
+                    String username = documentSnapshot.getString("username");
+                    edtNhapTen.setText(username);
+                } else {
+                    String displayName = user.getDisplayName();
+                    edtNhapTen.setText(displayName != null ? displayName : "");
+                }
+            }, e -> Log.e("Firestore", "Lỗi lấy dữ liệu", e));
+        }
 
         imgDong.setOnClickListener(view -> dialog.dismiss());
-        imgXoaChu.setOnClickListener(view -> edtNhapTen.setText(null));
-        btnLuuTen.setOnClickListener(view -> {
-            txtTen.setText(edtNhapTen.getText());
+        imgXoaChu.setOnClickListener(view -> edtNhapTen.setText(""));
+        btnLuuTen.setOnClickListener(v -> {
+            String newName = edtNhapTen.getText().toString().trim();
+            if (newName.isEmpty()) {
+                Toast.makeText(HoSoActivity.this, "Tên không được để trống!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (user != null) {
+                firestoreHelper.updateUserName(user.getUid(), newName,
+                        unused -> Toast.makeText(HoSoActivity.this, "Đã cập nhật tên!", Toast.LENGTH_SHORT).show(),
+                        e -> Toast.makeText(HoSoActivity.this, "Lỗi cập nhật!", Toast.LENGTH_SHORT).show());
+            }
             dialog.dismiss();
         });
 

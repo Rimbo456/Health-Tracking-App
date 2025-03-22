@@ -45,7 +45,7 @@
                 android:textColor="@color/black"/>
 
             <TextView
-                android:id="@+id/bacham"
+                android:id="@+id/tvEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -85,6 +85,30 @@
                     android:layout_gravity="center|start"
                     android:layout_marginStart="10dp"
                     android:text="@string/profile"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </TableRow>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginVertical="3dp"
+                android:background="@color/light_gray" />
+
+            <TableRow>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_star_of_life_512" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/health_condition"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </TableRow>
@@ -297,7 +321,6 @@
                 android:background="@color/light_gray" />
 
             <TableRow>
-
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
