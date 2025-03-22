@@ -40,7 +40,9 @@ fun ItemBook(
     image: Int,
     title: String,
     navController: NavHostController,
-    route: String
+    route: String,
+    value: String? = "Khong co du lieu",
+    unit: String? = ""
 ) {
     Card(
         colors = CardDefaults.cardColors(color),
@@ -106,7 +108,7 @@ fun ItemBook(
                     .padding(17.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Khong co du lieu")
+                Text(text = value!!+" "+unit!!)
                 Text(text = "Time")
             }
         }

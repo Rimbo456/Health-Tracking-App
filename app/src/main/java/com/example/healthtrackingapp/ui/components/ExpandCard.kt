@@ -51,7 +51,8 @@ fun ExpandCard(
     content: @Composable () -> Unit,
     title: String,
     value: Double?,
-    unit: String
+    unit: String,
+    colorEle: Color
 ) {
     var expanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -65,7 +66,7 @@ fun ExpandCard(
             .shadow(
                 elevation = 6.dp,
                 shape = RoundedCornerShape(16.dp),
-                spotColor = secondaryColor
+                spotColor = colorEle
             ),
         colors = CardDefaults.cardColors(
             containerColor = cardBackgroundColor

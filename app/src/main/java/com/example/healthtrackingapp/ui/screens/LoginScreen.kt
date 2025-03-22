@@ -54,12 +54,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
+    val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
     var email by remember { mutableStateOf(TextFieldValue()) }
@@ -71,6 +73,22 @@ fun LoginScreen(navController: NavHostController) {
         onAuthComplete = { result ->
             user = result.user
             if (user != null) {
+                db.collection("users").document(user!!.uid).get()
+                    .addOnSuccessListener { document ->
+                        if (!document.exists()) {
+                            // Nếu user chưa tồn tại, thêm vào Firestore
+                            db.collection("users")
+                                .document(user!!.uid)
+                                .set(
+                                    mapOf(
+                                        "uid" to user!!.uid,
+                                        "name" to user!!.displayName,
+                                    )
+                                )
+                        } else {
+                            println("User đã tồn tại trong Firestore!")
+                        }
+                    }
                 navController.navigate("getinfor")
             }
         },

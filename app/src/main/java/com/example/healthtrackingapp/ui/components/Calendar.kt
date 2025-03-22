@@ -107,7 +107,7 @@ fun Calendar() {
                                 "SATURDAY" -> "TH 7"
                                 else -> "CN"
                             },
-                            fontSize = 20.sp
+                            fontSize = 18.sp
                         )
                         Box(
                             modifier = if (selectedDay.value == item)

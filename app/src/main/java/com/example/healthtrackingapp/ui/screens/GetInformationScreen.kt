@@ -42,9 +42,15 @@ import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.CircularCheckboxWithIcon
 import com.example.healthtrackingapp.ui.components.SliderCustom
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 @Composable
 fun GetInformationScreen(navController: NavHostController) {
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
+    val db = FirebaseFirestore.getInstance()
+
     var height by remember { mutableStateOf(50f) }
     var weighth by remember { mutableStateOf(20f) }
     var gender by remember { mutableStateOf(true) }
@@ -179,6 +185,16 @@ fun GetInformationScreen(navController: NavHostController) {
                     }*/
                     IconButton(
                         onClick = {
+                            db.collection("users")
+                                .document(userId!!)
+                                .set(
+                                    mapOf(
+                                        "gender" to gender,
+                                        "height" to height,
+                                        "weight" to weighth,
+                                    ),
+                                    SetOptions.merge()
+                                )
                             navController.navigate("main") {
                                 popUpTo(0) { inclusive = true }
                             }
