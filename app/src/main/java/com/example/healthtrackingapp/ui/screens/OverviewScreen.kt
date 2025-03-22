@@ -573,6 +573,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -581,6 +582,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -589,6 +591,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -617,6 +622,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -686,55 +692,242 @@ fun OverviewScreen(
                     onAddSymptom = { showDialog = true }
                 )
 
-                // Card for Temperature
-                ExpandCard(
-                    title = "Nhiệt độ cơ thể",
-                    value = 37.5,
-                    unit = "°C",
-                    content = {
-                        BodyTemperatureChart(LocalDate.now().dayOfMonth)
-                    }
-                )
+                ExpandableContainer(
+                    title = "Biểu đồ chỉ số cơ thể",
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        // Card for Temperature
+                        ExpandCard(
+                            title = "Nhiệt độ cơ thể",
+                            value = 37.5,
+                            unit = "°C",
+                            colorEle = Color(red = 218, green = 115, blue = 35, alpha = 255),
+                            content = {
+                                BodyTemperatureChart(LocalDate.now().dayOfMonth)
+                            }
+                        )
 
-                // Card for Blood Presure
-                ExpandCard(
-                    title = "Huyết áp",
-                    value = 117.0,
-                    unit = "mmHg",
-                    content = {
-                        JetpackComposeBasicLineChart()
-                    }
-                )
+                        // Card for Blood Presure
+                        ExpandCard(
+                            title = "Huyết áp",
+                            value = 117.0,
+                            unit = "mmHg",
+                            colorEle = Color(red = 255, green = 32, blue = 32, alpha = 255),
+                            content = {
+                                JetpackComposeBasicLineChart()
+                            }
+                        )
 
-                // Heart Rate
-                ExpandCard(
-                    title = "Bắn tym",
-                    value = 80.0,
-                    unit = "BPM",
-                    content = {
-                        HeartRateChart()
-                    }
-                )
+                        // Heart Rate
+                        ExpandCard(
+                            title = "Bắn tym",
+                            value = 80.0,
+                            unit = "BPM",
+                            colorEle = Color(red = 255, green = 32, blue = 32, alpha = 255),
+                            content = {
+                                HeartRateChart()
+                            }
+                        )
 
-                // blood glucose
-                ExpandCard(
-                    title = "Đường huyết",
-                    value = 140.0,
-                    unit = "mg/dL",
-                    content = {
-                        BloodGlucoseChart()
-                    }
-                )
+                        // blood glucose
+                        ExpandCard(
+                            title = "Đường huyết",
+                            value = 140.0,
+                            unit = "mg/dL",
+                            colorEle = Color(red = 177, green = 255, blue = 32, alpha = 255),
+                            content = {
+                                BloodGlucoseChart()
+                            }
+                        )
 
-                //blood oxygen levels
-                ExpandCard(
-                    title = "Nồng độ oxygen trong máu",
-                    value = 95.0,
-                    unit = "%",
-                    content = {
-                        BloodOxygenLevelChart()
+                        //blood oxygen levels
+                        ExpandCard(
+                            title = "Nồng độ oxygen trong máu",
+                            value = 95.0,
+                            unit = "%",
+                            colorEle = Color(red = 32, green = 229, blue = 255, alpha = 255),
+                            content = {
+                                BloodOxygenLevelChart()
+                            }
+                        )
                     }
-                )
+                }
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        // Tiêu đề
+                        Text(
+                            text = "Bữa ăn trong ngày",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                        Divider(thickness = 1.dp, color = Color.Black)
+
+                        // Khu vực bữa ăn
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            MealColumn(
+                                title = "Buổi sáng",
+                                meals = listOf("Chính", "Phụ"),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            VerticalDivider(
+                                thickness = 1.dp,
+                                color = Color.Black
+                            )
+
+                            MealColumn(
+                                title = "Buổi trưa",
+                                meals = listOf("Chính", "Phụ"),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            VerticalDivider(
+                                thickness = 1.dp,
+                                color = MaterialTheme.colorScheme.surfaceVariant
+                            )
+
+                            MealColumn(
+                                title = "Buổi chiều",
+                                meals = listOf("Chính", "Phụ"),
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+
+                        Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.surfaceVariant)
+
+                        // Thông tin dinh dưỡng
+                        NutritionInfoItem(
+                            label = "Lượng nước đã uống",
+                            value = "2 lít",
+                            icon = Icons.Filled.Check
+                        )
+
+                        NutritionInfoItem(
+                            label = "Thực phẩm đã tiêu thụ",
+                            value = "Mì tôm",
+                            icon = Icons.Filled.Check
+                        )
+
+                        NutritionInfoItem(
+                            label = "Vitamin/sữa/thuốc bổ",
+                            value = "Không có",
+                            icon = null
+                        )
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        // Tiêu đề
+                        Text(
+                            text = "Vận động và tập luyện",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                        Divider(thickness = 1.dp, color = Color.Black)
+
+
+                        // Thông tin dinh dưỡng
+                        NutritionInfoItem(
+                            label = "Loại hình tập luyện",
+                            value = "Yoga",
+                            icon = Icons.Filled.Check
+                        )
+
+                        NutritionInfoItem(
+                            label = "Thời gian tập luyện",
+                            value = "2 tiếng",
+                            icon = Icons.Filled.Check
+                        )
+
+                        NutritionInfoItem(
+                            label = "Cường độ tập luyện",
+                            value = "Không có",
+                            icon = null
+                        )
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        // Tiêu đề
+                        Text(
+                            text = "Tâm trạng và cảm xúc",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                        Divider(thickness = 1.dp, color = Color.Black)
+
+
+                        // Thông tin dinh dưỡng
+                        NutritionInfoItem(
+                            label = "Cảm xúc trong ngày",
+                            value = "Cay vã ò",
+                            icon = Icons.Filled.Check
+                        )
+
+                        NutritionInfoItem(
+                            label = "Nguyên nhân ảnh hưởng",
+                            value = "Chuỗi thua 5",
+                            icon = Icons.Filled.Check
+                        )
+
+                        NutritionInfoItem(
+                            label = "Ghi chú cá nhân",
+                            value = "Không có",
+                            icon = null
+                        )
+                    }
+                }
+
+
 
                 // Chat luong giac ngu
 
@@ -1012,6 +1205,102 @@ fun SymptomCard(data: SymptomData) {
 }
 
 @Composable
+fun ExpandableContainer(
+    title: String,
+    severityLevel: Int? = null,
+    content: @Composable () -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val rotationState by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "rotation"
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF9FAFF)
+        ),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(6.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // Header (always visible)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .background(
+                        color = Color.Transparent
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Severity indicator (only shown if severityLevel is provided)
+                    if (severityLevel != null) {
+                        Box(
+                            modifier = Modifier
+                                .size(12.dp)
+                                .background(
+                                    color = when {
+                                        severityLevel < 2 -> Color(0xFF66BB6A)  // Green
+                                        severityLevel < 3 -> Color(0xFFFFEB3B)  // Yellow
+                                        severityLevel < 4 -> Color(0xFFFFA726)  // Orange
+                                        else -> Color(0xFFEF5350)  // Red
+                                    },
+                                    shape = CircleShape
+                                )
+                        )
+                    }
+
+                    Text(
+                        text = title.take(25) + if (title.length > 25) "..." else "",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 22.sp,
+                        color = Color(0xFF333333) // textPrimaryColor
+                    )
+                }
+
+                IconButton(
+                    onClick = { expanded = !expanded },
+                    modifier = Modifier.size(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ExpandMore,
+                        contentDescription = if (expanded) "Thu gọn" else "Mở rộng",
+                        tint = Color(0xFF7F7FD5), // primaryColor
+                        modifier = Modifier.rotate(rotationState)
+                    )
+                }
+            }
+
+            // Expandable content
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    // Content passed from outside
+                    content()
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun SymptomDetailRow(label: String, value: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -1208,8 +1497,95 @@ private fun TopBarDate(navController: NavHostController? = null) {
     }
 }
 
-@Preview(showSystemUi = true)
 @Composable
-fun a() {
-    TopBarDate()
+fun MealColumn(
+    title: String,
+    meals: List<String>,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text(
+            text = title,
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        meals.forEach { meal ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                var isChecked by remember { mutableStateOf(false) }
+
+                Checkbox(
+                    checked = isChecked,
+                    onCheckedChange = { isChecked = it },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = MaterialTheme.colorScheme.primary,
+                        uncheckedColor = MaterialTheme.colorScheme.outline
+                    ),
+                    modifier = Modifier.size(20.dp)
+                )
+
+                Text(
+                    text = meal,
+                    fontSize = 14.sp,
+                    color = if (isChecked)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun VerticalDivider(
+    modifier: Modifier = Modifier,
+    thickness: Dp = 1.dp,
+    color: Color = MaterialTheme.colorScheme.outline
+) {
+    Box(
+        modifier = modifier
+            .fillMaxHeight()
+            .width(thickness)
+            .background(color)
+    )
+}
+
+@Composable
+fun NutritionInfoItem(
+    label: String,
+    value: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector?
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                    append("$label: ")
+                }
+                append(value)
+            },
+            modifier = Modifier.weight(1f)
+        )
+
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
 }

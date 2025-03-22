@@ -34,6 +34,11 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,9 +53,27 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.ItemBook
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun HealthBookScreen(navController: NavHostController) {
+    val uid = FirebaseAuth.getInstance().currentUser?.uid
+    val db = FirebaseFirestore.getInstance()
+
+    var weight by remember { mutableStateOf(0.0) }
+
+    LaunchedEffect(uid) {
+        db.collection("users")
+            .document(uid!!)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    weight = document.getDouble("weight")!!
+                } else println("User không tồn tại!")
+            }
+    }
+
     Scaffold(
         modifier = Modifier.padding(WindowInsets.systemBars.asPaddingValues()),
         topBar = { TopBar(navController, title = "Suc khoe cua ban") }
@@ -92,7 +115,9 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Can nang",
                         image = R.drawable.reshot_icon_weighing_scale_pzrhsgv7y6,
                         navController = navController,
-                        route = "weighingscreen"
+                        route = "weighingscreen",
+                        value = ((weight * 100).toInt() / 100f).toString(),
+                        unit = "kg"
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
