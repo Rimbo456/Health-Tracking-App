@@ -1,6 +1,7 @@
 package com.example.healthtrackingapp.ui.screens
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.TableRow
 import android.widget.TextView
@@ -23,6 +24,18 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun UserScreen() {
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+    val db = FirebaseFirestore.getInstance()
+    var name by remember { mutableStateOf("") }
+
+    db.collection("users")
+        .document(user!!.uid)
+        .get()
+        .addOnSuccessListener { document ->
+            name = document.getString("name") ?: ""
+        }
+        .addOnFailureListener { e ->
+            Log.e("FirestoreError", "Error getting user data: ${e.message}")
+        }
 
     AndroidView(
         modifier = Modifier.fillMaxSize(),
@@ -34,7 +47,7 @@ fun UserScreen() {
             val avt = view.findViewById<ShapeableImageView>(R.id.imgAvatar)
 
             if (user != null) {
-                tvUserName.text = user!!.displayName
+                tvUserName.text = name
                 tvEmail.text = user!!.email
             }
 

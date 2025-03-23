@@ -43,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.ui.components.LineChart
 import com.example.healthtrackingapp.ui.components.TopBarForAdd
 
@@ -194,9 +195,9 @@ import com.example.healthtrackingapp.ui.components.TopBarForAdd
 //    }
 //}
 @Composable
-fun ModelScreen(navController: NavController) {
+fun ModelScreen(navController: NavHostController) {
     val models = listOf(
-        "ChatGPT", "Bard", "Claude", "Gemini", "Llama"
+        "Chuẩn đoán u não", "Bard", "Claude", "Gemini", "Llama"
     )
     TopBar(
         title = "AI Models"
@@ -208,21 +209,23 @@ fun ModelScreen(navController: NavController) {
             .padding(16.dp)
     ) {
         items(models) { model ->
-            AIModelCard(model) {
-                navController.navigate("model_detail/$model")
-            }
+            AIModelCard(
+                modelName = model,
+                navController = navController,
+                route = "unao"
+            )
             Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
 
 @Composable
-fun AIModelCard(modelName: String, onClick: () -> Unit) {
+fun AIModelCard(modelName: String, navController: NavHostController, route: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .clickable { onClick() }
+            .clickable { navController.navigate(route) }
             .background(Color.White)
             .shadow(6.dp, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),

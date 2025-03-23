@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -25,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.healthtrackingapp.R
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -72,6 +76,14 @@ fun AddFoodScreen(navController: NavHostController) {
             )
         },
     ) { paddingValues ->
+        Image(
+            painter = painterResource(id = R.drawable.nen_app),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            contentScale = ContentScale.Crop
+        )
         Column(
             modifier = Modifier
                 .padding(paddingValues)

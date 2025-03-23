@@ -25,7 +25,7 @@ fun TopBarForAdd(navController: NavHostController) {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.08f)
-            .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
+            .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

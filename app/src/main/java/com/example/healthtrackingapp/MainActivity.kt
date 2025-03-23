@@ -20,6 +20,7 @@ import com.example.healthtrackingapp.ui.screens.LoginScreen
 import com.example.healthtrackingapp.ui.screens.MainScreen
 import com.example.healthtrackingapp.ui.screens.OverviewScreen
 import com.example.healthtrackingapp.ui.screens.StartScreen
+import com.example.healthtrackingapp.ui.screens.UNaoScreen
 import com.example.healthtrackingapp.ui.screens.WeighingScreen
 import com.example.healthtrackingapp.ui.theme.HealthTrackingAppTheme
 import com.google.firebase.FirebaseApp
@@ -231,6 +232,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) { OverviewScreen(navController) }
+                    composable("unao") { UNaoScreen() }
                 }
             }
         }

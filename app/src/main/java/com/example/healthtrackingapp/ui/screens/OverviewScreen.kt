@@ -687,6 +687,44 @@ fun OverviewScreen(
                     }
                 }
 
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+
+                        // Tiêu đề
+                        Text(
+                            text = "Chuẩn đoán u não",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                        Divider(thickness = 1.dp, color = Color.Black)
+
+
+                        Image(
+                            painter = painterResource(R.drawable.nen_app),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        NutritionInfoItem(
+                            label = "Kết quả",
+                            value = "Không có",
+                            icon = null
+                        )
+                    }
+                }
+
                 // Spacer for bottom padding
                 Spacer(modifier = Modifier.height(16.dp))
             }
