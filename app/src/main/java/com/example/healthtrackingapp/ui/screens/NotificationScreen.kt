@@ -128,10 +128,13 @@ fun NotificationScreen() {
                     fontWeight = FontWeight.Bold
                 )
                 IconButton(onClick = { showNotifications = !showNotifications }) {
-                    Icon(
-                        Icons.Filled.Notifications,
+                    Image(
+                        painter = if (showNotifications) {
+                            painterResource(id = R.drawable.ic_bell_touch_420)
+                        } else {
+                            painterResource(id = R.drawable.ic_bell_no_touch_420)
+                        },
                         contentDescription = "Notifications",
-                        tint = Color.Black,
                         modifier = Modifier.size(30.dp)
                     )
                 }

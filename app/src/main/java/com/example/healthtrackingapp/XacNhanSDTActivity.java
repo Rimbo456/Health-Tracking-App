@@ -15,10 +15,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class XacNhanSDTActivity extends AppCompatActivity {
     TextView txtSDTXacThuc;
     EditText otp_1, otp_2, otp_3, otp_4, otp_5, otp_6;
     Button btnXacNhanOTP;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    String userId = user.getUid(), name, phone;
+    DocumentReference userInfo = db.collection("users").document(userId);
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -42,31 +52,29 @@ public class XacNhanSDTActivity extends AppCompatActivity {
         btnXacNhanOTP = findViewById(R.id.btnXacNhanOTP);
 
         Intent intent = getIntent();
-        String sdt = intent.getStringExtra("SDT");
+        String sdt = intent.getStringExtra("sdt");
 
         txtSDTXacThuc.setText(sdt);
 
         btnXacNhanOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String otp1 = otp_1.getText().toString().trim();
-                String otp2 = otp_2.getText().toString().trim();
-                String otp3 = otp_3.getText().toString().trim();
-                String otp4 = otp_4.getText().toString().trim();
-                String otp5 = otp_5.getText().toString().trim();
-                String otp6 = otp_6.getText().toString().trim();
+                String OTP = otp_1.getText().toString().trim()
+                            +otp_2.getText().toString().trim()
+                            +otp_3.getText().toString().trim()
+                            +otp_4.getText().toString().trim()
+                            +otp_5.getText().toString().trim()
+                            +otp_6.getText().toString().trim();
 
-                if (otp1.isEmpty()||otp2.isEmpty()||otp3.isEmpty()||otp4.isEmpty()||otp5.isEmpty()||otp6.isEmpty())
-                    Toast.makeText(XacNhanSDTActivity.this, "Nhập mã OPT được gửi về số điện thoại để xác minh", Toast.LENGTH_SHORT).show();
+                if (OTP.isEmpty())
+                    otp_1.setError("Nhập mã OTP được gửi về số điện thoại "+sdt+" để xác minh");
                 else {
-                    String maOTP=otp1+otp2+otp3+otp4+otp5+otp6;
-                    if(maOTP.equals("111111")){
-                        Intent pushintent = new Intent();
-                        pushintent.putExtra("SDT", sdt);
+                    if(OTP.equals("111111")){
+                        userInfo.update("phone", sdt);
                         finish();
                     }
                     else
-                        Toast.makeText(XacNhanSDTActivity.this, "Sai mã xác minh", Toast.LENGTH_SHORT).show();
+                        otp_1.setError("Sai mã xác minh");
                 }
             }
         });
