@@ -27,8 +27,8 @@
     <string name="introduction">Về chúng tôi</string>
     <string name="cam_ket_bao_mat_info">Chúng tôi cam kết bảo mật thông tin cá nhân của bạn. Dữ liệu chỉ được sử dụng để hỗ trợ theo dõi sức khỏe và cải thiện trải nghiệm của bạn.</string>
     <string name="notification">Trung tâm thông báo</string>
-    <string name="chieu_cao">%d cm</string>
-    <string name="can_nang">%d Kg</string>
+    <string name="chieu_cao">%.1f cm</string>
+    <string name="can_nang">%.1f Kg</string>
     <string name="nuandiet">Dinh dưỡng và chế độ ăn uống</string>
     <string name="phyacaworkout">Vận động và tập luyện</string>
     <string name="moodaemo">Tâm trạng và cảm xúc</string>

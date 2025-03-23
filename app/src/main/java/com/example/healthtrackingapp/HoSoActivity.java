@@ -70,16 +70,24 @@ public class HoSoActivity extends Activity {
                 if (document.exists()) {
                     name = document.getString("name");
                     phone = document.getString("phone");
-                    gender = document.getBoolean("gender");
-                    height = document.getDouble("height");
-                    weight = document.getDouble("weight");
-                    birthYear = document.getLong("birthYear");
+                    // Xử lý trường hợp giá trị null
+                    gender = document.getBoolean("gender") != null ? document.getBoolean("gender") : false;
+                    height = document.getDouble("height") != null ? document.getDouble("height") : 0.0;
+                    weight = document.getDouble("weight") != null ? document.getDouble("weight") : 0.0;
+
+                    // Xử lý trường hợp birthYear null
+                    if (document.contains("birthYear") && document.getLong("birthYear") != null) {
+                        birthYear = document.getLong("birthYear");
+                    } else {
+                        birthYear = 0; // Giá trị mặc định
+                    }
+
+                    setUserInfo();
                 } else {
                     Log.d("FirestoreData", "Không tìm thấy dữ liệu");
                 }
             }
         });
-        setUserInfo();
 
         tbrTen.setOnClickListener(view -> showEnterNameDialog());
         tbrSDT.setOnClickListener(view -> showEnterPhoneDialog());
@@ -201,10 +209,22 @@ public class HoSoActivity extends Activity {
         imgXoaChu.setOnClickListener(view -> edtNhapChieuCao.setText(null));
         btnLuuChieuCao.setOnClickListener(view -> {
             String inputText = edtNhapChieuCao.getText().toString().trim();
-            height = Double.parseDouble(inputText);
-            userInfo.update("height", height);
-            setUserInfo();
-            dialog.dismiss();
+            if (!inputText.isEmpty()) {
+                try {
+                    height = Double.parseDouble(inputText);
+                    if (height > 0 && height < 300) {  // Kiểm tra giá trị hợp lệ
+                        userInfo.update("height", height);
+                        setUserInfo();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(HoSoActivity.this, "Chiều cao không hợp lệ!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (NumberFormatException e) {
+                    Toast.makeText(HoSoActivity.this, "Vui lòng nhập chiều cao hợp lệ!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(HoSoActivity.this, "Vui lòng nhập chiều cao!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         dialog.show();
@@ -225,10 +245,22 @@ public class HoSoActivity extends Activity {
         imgXoaChu.setOnClickListener(view -> edtNhapCanNang.setText(null));
         btnLuuCanNang.setOnClickListener(view -> {
             String inputText = edtNhapCanNang.getText().toString().trim();
-            weight = Double.parseDouble(inputText);
-            userInfo.update("weight", weight);
-            setUserInfo();
-            dialog.dismiss();
+            if (!inputText.isEmpty()) {
+                try {
+                    weight = Double.parseDouble(inputText);
+                    if (weight > 0 && weight < 1000) {  // Kiểm tra giá trị hợp lệ
+                        userInfo.update("weight", weight);
+                        setUserInfo();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(HoSoActivity.this, "Cân nặng không hợp lệ!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (NumberFormatException e) {
+                    Toast.makeText(HoSoActivity.this, "Vui lòng nhập cân nặng hợp lệ!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(HoSoActivity.this, "Vui lòng nhập cân nặng!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         dialog.show();
@@ -243,30 +275,73 @@ public class HoSoActivity extends Activity {
         EditText edtNhapNam = dialog.findViewById(R.id.edtNhapNam);
         Button btnLuuNam = dialog.findViewById(R.id.btnLuuNam);
 
-        edtNhapNam.setText(String.valueOf(birthYear));
+        // Xử lý trường hợp birthYear là 0 (chưa được thiết lập)
+        if (birthYear != 0) {
+            edtNhapNam.setText(String.valueOf(birthYear));
+        } else {
+            edtNhapNam.setText("");
+        }
 
         imgDong.setOnClickListener(view -> dialog.dismiss());
         imgXoaChu.setOnClickListener(view -> edtNhapNam.setText(null));
         btnLuuNam.setOnClickListener(view -> {
             String inputText = edtNhapNam.getText().toString().trim();
-            birthYear = Long.parseLong(inputText);
-            userInfo.update("birthYear", birthYear);
-            setUserInfo();
-            dialog.dismiss();
+            if (!inputText.isEmpty()) {
+                try {
+                    birthYear = Long.parseLong(inputText);
+                    if (birthYear > 1900 && birthYear <= 2025) {  // Kiểm tra giá trị hợp lệ
+                        userInfo.update("birthYear", birthYear);
+                        setUserInfo();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(HoSoActivity.this, "Năm sinh không hợp lệ!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (NumberFormatException e) {
+                    Toast.makeText(HoSoActivity.this, "Vui lòng nhập năm sinh hợp lệ!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(HoSoActivity.this, "Vui lòng nhập năm sinh!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         dialog.show();
     }
 
-    public void setUserInfo (){
-        txtTen.setText(name);
-        txtSDT.setText(phone);
-        if (gender)
-            txtGioiTinh.setText("Nam");
-        else
-            txtGioiTinh.setText("Nữ");
-        txtChieuCao.setText(getString(R.string.chieu_cao, height));
-        txtCanNang.setText(getString(R.string.can_nang, weight));
-        txtNamSinh.setText(String.valueOf(birthYear));
+    public void setUserInfo() {
+        if (name != null && !name.isEmpty()) {
+            txtTen.setText(name);
+        } else {
+            txtTen.setText("Chưa nhập");
+        }
+
+        if (phone != null && !phone.isEmpty()) {
+            txtSDT.setText(phone);
+        } else {
+            txtSDT.setText("Chưa nhập");
+        }
+
+        if (gender != null) {
+            txtGioiTinh.setText(gender ? "Nam" : "Nữ");
+        } else {
+            txtGioiTinh.setText("Chưa chọn");
+        }
+
+        if (height > 0) {
+            txtChieuCao.setText(String.format("%.1f cm", height));
+        } else {
+            txtChieuCao.setText("Chưa nhập");
+        }
+
+        if (weight > 0) {
+            txtCanNang.setText(String.format("%.1f kg", weight));
+        } else {
+            txtCanNang.setText("Chưa nhập");
+        }
+
+        if (birthYear > 0) {
+            txtNamSinh.setText(String.valueOf(birthYear));
+        } else {
+            txtNamSinh.setText("Chưa nhập");
+        }
     }
 }
