@@ -14,10 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.Date
 
 @Composable
 fun ItemGoal(
     content: String,
+    title: String,
+    date: String,
     isChecked: Boolean,
     modifier: Modifier
 ) {
@@ -34,7 +37,7 @@ fun ItemGoal(
                 modifier = Modifier.padding(15.dp)
             ) {
                 Text(
-                    text = "Tittle",
+                    text = title,
                     fontSize = 25.sp,
                     modifier = Modifier.padding(bottom = 10.dp)
                 )
@@ -44,7 +47,7 @@ fun ItemGoal(
                     modifier = Modifier.padding(bottom = 10.dp)
                 )
                 Text(
-                    text = "Date",
+                    text = date,
                     fontSize = 18.sp,
                     modifier = Modifier.padding(bottom = 10.dp)
                 )

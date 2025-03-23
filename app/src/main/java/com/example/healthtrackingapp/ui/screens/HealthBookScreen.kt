@@ -104,10 +104,10 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Buoc chan",
+                        title = "Bữa ăn",
                         image = R.drawable.reshot_icon_running_shoes_nfc659ujds,
                         navController = navController,
-                        route = ""
+                        route = "addfood"
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
@@ -125,7 +125,7 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Giac ngu",
                         image = R.drawable.reshot_icon_sleeping_x2ekjbl3yq,
                         navController = navController,
-                        route = ""
+                        route = "addsleep"
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
@@ -133,7 +133,7 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Luong nuoc tieu thu",
                         image = R.drawable.reshot_icon_water_bottle_pzw3g8afsq,
                         navController = navController,
-                        route = ""
+                        route = "addwater"
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),

@@ -58,6 +58,9 @@ import androidx.compose.ui.window.Popup
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.Calendar
 import com.example.healthtrackingapp.ui.components.ItemNof
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -73,13 +76,13 @@ fun NotificationScreen() {
     var workoutTime by remember { mutableStateOf(60) }
     var isTimerRunning by remember { mutableStateOf(false) }
     var intensityValue by remember { mutableStateOf(3f) }
-    var selectedFatigue by remember { mutableStateOf(1) }
+    var selectedFatigue by remember { mutableStateOf(-1) }
     var noteText by remember { mutableStateOf("") }
+    var time by remember { mutableStateOf("") }
     var fatigueOptions = listOf("Thoải mái", "Hơi mệt", "Mệt", "Kiệt sức")
-    var progressOptions by remember { mutableStateOf(listOf("Tăng sức bền", "Giảm cân", "Tăng cơ", "Dẻo dai hơn")) }
-    var selectedProgressItems by remember { mutableStateOf(setOf<String>()) }
-    var showAddProgressDialog by remember { mutableStateOf(false) }
-    var newProgressItem by remember { mutableStateOf("") }
+
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -100,7 +103,9 @@ fun NotificationScreen() {
             .padding(horizontal = 16.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -110,7 +115,11 @@ fun NotificationScreen() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = { currentTime = getTime() }) {
-                    Icon(Icons.Filled.Refresh, contentDescription = "Refresh Time", tint = Color.Black)
+                    Icon(
+                        Icons.Filled.Refresh,
+                        contentDescription = "Refresh Time",
+                        tint = Color.Black
+                    )
                 }
                 Text(
                     text = currentTime,
@@ -119,7 +128,12 @@ fun NotificationScreen() {
                     fontWeight = FontWeight.Bold
                 )
                 IconButton(onClick = { showNotifications = !showNotifications }) {
-                    Icon(Icons.Filled.Notifications, contentDescription = "Notifications", tint = Color.Black, modifier = Modifier.size(30.dp))
+                    Icon(
+                        Icons.Filled.Notifications,
+                        contentDescription = "Notifications",
+                        tint = Color.Black,
+                        modifier = Modifier.size(30.dp)
+                    )
                 }
             }
 
@@ -156,9 +170,16 @@ fun NotificationScreen() {
                             modifier = Modifier
                                 .background(
                                     brush = Brush.linearGradient(
-                                        colors = listOf(Color(0xFF7F7FD5), Color(0xFF86A8E7), Color(0xFF91EAE4)),
+                                        colors = listOf(
+                                            Color(0xFF7F7FD5),
+                                            Color(0xFF86A8E7),
+                                            Color(0xFF91EAE4)
+                                        ),
                                         start = Offset(0f, 0f),
-                                        end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+                                        end = Offset(
+                                            Float.POSITIVE_INFINITY,
+                                            Float.POSITIVE_INFINITY
+                                        )
                                     )
                                 )
                                 .padding(20.dp)
@@ -308,7 +329,12 @@ fun NotificationScreen() {
                                         ) {
                                             workoutOptions.forEach { workout ->
                                                 DropdownMenuItem(
-                                                    text = { Text(workout, fontWeight = FontWeight.Medium) },
+                                                    text = {
+                                                        Text(
+                                                            workout,
+                                                            fontWeight = FontWeight.Medium
+                                                        )
+                                                    },
                                                     onClick = {
                                                         selectedWorkout = workout
                                                         showDropdown = false
@@ -362,7 +388,9 @@ fun NotificationScreen() {
                                             text = "$workoutTime",
                                             fontSize = 36.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color = if (workoutTime <= 10) Color.Red else Color(0xFF333333)
+                                            color = if (workoutTime <= 10) Color.Red else Color(
+                                                0xFF333333
+                                            )
                                         )
                                         Text(
                                             text = "giây",
@@ -376,7 +404,9 @@ fun NotificationScreen() {
                                         modifier = Modifier
                                             .size(140.dp)
                                             .padding(4.dp),
-                                        color = if (workoutTime <= 10) Color.Red else Color(0xFF7F7FD5),
+                                        color = if (workoutTime <= 10) Color.Red else Color(
+                                            0xFF7F7FD5
+                                        ),
                                         strokeWidth = 4.dp
                                     )
                                 }
@@ -414,7 +444,9 @@ fun NotificationScreen() {
                                         onClick = { isTimerRunning = !isTimerRunning },
                                         shape = RoundedCornerShape(16.dp),
                                         colors = ButtonDefaults.buttonColors(
-                                            containerColor = if (isTimerRunning) Color(0xFFE57373) else Color(0xFF81C784)
+                                            containerColor = if (isTimerRunning) Color(0xFFE57373) else Color(
+                                                0xFF81C784
+                                            )
                                         ),
                                         modifier = Modifier.weight(1f)
                                     ) {
@@ -424,7 +456,10 @@ fun NotificationScreen() {
                                             modifier = Modifier.size(20.dp)
                                         )
                                         Spacer(modifier = Modifier.width(4.dp))
-                                        Text(if (isTimerRunning) "Dừng" else "Bắt đầu", fontWeight = FontWeight.Medium)
+                                        Text(
+                                            if (isTimerRunning) "Dừng" else "Bắt đầu",
+                                            fontWeight = FontWeight.Medium
+                                        )
                                     }
                                 }
                             }
@@ -532,10 +567,14 @@ fun NotificationScreen() {
                                         shape = RoundedCornerShape(12.dp),
                                         border = BorderStroke(
                                             width = 1.dp,
-                                            color = if (selectedFatigue == index) Color(0xFF7F7FD5) else Color(0xFFE0E0E0)
+                                            color = if (selectedFatigue == index) Color(0xFF7F7FD5) else Color(
+                                                0xFFE0E0E0
+                                            )
                                         ),
                                         colors = CardDefaults.cardColors(
-                                            containerColor = if (selectedFatigue == index) Color(0xFFF0F0FF) else Color.White
+                                            containerColor = if (selectedFatigue == index) Color(
+                                                0xFFF0F0FF
+                                            ) else Color.White
                                         )
                                     ) {
                                         Column(
@@ -565,6 +604,34 @@ fun NotificationScreen() {
                                     }
                                 }
                             }
+                        }
+
+                        // Thời gian luyện tập
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(
+                                "Thời gian luyện tập",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color(0xFF555555)
+                            )
+
+                            OutlinedTextField(
+                                value = time,
+                                onValueChange = { time = it },
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                placeholder = { Text("Ghi lại thời gian. VD: 30 phút, 1 giờ...") },
+                                shape = RoundedCornerShape(12.dp),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = Color(0xFF7F7FD5),
+                                    unfocusedBorderColor = Color(0xFFE0E0E0),
+                                    cursorColor = Color(0xFF7F7FD5)
+                                ),
+                                textStyle = TextStyle(fontSize = 14.sp),
+                            )
                         }
 
                         // Ghi chú cảm nhận
@@ -600,7 +667,38 @@ fun NotificationScreen() {
 
                         // Nút lưu ghi chú
                         Button(
-                            onClick = { /* Lưu ghi chú */ },
+                            onClick = {
+                                db.collection("users")
+                                    .document(user!!.uid)
+                                    .collection("workout")
+                                    .add(
+                                        hashMapOf(
+                                            "workoutType" to selectedWorkout,
+                                            "intensityValue" to when (intensityValue) {
+                                                1f -> "Nhẹ nhàng"
+                                                2f -> "Trung bình nhẹ"
+                                                3f -> "Vừa phải"
+                                                4f -> "Trung bình cao"
+                                                else -> "Mạnh mẽ"
+                                            },
+                                            "selectedFatigue" to when (selectedFatigue) {
+                                                0 -> "Thoải mái"
+                                                1 -> "Hơi mệt"
+                                                2 -> "Mệt"
+                                                3 -> "Kiệt sức"
+                                                else -> ""
+                                            },
+                                            "duration" to time,
+                                            "noteText" to noteText,
+                                            "timestamp" to System.currentTimeMillis(),
+                                        )
+                                    )
+                                selectedWorkout = "Chọn bài tập"
+                                intensityValue = 3f
+                                selectedFatigue = 0
+                                time = ""
+                                noteText = ""
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp),
@@ -629,50 +727,6 @@ fun NotificationScreen() {
                 }
             }
 
-            // Dialog thêm mục tiêu mới
-            if (showAddProgressDialog) {
-                AlertDialog(
-                    onDismissRequest = { showAddProgressDialog = false },
-                    title = {
-                        Text(
-                            "Thêm mục tiêu mới",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    },
-                    text = {
-                        OutlinedTextField(
-                            value = newProgressItem,
-                            onValueChange = { newProgressItem = it },
-                            placeholder = { Text("Nhập mục tiêu mới...") },
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                if (newProgressItem.isNotBlank()) {
-                                    progressOptions = progressOptions + newProgressItem
-                                    selectedProgressItems = selectedProgressItems + newProgressItem
-                                    newProgressItem = ""
-                                    showAddProgressDialog = false
-                                }
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF7F7FD5)
-                            )
-                        ) {
-                            Text("Thêm")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showAddProgressDialog = false }) {
-                            Text("Hủy")
-                        }
-                    }
-                )
-            }
 
         }
 
