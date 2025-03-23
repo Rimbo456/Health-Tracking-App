@@ -64,6 +64,11 @@ fun AddFoodScreen(navController: NavHostController) {
         topBar = {
             TopAppBar(
                 title = { Text("Nhập thông tin bữa ăn") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.Default.ArrowDropDown, "Back")
+                    }
+                }
             )
         },
     ) { paddingValues ->

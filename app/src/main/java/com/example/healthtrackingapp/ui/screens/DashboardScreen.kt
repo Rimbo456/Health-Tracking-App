@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -61,6 +62,7 @@ import com.example.healthtrackingapp.ui.components.CircularCheckboxWithIcon
 import com.example.healthtrackingapp.ui.components.ItemGoal
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -80,6 +82,11 @@ fun DashboardScreen(
     var titleGoal by remember { mutableStateOf("") }
     var contentGoal by remember { mutableStateOf("") }
     var dateGoal by remember { mutableStateOf("") }
+    var heartRate by remember { mutableStateOf("") }
+    var tamthu by remember { mutableStateOf("") }
+    var tamtruong by remember { mutableStateOf("") }
+    var sleep by remember { mutableStateOf("") }
+    var workoutDuration by remember { mutableStateOf("") }
 
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
@@ -105,6 +112,60 @@ fun DashboardScreen(
                     contentGoal = document.getString("content") ?: ""
                     dateGoal = document.getString("date") ?: ""
                 }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting goals", e)
+                // Xử lý lỗi ở đây
+            }
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("blood_pressure")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    tamthu = document.getString("tamthu") ?: ""
+                    tamtruong = document.getString("tamtruong") ?: ""
+                    heartRate = document.getString("nhiptim") ?: ""
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting blood_presure", e)
+                // Xử lý lỗi ở đây
+            }
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("sleep")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    sleep = document.getString("giacngu") ?: ""
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting sleep", e)
+                // Xử lý lỗi ở đây
+            }
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("workout")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    workoutDuration = document.getString("duration") ?: ""
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting workout", e)
+                // Xử lý lỗi ở đây
             }
     }
 
@@ -220,12 +281,12 @@ fun DashboardScreen(
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
-                            text ="Nội dung: " + contentGoal,
+                            text = "Nội dung: " + contentGoal,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                         Text(
-                            text = "Ngày hoàn thành: "+dateGoal,
+                            text = "Ngày hoàn thành: " + dateGoal,
                             fontSize = 18.sp,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
@@ -259,7 +320,7 @@ fun DashboardScreen(
                         .fillMaxHeight()
                         .weight(1f),
                     title = stringResource(id = R.string.heartrate),
-                    value = 80,
+                    value = heartRate.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0,
                     unit = "bpm",
                     icon = Icons.Filled.Favorite,
                     color = CardDefaults.cardColors(
@@ -273,7 +334,7 @@ fun DashboardScreen(
                         .fillMaxHeight()
                         .weight(1f),
                     title = stringResource(id = R.string.exercise),
-                    value = 24,
+                    value = workoutDuration.filter { it.isDigit() }.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0,
                     unit = "min",
                     icon = Icons.Filled.ElectricBolt,
                     color = CardDefaults.cardColors(
@@ -307,7 +368,7 @@ fun DashboardScreen(
                         .fillMaxHeight()
                         .weight(1f),
                     title = stringResource(id = R.string.sleep),
-                    value = 8,
+                    value = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0,
                     unit = "hrs",
                     icon = Icons.Filled.Hotel,
                     color = CardDefaults.cardColors(
@@ -382,7 +443,7 @@ fun FeelingDialog(onDismiss: () -> Unit) {
                             )
                         }
                     }
-                    if (indexx > -1){
+                    if (indexx > -1) {
                         Text(
                             text = when (indexx) {
                                 0 -> "Mọi thứ đều ổn, tôi cảm thấy thoải mái và kiểm soát tốt cuộc sống."

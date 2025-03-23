@@ -89,6 +89,7 @@ import com.example.healthtrackingapp.ui.components.SymptomEntryDialog
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -122,6 +123,10 @@ fun OverviewScreen(
     var workoutType by remember { mutableStateOf("") }
     var durationWorkout by remember { mutableStateOf("") }
     var intensityValue by remember { mutableStateOf("") }
+    var mood by remember { mutableStateOf("") }
+    var sleep by remember { mutableStateOf("") }
+    var sleepEfficiency by remember { mutableStateOf("") }
+    var feedbackSleep by remember { mutableStateOf("") }
 
 
     val db = FirebaseFirestore.getInstance()
@@ -155,6 +160,7 @@ fun OverviewScreen(
         val foodAnoList = mutableListOf<String>()
         val mealTypeList = mutableListOf<String>()
         val workoutList = mutableListOf<Map<String, String>>()
+        val moodList = mutableListOf<String>()
 
         db.collection("users")
             .document(user!!.uid)
@@ -187,6 +193,21 @@ fun OverviewScreen(
             .addOnFailureListener { e ->
                 // Xử lý lỗi
                 Log.e("FirestoreError", "Error getting food documents: ${e.message}")
+            }
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("mood")
+            .whereGreaterThanOrEqualTo("timestamp", startOfDay)
+            .whereLessThanOrEqualTo("timestamp", endOfDay)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    mood = document.getString("moodLevel") ?: ""
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting mood documents: ${e.message}")
             }
 
         db.collection("users")
@@ -227,6 +248,29 @@ fun OverviewScreen(
             }
             .addOnFailureListener { e ->
                 Log.e("FirestoreError", "Error getting user data: ${e.message}")
+            }
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("sleep")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    sleep = document.getString("giacngu") ?: ""
+                    val sleepInt = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0
+                    val efficencyIndex = (sleepInt / 1.5) * 100
+                    sleepEfficiency = when (true) {
+                        (efficencyIndex >= 85) -> "Giấc ngủ tốt"
+                        (efficencyIndex >= 75) and (efficencyIndex <= 85) -> "Giấc ngủ tốt"
+                        else -> "Giấc ngủ kém"
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting sleep", e)
+                // Xử lý lỗi ở đây
             }
     }
 
@@ -578,7 +622,7 @@ fun OverviewScreen(
                         // Thông tin dinh dưỡng
                         NutritionInfoItem(
                             label = "Cảm xúc trong ngày",
-                            value = "Cay vã ò",
+                            value = mood,
                             icon = Icons.Filled.Check
                         )
 
@@ -598,6 +642,50 @@ fun OverviewScreen(
 
 
                 // Chat luong giac ngu
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        // Tiêu đề
+                        Text(
+                            text = "Chất lượng giấc ngủ",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                        Divider(thickness = 1.dp, color = Color.Black)
+
+
+                        // Thông tin dinh dưỡng
+                        NutritionInfoItem(
+                            label = "Tổng thời gian ngủ",
+                            value = sleep,
+                            icon = Icons.Filled.Check
+                        )
+
+                        NutritionInfoItem(
+                            label = "Hiệu suất giấc ngủ",
+                            value = sleepEfficiency,
+                            icon = Icons.Filled.Check
+                        )
+
+                        NutritionInfoItem(
+                            label = "Đánh giá giấc ngủ",
+                            value = "Không có",
+                            icon = null
+                        )
+                    }
+                }
 
                 // Spacer for bottom padding
                 Spacer(modifier = Modifier.height(16.dp))
