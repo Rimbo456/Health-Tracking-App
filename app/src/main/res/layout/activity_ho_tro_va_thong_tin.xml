@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_ho_tro_va_thong_tin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hỗ trợ &amp; Thông tin ứng dụng"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingBottom="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ứng dụng giúp theo dõi sức khỏe và dự đoán bệnh dựa trên AI."
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="10dp" />
+
+        <Button
+            android:id="@+id/btnContactSupport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Liên hệ hỗ trợ" />
+
+        <Button
+            android:id="@+id/btnPrivacyPolicy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chính sách bảo mật"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+</ScrollView>
