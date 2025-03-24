@@ -142,7 +142,6 @@ public class HoSoActivity extends Activity {
         ImageView imgXoaChu = dialog.findViewById(R.id.imgXoaChu);
         EditText edtNhapSDT = dialog.findViewById(R.id.edtNhapSDT);
         Button btnLuuSDT = dialog.findViewById(R.id.btnLuuSDT);
-        userInfo.get().addOnSuccessListener(document -> phone = document.getString("phone"));
 
         edtNhapSDT.setText(phone);
         imgDong.setOnClickListener(view -> dialog.dismiss());
