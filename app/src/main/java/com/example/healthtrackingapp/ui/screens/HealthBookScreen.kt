@@ -112,7 +112,7 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Can nang",
+                        title = "Cân nặng",
                         image = R.drawable.reshot_icon_weighing_scale_pzrhsgv7y6,
                         navController = navController,
                         route = "weighingscreen",
@@ -122,7 +122,7 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Giac ngu",
+                        title = "Giấc ngủ",
                         image = R.drawable.reshot_icon_sleeping_x2ekjbl3yq,
                         navController = navController,
                         route = "addsleep"
@@ -130,7 +130,7 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Luong nuoc tieu thu",
+                        title = "Lượng nước tiêu thụ",
                         image = R.drawable.reshot_icon_water_bottle_pzw3g8afsq,
                         navController = navController,
                         route = "addwater"
@@ -138,10 +138,18 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Huyet ap",
+                        title = "Huyết áp",
                         image = R.drawable.reshot_icon_blood_pressure_zvjhstxe8u,
                         navController = navController,
                         route = "bloodpressurescreen"
+                    )
+                    ItemBook(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.White,
+                        title = "Nhiệt độ cơ thể",
+                        image = R.drawable.temperature,
+                        navController = navController,
+                        route = "addtemperaturescreen"
                     )
                 }
             }

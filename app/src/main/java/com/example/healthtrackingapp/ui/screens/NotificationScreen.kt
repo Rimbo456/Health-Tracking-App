@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.screens
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -72,6 +73,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
+import androidx.core.graphics.toColorInt
 
 @Composable
 fun NotificationScreen() {
@@ -781,7 +783,7 @@ fun NotificationsPanel(onDismiss: () -> Unit) {
     LaunchedEffect(Unit) {
         db.collection("users")
             .document(user!!.uid)
-            .collection("notifications")
+            .collection("notification")
             .whereEqualTo("unread", true)
             .get()
             .addOnSuccessListener { documents ->
@@ -793,15 +795,19 @@ fun NotificationsPanel(onDismiss: () -> Unit) {
                         doc.getString("icon") ?: "",
                         doc.getString("color") ?: "",
                         doc.getTimestamp("timestamp") ?: Timestamp.now(),
+                        doc.getBoolean("unread") ?: true
                     )
                     notificationList.add(data)
                     db.collection("users")
                         .document(user!!.uid)
-                        .collection("notifications")
+                        .collection("notification")
                         .document(doc.id)
                         .update("unread", false)
                 }
                 notifications = notificationList
+            }
+            .addOnFailureListener { e ->
+                Log.e("Notifications", "Error loading notifications: ${e.message}")
             }
     }
 
@@ -899,7 +905,7 @@ fun NotificationsPanel(onDismiss: () -> Unit) {
                         description = i.description,
                         time = timeText,
                         icon = stringToIcon(i.icon),
-                        color = hexStringToColor(i.color)
+                        color = hexStringToComposeColor(i.color)
                     )
                 }
             }
@@ -908,7 +914,7 @@ fun NotificationsPanel(onDismiss: () -> Unit) {
 }
 
 fun stringToIcon(iconName: String): ImageVector {
-    return when (iconName.lowercase()) {
+    return when (iconName) {
         "WaterDrop" -> Icons.Default.WaterDrop
         "Favorite" -> Icons.Default.Favorite
         "MonitorHeart" -> Icons.Default.MonitorHeart
@@ -926,15 +932,18 @@ fun getElapsedTime(timestamp: Timestamp): Pair<Long, Long> {
 
     return Pair(hours, minutes)
 }
-fun hexStringToColor(hexString: String): Color {
+fun hexStringToComposeColor(hexString: String): Color {
     return try {
-        val hexProcessed = hexString.replace("#", "")
-        when (hexProcessed.length) {
-            6 -> Color(android.graphics.Color.parseColor("#$hexProcessed"))
-            8 -> Color(android.graphics.Color.parseColor("#$hexProcessed"))
-            else -> Color.Black // Default
-        }
+        // Loại bỏ tiền tố "0x" nếu có
+        val cleanHex = hexString.removePrefix("0x")
+
+        // Chuyển đổi thành Long rồi lấy giá trị Int
+        val colorInt = cleanHex.toLong(16).toInt()
+
+        // Chuyển thành Color
+        Color(colorInt)
     } catch (e: Exception) {
-        Color.Black // Trả về màu mặc định nếu có lỗi
+        Log.e("Color", "Invalid color format: $hexString", e)
+        Color.Gray // Màu mặc định nếu lỗi
     }
 }

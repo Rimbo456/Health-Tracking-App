@@ -26,25 +26,11 @@ import com.google.firebase.ktx.Firebase
 
 @SuppressLint("MissingInflatedId")
 @Composable
-fun AddWaterScreen(
+fun AddTemperatureScreen(
     navController: NavHostController
 ) {
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
-
-    var weight by remember { mutableStateOf(0) }
-
-    LaunchedEffect(Unit) {
-        db.collection("users")
-            .document(user!!.uid)
-            .get()
-            .addOnSuccessListener { document ->
-                weight = document.getLong("weight")?.toInt() ?: 0
-            }
-            .addOnFailureListener { e ->
-                Log.e("FirestoreError", "Error getting weight data: ${e.message}")
-            }
-    }
 
     Scaffold { innerPadding ->
         AndroidView(
@@ -53,7 +39,7 @@ fun AddWaterScreen(
                 .padding(innerPadding),
             factory = { context ->
                 val view = LayoutInflater.from(context)
-                    .inflate(R.layout.nhap_luong_nuoc_tieu_thu, null, false)
+                    .inflate(R.layout.nhap_nhiet_do, null, false)
 
                 val btnClose = view.findViewById<ImageView>(R.id.imgDong)
                 btnClose.setOnClickListener {
@@ -66,27 +52,40 @@ fun AddWaterScreen(
                 btnSave.setOnClickListener {
                     db.collection("users")
                         .document(user!!.uid)
-                        .collection("water")
+                        .collection("temperature")
                         .add(
                             hashMapOf(
-                                "luongnuoc" to edtLuongNuoc.text.toString(),
+                                "nhietdo" to edtLuongNuoc.text.toString(),
                                 "timestamp" to Timestamp.now()
                             )
                         )
-                    val luongnuoc = edtLuongNuoc.text.toString().filter { it.isDigit() }.toInt()/1000
-                    val luongnuocNeed = 0.033 * weight
+                    val temperature = edtLuongNuoc.text.toString().toDouble()
                     when (true) {
-                        (luongnuoc < luongnuocNeed) -> {
-                            val thieu = luongnuocNeed - luongnuoc
+                        ((temperature >= 36.1)and(temperature <= 37.5)) -> {
                             db.collection("users")
                                 .document(user!!.uid)
                                 .collection("notification")
                                 .add(
                                     hashMapOf(
-                                        "title" to "Bạn cần uống nước",
-                                        "description" to "Bạn đã không uống đủ lượng nước ngày hôm nay, cơ thể bạn còn thiếu $thieu ml để hoạt động tốt",
-                                        "icon" to "WaterDrop",
-                                        "color" to "0xFF03A9F4",
+                                        "title" to "Nhiệt độ cơ thể",
+                                        "description" to "Nhiệt độ cơ thể bạn là "+temperature+" độ C, không có gì bất thường.",
+                                        "icon" to "Thermostat",
+                                        "color" to "0xFFBD2E4B",
+                                        "timestamp" to Timestamp.now(),
+                                        "unread" to true
+                                    )
+                                )
+                        }
+                        (temperature < 36.1) -> {
+                            db.collection("users")
+                                .document(user!!.uid)
+                                .collection("notification")
+                                .add(
+                                    hashMapOf(
+                                        "title" to "Nhiệt độ cơ thể",
+                                        "description" to "Nhiệt độ cơ thể bạn là "+temperature+" độ C, cảnh báo nhiệt độ thấp",
+                                        "icon" to "Thermostat",
+                                        "color" to "0xFFBD2E4B",
                                         "timestamp" to Timestamp.now(),
                                         "unread" to true
                                     )
@@ -98,10 +97,10 @@ fun AddWaterScreen(
                                 .collection("notification")
                                 .add(
                                     hashMapOf(
-                                        "title" to "Đã uống đủ nước",
-                                        "description" to "Chúc mừng bạn đã uống đủ nước cho hôm nay",
-                                        "icon" to "WaterDrop",
-                                        "color" to "0xFF03A9F4",
+                                        "title" to "Nhiệt độ cơ thể",
+                                        "description" to "Nhiệt độ cơ thể bạn là "+temperature+" độ C, bạn đang bị sốt",
+                                        "icon" to "Thermostat",
+                                        "color" to "0xFFBD2E4B",
                                         "timestamp" to Timestamp.now(),
                                         "unread" to true
                                     )

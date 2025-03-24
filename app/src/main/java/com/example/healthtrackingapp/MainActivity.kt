@@ -9,8 +9,10 @@ import androidx.compose.animation.core.tween
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.example.healthtrackingapp.ui.screens.AddFoodScreen
 import com.example.healthtrackingapp.ui.screens.AddSleepScreen
+import com.example.healthtrackingapp.ui.screens.AddTemperatureScreen
 import com.example.healthtrackingapp.ui.screens.AddWaterScreen
 import com.example.healthtrackingapp.ui.screens.BloodPressureScreen
 import com.example.healthtrackingapp.ui.screens.GetInformationScreen
@@ -113,6 +115,7 @@ class MainActivity : ComponentActivity() {
                     ) { GetInformationScreen(navController) }
                     composable(
                         "main",
+                        deepLinks = listOf(navDeepLink { uriPattern = "myapp://main/user" }),
                         enterTransition = {
                             when (targetState.destination.route) {
                                 "getinfor" -> slideIntoContainer(
@@ -139,6 +142,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
+
                     ) { MainScreen(navController) }
                     composable("healthbook") { HealthBookScreen(navController) }
                     composable(
@@ -216,6 +220,21 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) { BloodPressureScreen(navController) }
+                    composable(
+                        "addtemperaturescreen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { AddTemperatureScreen(navController) }
                     composable("goalscreen") { GoalScreen(navController = navController) }
                     composable(
                         "overviewscreen",
@@ -232,7 +251,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) { OverviewScreen(navController) }
-                    composable("unao") { UNaoScreen() }
+                    composable("unao") { UNaoScreen(navController) }
                 }
             }
         }

@@ -55,6 +55,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -112,6 +113,7 @@ fun OverviewScreen(
 ) {
     var showDialog by remember { mutableStateOf(false) }
     var lastSymptomData by remember { mutableStateOf<SymptomData?>(null) }
+    var symptomDatas by remember { mutableStateOf(listOf<SymptomData>()) }
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var usedFood by remember { mutableStateOf("") }
     var usedFoodAno by remember { mutableStateOf("") }
@@ -136,7 +138,7 @@ fun OverviewScreen(
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(selectedDate) {
         // Xác định timestamp đầu và cuối ngày
         val calendar = Calendar.getInstance()
         calendar.set(
@@ -310,6 +312,21 @@ fun OverviewScreen(
                 // Xử lý lỗi ở đây
             }
 
+
+        val symptomList = mutableListOf<SymptomData>()
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("symptom")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val symptomData = document.toObject(SymptomData::class.java)
+                    symptomList.add(symptomData)
+                }
+                symptomDatas = symptomList
+            }
+
     }
 
     Scaffold(
@@ -350,7 +367,8 @@ fun OverviewScreen(
                 // Card for Symptoms
                 SymptomsSection(
                     lastSymptomData = lastSymptomData,
-                    onAddSymptom = { showDialog = true }
+                    onAddSymptom = { showDialog = true },
+                    symptomDatas = symptomDatas
                 )
 
                 ExpandableContainer(
@@ -455,7 +473,7 @@ fun OverviewScreen(
                             unit = "°C",
                             colorEle = Color(red = 218, green = 115, blue = 35, alpha = 255),
                             content = {
-                                BodyTemperatureChart(LocalDate.now().dayOfMonth)
+                                BodyTemperatureChart()
                             }
                         )
 
@@ -813,7 +831,8 @@ fun HeaderSection() {
 @Composable
 fun SymptomsSection(
     lastSymptomData: SymptomData?,
-    onAddSymptom: () -> Unit
+    onAddSymptom: () -> Unit,
+    symptomDatas: List<SymptomData>
 ) {
     Card(
         modifier = Modifier
@@ -876,6 +895,25 @@ fun SymptomsSection(
                         shape = RoundedCornerShape(1.dp)
                     )
             )
+
+            symptomDatas?.forEach { i ->
+                SymptomCard(i)
+            } ?: run {
+                // Empty state
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Chưa có triệu chứng nào được ghi nhận",
+                        color = textSecondaryColor,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
 
             // Symptoms display
             lastSymptomData?.let { data ->
@@ -1210,7 +1248,7 @@ fun Temp() {
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut()
             ) {
-                BodyTemperatureChart(LocalDate.now().dayOfMonth)
+                BodyTemperatureChart()
             }
         }
     }

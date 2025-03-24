@@ -85,11 +85,11 @@ fun ItemBook(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
+                    /*Text(
                         text = "khong on",
                         fontSize = 16.sp,
                         modifier = Modifier.padding(end = 5.dp)
-                    )
+                    )*/
                     Icon(
                         imageVector = Icons.Default.ArrowForwardIos,
                         contentDescription = null

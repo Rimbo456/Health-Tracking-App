@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.example.healthtrackingapp.ui.components.BottomNavigation
 
 @Composable
@@ -48,7 +49,10 @@ fun MainScreen(
             composable("dashboard") { DashboardScreen(mainNavController) }
             composable("graph") { ModelScreen(mainNavController) }
             composable("notification") { NotificationScreen() }
-            composable("user") { UserScreen() }
+            composable(
+                "user",
+                deepLinks = listOf(navDeepLink { uriPattern = "myapp://main/user" })
+            ) { UserScreen() }
         }
     }
 }
