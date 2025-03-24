@@ -43,6 +43,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -752,8 +753,48 @@ fun getTime(): String {
     return now.format(formatter)
 }
 
+private data class Notification(
+    val title: String,
+    val description: String,
+    val time: String,
+    val icon: String,
+    val color: String,
+    val timestamp: Long,
+    val unread: Boolean = true,
+)
+
 @Composable
 fun NotificationsPanel(onDismiss: () -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
+    var notifications by remember { mutableStateOf<List<Notification>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("notifications")
+            .whereEqualTo("unread", true)
+            .get()
+            .addOnSuccessListener { documents ->
+                val notificationList = mutableListOf<Notification>()
+                for (doc in documents) {
+                    val data = Notification(
+                        doc.getString("title") ?: "",
+                        doc.getString("description") ?: "",
+                        doc.getString("time") ?: "",
+                        doc.getString("icon") ?: "",
+                        doc.getString("color") ?: "",
+                        doc.getLong("timestamp") ?: 0
+                    )
+                    notificationList.add(data)
+                }
+                notifications = notificationList
+            }
+    }
+
     Box(
         modifier = Modifier
             .padding(top = 64.dp, end = 16.dp)
