@@ -47,7 +47,7 @@
             android:text="Nhập năm"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/Gray"
             android:background="@null"
             tools:ignore="HardcodedText"/>
 
@@ -67,9 +67,9 @@
         android:background="@color/black"/>
 
     <TextView
+        android:id="@+id/txtKtr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Năm sinh không hợp lệ"
         android:textSize="12sp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
