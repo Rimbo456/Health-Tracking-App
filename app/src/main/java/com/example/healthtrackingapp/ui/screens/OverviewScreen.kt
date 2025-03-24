@@ -127,6 +127,10 @@ fun OverviewScreen(
     var sleep by remember { mutableStateOf("") }
     var sleepEfficiency by remember { mutableStateOf("") }
     var feedbackSleep by remember { mutableStateOf("") }
+    var waterInput by remember { mutableStateOf("") }
+    var heartRate by remember { mutableStateOf("") }
+    var tamthu by remember { mutableStateOf("") }
+    var tamtruong by remember { mutableStateOf("") }
 
 
     val db = FirebaseFirestore.getInstance()
@@ -212,6 +216,21 @@ fun OverviewScreen(
 
         db.collection("users")
             .document(user!!.uid)
+            .collection("water")
+            .whereGreaterThanOrEqualTo("timestamp", startOfDay)
+            .whereLessThanOrEqualTo("timestamp", endOfDay)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    waterInput = document.getString("luongnuoc") ?: ""
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting water documents: ${e.message}")
+            }
+
+        db.collection("users")
+            .document(user!!.uid)
             .collection("workout")
             .whereGreaterThanOrEqualTo("timestamp", startOfDay)
             .whereLessThanOrEqualTo("timestamp", endOfDay)
@@ -272,6 +291,25 @@ fun OverviewScreen(
                 Log.e("FirestoreError", "Error getting sleep", e)
                 // Xử lý lỗi ở đây
             }
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("blood_pressure")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    tamthu = document.getString("tamthu") ?: ""
+                    tamtruong = document.getString("tamtruong") ?: ""
+                    heartRate = document.getString("nhiptim") ?: ""
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting blood_presure", e)
+                // Xử lý lỗi ở đây
+            }
+
     }
 
     Scaffold(
@@ -532,7 +570,7 @@ fun OverviewScreen(
                         // Thông tin dinh dưỡng
                         NutritionInfoItem(
                             label = "Lượng nước đã uống",
-                            value = "2 lít",
+                            value = waterInput,
                             icon = Icons.Filled.Check
                         )
 

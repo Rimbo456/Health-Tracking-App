@@ -7,6 +7,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,16 +27,23 @@ fun UserScreen() {
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
     val db = FirebaseFirestore.getInstance()
     var name by remember { mutableStateOf("") }
+    var isDataLoaded by remember { mutableStateOf(false) }
 
-    db.collection("users")
-        .document(user!!.uid)
-        .get()
-        .addOnSuccessListener { document ->
-            name = document.getString("name") ?: ""
+    LaunchedEffect(Unit) {
+        user?.uid?.let { uid ->
+            db.collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    name = document.getString("name") ?: ""
+                    isDataLoaded = true
+                }
+                .addOnFailureListener { e ->
+                    Log.e("FirestoreError", "Error getting user data: ${e.message}")
+                    isDataLoaded = true
+                }
         }
-        .addOnFailureListener { e ->
-            Log.e("FirestoreError", "Error getting user data: ${e.message}")
-        }
+    }
 
     AndroidView(
         modifier = Modifier.fillMaxSize(),
@@ -46,17 +54,22 @@ fun UserScreen() {
             val tvEmail = view.findViewById<TextView>(R.id.tvEmail)
             val avt = view.findViewById<ShapeableImageView>(R.id.imgAvatar)
 
-            if (user != null) {
-                tvUserName.text = name
-                tvEmail.text = user!!.email
-            }
-
             val tbrHoSo = view.findViewById<TableRow>(R.id.tbrHoSo)
             tbrHoSo.setOnClickListener {
                 val intent = Intent(context, HoSoActivity::class.java)
                 context.startActivity(intent)
             }
             view
+        },
+        update = { view ->
+            // Cập nhật UI sau khi dữ liệu được tải
+            val tvUserName = view.findViewById<TextView>(R.id.tvUserName)
+            val tvEmail = view.findViewById<TextView>(R.id.tvEmail)
+
+            if (user != null) {
+                tvUserName.text = name
+                tvEmail.text = user!!.email
+            }
         }
     )
 }

@@ -82,7 +82,12 @@ public class HoSoActivity extends Activity {
                         birthYear = 0; // Giá trị mặc định
                     }
 
-                    setUserInfo();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            setUserInfo(); // Cập nhật UI ngay lập tức
+                        }
+                    });
                 } else {
                     Log.d("FirestoreData", "Không tìm thấy dữ liệu");
                 }

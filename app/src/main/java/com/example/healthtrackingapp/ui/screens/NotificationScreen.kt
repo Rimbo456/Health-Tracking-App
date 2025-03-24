@@ -15,8 +15,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.rounded.Add
@@ -59,12 +62,16 @@ import androidx.compose.ui.window.Popup
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.Calendar
 import com.example.healthtrackingapp.ui.components.ItemNof
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
+import kotlin.time.Duration
 
 @Composable
 fun NotificationScreen() {
@@ -756,10 +763,9 @@ fun getTime(): String {
 private data class Notification(
     val title: String,
     val description: String,
-    val time: String,
     val icon: String,
     val color: String,
-    val timestamp: Long,
+    val timestamp: Timestamp,
     val unread: Boolean = true,
 )
 
@@ -784,12 +790,16 @@ fun NotificationsPanel(onDismiss: () -> Unit) {
                     val data = Notification(
                         doc.getString("title") ?: "",
                         doc.getString("description") ?: "",
-                        doc.getString("time") ?: "",
                         doc.getString("icon") ?: "",
                         doc.getString("color") ?: "",
-                        doc.getLong("timestamp") ?: 0
+                        doc.getTimestamp("timestamp") ?: Timestamp.now(),
                     )
                     notificationList.add(data)
+                    db.collection("users")
+                        .document(user!!.uid)
+                        .collection("notifications")
+                        .document(doc.id)
+                        .update("unread", false)
                 }
                 notifications = notificationList
             }
@@ -846,7 +856,7 @@ fun NotificationsPanel(onDismiss: () -> Unit) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                ItemNof(
+                /*ItemNof(
                     title = "Nhắc nhở uống nước",
                     description = "Đã đến giờ uống nước. Hãy uống 250ml nước ngay bây giờ!",
                     time = "5 phút trước",
@@ -876,8 +886,55 @@ fun NotificationsPanel(onDismiss: () -> Unit) {
                     time = "3 giờ trước",
                     icon = Icons.Default.EmojiEvents,
                     color = Color(0xFFFFD700)
-                )
+                )*/
+                notifications.forEach { i ->
+                    val (hours, minutes) = getElapsedTime(i.timestamp)
+                    val timeText = when {
+                        hours > 0 -> "$hours giờ trước"
+                        minutes > 0 -> "$minutes phút trước"
+                        else -> "Vừa xong"
+                    }
+                    ItemNof(
+                        title = i.title,
+                        description = i.description,
+                        time = timeText,
+                        icon = stringToIcon(i.icon),
+                        color = hexStringToColor(i.color)
+                    )
+                }
             }
         }
+    }
+}
+
+fun stringToIcon(iconName: String): ImageVector {
+    return when (iconName.lowercase()) {
+        "WaterDrop" -> Icons.Default.WaterDrop
+        "Favorite" -> Icons.Default.Favorite
+        "MonitorHeart" -> Icons.Default.MonitorHeart
+        else -> {Icons.Default.Numbers}
+    }
+}
+fun getElapsedTime(timestamp: Timestamp): Pair<Long, Long> {
+    val currentTimeMillis = System.currentTimeMillis()
+    val timestampMillis = timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
+
+    val diffMillis = currentTimeMillis - timestampMillis
+
+    val hours = TimeUnit.MILLISECONDS.toHours(diffMillis)
+    val minutes = TimeUnit.MILLISECONDS.toMinutes(diffMillis) % 60
+
+    return Pair(hours, minutes)
+}
+fun hexStringToColor(hexString: String): Color {
+    return try {
+        val hexProcessed = hexString.replace("#", "")
+        when (hexProcessed.length) {
+            6 -> Color(android.graphics.Color.parseColor("#$hexProcessed"))
+            8 -> Color(android.graphics.Color.parseColor("#$hexProcessed"))
+            else -> Color.Black // Default
+        }
+    } catch (e: Exception) {
+        Color.Black // Trả về màu mặc định nếu có lỗi
     }
 }

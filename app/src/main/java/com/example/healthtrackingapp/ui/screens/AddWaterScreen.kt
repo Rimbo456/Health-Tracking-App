@@ -1,6 +1,7 @@
 package com.example.healthtrackingapp.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +30,20 @@ fun AddWaterScreen(
 ) {
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
+    var weight by remember { mutableStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        db.collection("users")
+            .document(user!!.uid)
+            .get()
+            .addOnSuccessListener { document ->
+                weight = document.getLong("weight")?.toInt() ?: 0
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting weight data: ${e.message}")
+            }
+    }
 
     Scaffold { innerPadding ->
         AndroidView(
@@ -56,6 +72,41 @@ fun AddWaterScreen(
                                 "timestamp" to System.currentTimeMillis()
                             )
                         )
+                    val luongnuoc = edtLuongNuoc.text.toString().filter { it.isDigit() }.toInt()/1000
+                    val luongnuocNeed = 0.033 * weight
+                    when (true) {
+                        (luongnuoc < luongnuocNeed) -> {
+                            val thieu = luongnuocNeed - luongnuoc
+                            db.collection("users")
+                                .document(user!!.uid)
+                                .collection("notification")
+                                .add(
+                                    hashMapOf(
+                                        "title" to "Bạn cần uống nước",
+                                        "description" to "Bạn đã không uống đủ lượng nước ngày hôm nay, cơ thể bạn còn thiếu $thieu ml để hoạt động tốt",
+                                        "icon" to "WaterDrop",
+                                        "color" to "0xFF03A9F4",
+                                        "timestamp" to System.currentTimeMillis(),
+                                        "unread" to true
+                                    )
+                                )
+                        }
+                        else -> {
+                            db.collection("users")
+                                .document(user!!.uid)
+                                .collection("notification")
+                                .add(
+                                    hashMapOf(
+                                        "title" to "Đã uống đủ nước",
+                                        "description" to "Chúc mừng bạn đã uống đủ nước cho hôm nay",
+                                        "icon" to "WaterDrop",
+                                        "color" to "0xFF03A9F4",
+                                        "timestamp" to System.currentTimeMillis(),
+                                        "unread" to true
+                                    )
+                                )
+                        }
+                    }
                     navController.popBackStack()
                 }
 
