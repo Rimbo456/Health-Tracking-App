@@ -102,6 +102,12 @@ public class HoSoActivity extends Activity {
         tbrNamSinh.setOnClickListener(view -> showEnterBirthYearDialog());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        txtSDT.setText(phone);
+    }
+
     public void showEnterNameDialog(){
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.cus_dialog_nhap_ten);
@@ -150,6 +156,7 @@ public class HoSoActivity extends Activity {
                 Intent intentSDT = new Intent(HoSoActivity.this, XacNhanSDTActivity.class);
                 intentSDT.putExtra("sdt", soDienThoai);
                 startActivity(intentSDT);
+                dialog.dismiss();
             } else {
                 Toast.makeText(this, "Vui lòng nhập số điện thoại!", Toast.LENGTH_SHORT).show();
                 return;
