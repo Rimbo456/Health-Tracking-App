@@ -57,6 +57,19 @@ private fun JetpackComposeBasicLineChart(
                         }
                     ),
                 ),
+                rememberLineCartesianLayer(
+                    lineProvider = LineCartesianLayer.LineProvider.series(
+                        vicoTheme.lineCartesianLayerColors.map { color ->
+                            LineCartesianLayer.rememberLine(
+                                LineCartesianLayer.LineFill.single(
+                                    fill(
+                                        Color.Transparent
+                                    )
+                                )
+                            )
+                        }
+                    ),
+                ),
                 startAxis = VerticalAxis.rememberStart(
                     valueFormatter = remember {
                         CartesianValueFormatter { context, value, verticalAxisPosition ->
@@ -102,8 +115,9 @@ fun BodyTemperatureChart(modifier: Modifier = Modifier) {
             if (dataPointss.isNotEmpty()) { // Kiểm tra danh sách không rỗng trước khi vẽ
                 lineSeries { series(dataPointss.map { it.toInt() }) }
             } else {
-                lineSeries { series(0,0) }
+                lineSeries { series(0) }
             }
+            lineSeries { series(53) }
         }
     }
     PreviewBox { JetpackComposeBasicLineChart(modelProducer, modifier) }

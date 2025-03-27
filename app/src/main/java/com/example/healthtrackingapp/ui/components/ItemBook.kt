@@ -41,7 +41,7 @@ fun ItemBook(
     title: String,
     navController: NavHostController,
     route: String,
-    value: String? = "Khong co du lieu",
+    value: String? = "",
     unit: String? = ""
 ) {
     Card(

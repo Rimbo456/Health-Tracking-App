@@ -175,20 +175,26 @@ fun OverviewScreen(
             .whereLessThanOrEqualTo("timestamp", endOfDay)
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    document.getString("foodInput")?.takeIf { it.isNotEmpty() }?.let { foodList.add(it) }
+                if (documents.isEmpty) {
+                    usedFood = "Chưa có dữ liệu"
+                    usedFoodAno = "Chưa có dữ liệu"
+                    buoian = listOf("Chưa có dữ liệu")
+                } else {
+                    for (document in documents) {
+                        document.getString("foodInput")?.takeIf { it.isNotEmpty() }?.let { foodList.add(it) }
 
-                    val supplements = listOfNotNull(
-                        document.getString("vitaminInput"),
-                        document.getString("milkInput"),
-                        document.getString("supplementInput")
-                    ).filter { it.isNotEmpty() }
+                        val supplements = listOfNotNull(
+                            document.getString("vitaminInput"),
+                            document.getString("milkInput"),
+                            document.getString("supplementInput")
+                        ).filter { it.isNotEmpty() }
 
-                    if (supplements.isNotEmpty()) {
-                        foodAnoList.addAll(supplements)
+                        if (supplements.isNotEmpty()) {
+                            foodAnoList.addAll(supplements)
+                        }
+
+                        document.getString("mealType")?.takeIf { it.isNotEmpty() }?.let { mealTypeList.add(it) }
                     }
-
-                    document.getString("mealType")?.takeIf { it.isNotEmpty() }?.let { mealTypeList.add(it) }
                 }
 
                 // Cập nhật biến trạng thái sau khi có kết quả
@@ -208,8 +214,12 @@ fun OverviewScreen(
             .whereLessThanOrEqualTo("timestamp", endOfDay)
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    mood = document.getString("moodLevel") ?: ""
+                if (documents.isEmpty) {
+                    mood = "Chưa có dữ liệu"
+                } else {
+                    for (document in documents) {
+                        mood = document.getString("moodLevel") ?: ""
+                    }
                 }
             }
             .addOnFailureListener { e ->
@@ -223,8 +233,12 @@ fun OverviewScreen(
             .whereLessThanOrEqualTo("timestamp", endOfDay)
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    waterInput = document.getString("luongnuoc") ?: ""
+                if (documents.isEmpty) {
+                    waterInput = "Chưa có dữ liệu"
+                } else {
+                    for (document in documents) {
+                        waterInput = document.getString("luongnuoc") ?: ""
+                    }
                 }
             }
             .addOnFailureListener { e ->
@@ -238,13 +252,19 @@ fun OverviewScreen(
             .whereLessThanOrEqualTo("timestamp", endOfDay)
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val workout = mapOf(
-                        "type" to (document.getString("workoutType") ?: ""),
-                        "duration" to (document.getString("duration") ?: ""),
-                        "intensity" to (document.getString("intensityValue") ?: "")
-                    )
-                    workoutList.add(workout)
+                if (documents.isEmpty) {
+                    workoutType = "Chưa có dữ liệu"
+                    durationWorkout = "Chưa có dữ liệu"
+                    intensityValue = "Chưa có dữ liệu"
+                } else {
+                    for (document in documents) {
+                        val workout = mapOf(
+                            "type" to (document.getString("workoutType") ?: ""),
+                            "duration" to (document.getString("duration") ?: ""),
+                            "intensity" to (document.getString("intensityValue") ?: "")
+                        )
+                        workoutList.add(workout)
+                    }
                 }
 
                 // Nếu có dữ liệu tập luyện, sử dụng mục đầu tiên (hoặc xử lý nhiều mục nếu cần)
@@ -278,14 +298,18 @@ fun OverviewScreen(
             .limit(1)
             .get()
             .addOnSuccessListener { result ->
-                for (document in result) {
-                    sleep = document.getString("giacngu") ?: ""
-                    val sleepInt = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0
-                    val efficencyIndex = (sleepInt / 1.5) * 100
-                    sleepEfficiency = when (true) {
-                        (efficencyIndex >= 85) -> "Giấc ngủ tốt"
-                        (efficencyIndex >= 75) and (efficencyIndex <= 85) -> "Giấc ngủ tốt"
-                        else -> "Giấc ngủ kém"
+                if (result.isEmpty) {
+                    sleep = "Chưa có dữ liệu"
+                } else {
+                    for (document in result) {
+                        sleep = document.getString("giacngu") ?: ""
+                        val sleepInt = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0
+                        val efficencyIndex = (sleepInt / 1.5) * 100
+                        sleepEfficiency = when (true) {
+                            (efficencyIndex >= 85) -> "Giấc ngủ tốt"
+                            (efficencyIndex >= 75) and (efficencyIndex <= 85) -> "Giấc ngủ tốt"
+                            else -> "Giấc ngủ kém"
+                        }
                     }
                 }
             }
@@ -301,10 +325,16 @@ fun OverviewScreen(
             .limit(1)
             .get()
             .addOnSuccessListener { result ->
-                for (document in result) {
-                    tamthu = document.getString("tamthu") ?: ""
-                    tamtruong = document.getString("tamtruong") ?: ""
-                    heartRate = document.getString("nhiptim") ?: ""
+                if (result.isEmpty) {
+                    tamthu = "Chưa có dữ liệu"
+                    tamtruong = "Chưa có dữ liệu"
+                    heartRate = "Chưa có dữ liệu"
+                } else {
+                    for (document in result) {
+                        tamthu = document.getString("tamthu") ?: ""
+                        tamtruong = document.getString("tamtruong") ?: ""
+                        heartRate = document.getString("nhiptim") ?: ""
+                    }
                 }
             }
             .addOnFailureListener { e ->
@@ -320,9 +350,13 @@ fun OverviewScreen(
             .collection("symptom")
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val symptomData = document.toObject(SymptomData::class.java)
-                    symptomList.add(symptomData)
+                if (documents.isEmpty) {
+                    symptomList.clear()
+                } else {
+                    for (document in documents) {
+                        val symptomData = document.toObject(SymptomData::class.java)
+                        symptomList.add(symptomData)
+                    }
                 }
                 symptomDatas = symptomList
             }
@@ -490,7 +524,7 @@ fun OverviewScreen(
 
                         // Heart Rate
                         ExpandCard(
-                            title = "Bắn tym",
+                            title = "Nhịp tim",
                             value = 80.0,
                             unit = "BPM",
                             colorEle = Color(red = 255, green = 32, blue = 32, alpha = 255),
@@ -682,11 +716,11 @@ fun OverviewScreen(
                             icon = Icons.Filled.Check
                         )
 
-                        NutritionInfoItem(
+                        /*NutritionInfoItem(
                             label = "Nguyên nhân ảnh hưởng",
                             value = "Chuỗi thua 5",
                             icon = Icons.Filled.Check
-                        )
+                        )*/
 
                         NutritionInfoItem(
                             label = "Ghi chú cá nhân",
@@ -743,7 +777,7 @@ fun OverviewScreen(
                     }
                 }
 
-                Card(
+                /*Card(
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -779,7 +813,7 @@ fun OverviewScreen(
                             icon = null
                         )
                     }
-                }
+                }*/
 
                 // Spacer for bottom padding
                 Spacer(modifier = Modifier.height(16.dp))

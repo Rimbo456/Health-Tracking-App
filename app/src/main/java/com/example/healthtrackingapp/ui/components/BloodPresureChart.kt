@@ -104,12 +104,12 @@ fun JetpackComposeBasicLineChart(modifier: Modifier = Modifier) {
             if (dataPointTamthu.isNotEmpty()) { // Kiểm tra danh sách không rỗng trước khi vẽ
                 lineSeries { series(dataPointTamthu.map { it.toInt() }) }
             } else {
-                lineSeries { series(0,0) }
+                lineSeries { series(0) }
             }
             if (dataPointTamtruong.isNotEmpty()) { // Kiểm tra danh sách không rỗng trước khi vẽ
                 lineSeries { series(dataPointTamtruong.map { it.toInt() }) }
             } else {
-                lineSeries { series(0,0) }
+                lineSeries { series(0) }
             }
         }
     }
