@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.screens
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -67,6 +68,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -77,7 +79,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.BloodGlucoseChart
 import com.example.healthtrackingapp.ui.components.BloodOxygenLevelChart
@@ -92,6 +98,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -111,6 +118,7 @@ private val accentGradient = Brush.linearGradient(
 fun OverviewScreen(
     navController: NavHostController
 ) {
+    val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
     var lastSymptomData by remember { mutableStateOf<SymptomData?>(null) }
     var symptomDatas by remember { mutableStateOf(listOf<SymptomData>()) }
@@ -294,7 +302,8 @@ fun OverviewScreen(
         db.collection("users")
             .document(user!!.uid)
             .collection("sleep")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .whereGreaterThanOrEqualTo("timestamp", startOfDay)
+            .whereLessThanOrEqualTo("timestamp", endOfDay)
             .limit(1)
             .get()
             .addOnSuccessListener { result ->
@@ -318,7 +327,7 @@ fun OverviewScreen(
                 // Xử lý lỗi ở đây
             }
 
-        db.collection("users")
+        /*db.collection("users")
             .document(user!!.uid)
             .collection("blood_pressure")
             .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -340,7 +349,7 @@ fun OverviewScreen(
             .addOnFailureListener { e ->
                 Log.e("FirestoreError", "Error getting blood_presure", e)
                 // Xử lý lỗi ở đây
-            }
+            }*/
 
 
         val symptomList = mutableListOf<SymptomData>()
@@ -777,7 +786,7 @@ fun OverviewScreen(
                     }
                 }
 
-                /*Card(
+                Card(
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -801,19 +810,28 @@ fun OverviewScreen(
 
                         Divider(thickness = 1.dp, color = Color.Black)
 
-
-                        Image(
-                            painter = painterResource(R.drawable.nen_app),
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        val file = File(context.filesDir, "processed_image.jpg")
+                        if (file.exists()) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(context)
+                                    .data(file)
+                                    .build(),
+                                contentDescription = "Processed Image",
+                                modifier = Modifier.fillMaxWidth()
+                                    .background(Color.Gray),
+                                contentScale = ContentScale.FillWidth
+                            )
+                        } else {
+                            Text(text = "Không tìm thấy ảnh", modifier = Modifier.padding(16.dp))
+                        }
+                        val texttxt = File(context.filesDir, "texttxt.txt")
                         NutritionInfoItem(
                             label = "Kết quả",
-                            value = "Không có",
+                            value =if (texttxt.exists()) texttxt.readText() else "Không có",
                             icon = null
                         )
                     }
-                }*/
+                }
 
                 // Spacer for bottom padding
                 Spacer(modifier = Modifier.height(16.dp))
