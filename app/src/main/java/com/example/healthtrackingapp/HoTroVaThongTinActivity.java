@@ -38,7 +38,7 @@ public class HoTroVaThongTinActivity extends AppCompatActivity {
 
         btnHoTro.setOnClickListener(v -> {
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-            emailIntent.setData(Uri.parse("mailto:nguyenminhnhut151104@gmail.com"));
+            emailIntent.setData(Uri.parse("mailto:nguyenrimbo2004@gmail.com"));
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Hỗ trợ ứng dụng");
             startActivity(Intent.createChooser(emailIntent, "Chọn ứng dụng email"));
         });
