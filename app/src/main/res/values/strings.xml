@@ -33,4 +33,10 @@
     <string name="phyacaworkout">Vận động và tập luyện</string>
     <string name="moodaemo">Tâm trạng và cảm xúc</string>
     <string name="health_condition">Tình trạng sức khỏe</string>
+    <string name="motabuan">Ghi lại các bữa ăn hàng ngày, bao gồm thực phẩm đã tiêu thụ và khẩu phần ăn.</string>
+    <string name="motacannang">Theo dõi sự thay đổi cân nặng theo thời gian.</string>
+    <string name="motagiacngu">Ghi lại thời gian ngủ để đánh giá chất lượng giấc ngủ.</string>
+    <string name="motaluongnuoc">Theo dõi lượng nước uống mỗi ngày để đảm bảo đủ nước cho cơ thể.</string>
+    <string name="motahuyetap">Giúp kiểm soát huyết áp, đặc biệt quan trọng với những người có bệnh nền tim mạch.</string>
+    <string name="motanhietdo">Theo dõi nhiệt độ cơ thể để phát hiện sớm các dấu hiệu bất thường như sốt.</string>
 </resources>

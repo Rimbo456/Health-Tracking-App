@@ -106,10 +106,14 @@ suspend fun uploadImage(apiService: ApiServiceUNao, uri: Uri, context: Context):
 
             // Chuyển danh sách bbox thành chuỗi để hiển thị
             val predictionsText = responseBody.predictions.joinToString("\n") {
-                if (it.`class` == 1) {
-                    "U não"
+                if (responseBody.predictions.isEmpty()) {
+                    "Không có kết quả"
                 } else {
-                    "Không có gì bất thường"
+                    if (it.`class` == 1) {
+                        "U não"
+                    } else {
+                        "Không u não"
+                    }
                 }
 //                "Class: ${it.`class`}, Confidence: ${(it.confidence * 100).toInt()}%, BBox: ${it.bbox}"
             }
@@ -141,15 +145,18 @@ suspend fun uploadImage(apiService: ApiServiceUNao, uri: Uri, context: Context):
 fun UNaoScreen(navController: NavHostController) {
     val context = LocalContext.current
     val imageUri = remember { mutableStateOf<Uri?>(null) }
-    val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            imageUri.value = uri
-        }
 
     val apiService = RetrofitClient.apiService
     val coroutineScope = rememberCoroutineScope()
     val resultText = remember { mutableStateOf("Chưa có kết quả") }
     val processedImageUri = remember { mutableStateOf<Uri?>(null) }
+
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            processedImageUri.value = null  // Xóa ảnh kết quả khi chọn ảnh mới
+            resultText.value = "Chưa có kết quả"  // Reset kết quả dự đoán
+            imageUri.value = uri
+        }
 
     Scaffold(
         topBar = {

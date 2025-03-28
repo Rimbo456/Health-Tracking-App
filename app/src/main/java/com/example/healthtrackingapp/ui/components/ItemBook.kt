@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,8 @@ fun ItemBook(
     navController: NavHostController,
     route: String,
     value: String? = "",
-    unit: String? = ""
+    unit: String? = "",
+    mota: String = ""
 ) {
     Card(
         colors = CardDefaults.cardColors(color),
@@ -108,8 +110,9 @@ fun ItemBook(
                     .padding(17.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = value!!+" "+unit!!)
-                Text(text = "Time")
+                /*Text(text = value!!+" "+unit!!)
+                Text(text = "Time")*/
+                Text(mota, fontStyle = FontStyle.Italic)
             }
         }
     }
