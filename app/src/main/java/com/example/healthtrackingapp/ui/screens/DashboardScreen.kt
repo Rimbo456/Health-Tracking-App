@@ -44,6 +44,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -67,6 +68,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 
@@ -76,7 +78,7 @@ fun DashboardScreen(
     modifier: Modifier? = null,
 ) {
     var textToShow by remember { mutableStateOf("") }
-    val fullText = "Hôm nay bạn cảm thấy thế nào?"
+    var fullText by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
     var showDialog by remember { mutableStateOf(false) }
     var titleGoal by remember { mutableStateOf("") }
@@ -87,17 +89,60 @@ fun DashboardScreen(
     var tamtruong by remember { mutableStateOf("") }
     var sleep by remember { mutableStateOf("") }
     var workoutDuration by remember { mutableStateOf("") }
+    var mood by remember { mutableStateOf("") }
+    var isReload by remember { mutableStateOf(false) }
 
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
-    LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            fullText.forEachIndexed { index, _ ->
-                textToShow = fullText.substring(0, index + 1)
-                delay(50)
+    LaunchedEffect(isReload) {
+        val selectedDate = LocalDate.now()
+        val calendar = Calendar.getInstance()
+        calendar.set(
+            selectedDate.year,
+            selectedDate.monthValue - 1,
+            selectedDate.dayOfMonth,
+            0,
+            0,
+            0
+        )
+        val startOfDay = calendar.timeInMillis
+
+        calendar.set(
+            selectedDate.year,
+            selectedDate.monthValue - 1,
+            selectedDate.dayOfMonth,
+            23,
+            59,
+            59
+        )
+        val endOfDay = calendar.timeInMillis
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("mood")
+            .whereGreaterThanOrEqualTo("timestamp", startOfDay)
+            .whereLessThanOrEqualTo("timestamp", endOfDay)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                fullText = if (documents.isEmpty) {
+                    "Hôm nay bạn cảm thấy thế nào?"
+                } else {
+                    ("Cảm xúc hôm nay của bạn: " + documents.firstOrNull()?.getString("moodLevel")) ?: "Hôm nay bạn cảm thấy thế nào?"
+                }
+                coroutineScope.launch {
+                    fullText.forEachIndexed { index, _ ->
+                        textToShow = fullText.substring(0, index + 1)
+                        delay(50)
+                    }
+                }
+                isReload = false
             }
-        }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting mood documents: ${e.message}")
+                fullText = "Hôm nay bạn cảm thấy thế nào?"
+            }
     }
 
     LaunchedEffect(Unit) {
@@ -215,9 +260,10 @@ fun DashboardScreen(
         }
         Row(
             modifier = Modifier
+                .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
                 .fillMaxWidth(0.9f)
                 .height(56.dp)
-                .background(Color.LightGray, shape = RoundedCornerShape(12.dp))
+                .background(Color(0xFFEEEEFC), shape = RoundedCornerShape(12.dp))
                 .padding(horizontal = 16.dp)
                 .clickable { showDialog = true },
             verticalAlignment = Alignment.CenterVertically
@@ -263,13 +309,15 @@ fun DashboardScreen(
             }
             Column(
                 modifier = Modifier
+                    .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Top
             ) {
                 Card(
                     onClick = { navController.navigate("goalscreen") },
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    colors = CardDefaults.cardColors(Color(0xFFEEEEFC))
                 ) {
                     Column(
                         modifier = Modifier.padding(15.dp)
@@ -381,12 +429,19 @@ fun DashboardScreen(
 
     }
     if (showDialog) {
-        FeelingDialog(onDismiss = { showDialog = false })
+        FeelingDialog(
+            onDismiss = {
+                showDialog = false
+            },
+            onButtonClick = {
+                isReload = true
+            }
+        )
     }
 }
 
 @Composable
-fun FeelingDialog(onDismiss: () -> Unit) {
+fun FeelingDialog(onDismiss: () -> Unit,onButtonClick: () -> Unit) {
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
@@ -485,6 +540,7 @@ fun FeelingDialog(onDismiss: () -> Unit) {
                                     "timestamp" to System.currentTimeMillis(),
                                 )
                             )
+                        onButtonClick()
                         onDismiss()
                     }
                 ) {

@@ -357,6 +357,8 @@ fun OverviewScreen(
         db.collection("users")
             .document(user!!.uid)
             .collection("symptom")
+            .whereGreaterThanOrEqualTo("timestamp", startOfDay)
+            .whereLessThanOrEqualTo("timestamp", endOfDay)
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
@@ -368,6 +370,7 @@ fun OverviewScreen(
                     }
                 }
                 symptomDatas = symptomList
+                lastSymptomData = null
             }
 
     }

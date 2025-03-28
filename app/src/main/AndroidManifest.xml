@@ -24,7 +24,7 @@
             android:exported="false" />
         <activity
             android:name=".HoTroVaThongTinActivity"
-            android:theme="@style/Theme.HealthTrackingApp.NoActionBar"
+            android:theme="@style/Theme.HealthTrackingApp"
             android:exported="false" />
         <activity
             android:name=".TinhTrangSucKhoeActivity"

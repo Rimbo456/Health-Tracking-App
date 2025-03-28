@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun TopBarForAdd(navController: NavHostController) {
+fun TopBarForAdd(navController: NavHostController?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,7 +37,7 @@ fun TopBarForAdd(navController: NavHostController) {
             horizontalArrangement = Arrangement.End
         ) {
             IconButton(
-                onClick = { navController.navigate("healthbook") },
+                onClick = { navController?.navigate("healthbook") },
                 colors = IconButtonDefaults.iconButtonColors(Color.Black)
             ) {
                 Icon(

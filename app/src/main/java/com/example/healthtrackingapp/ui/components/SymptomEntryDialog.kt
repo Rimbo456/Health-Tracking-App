@@ -612,7 +612,8 @@ fun SymptomEntryDialog(
                                             "description" to symptomData.description,
                                             "severity" to symptomData.severity,
                                             "time" to symptomData.time,
-                                            "medications" to symptomData.medications
+                                            "medications" to symptomData.medications,
+                                            "timestamp" to System.currentTimeMillis()
                                         )
                                     )
                             }

@@ -140,7 +140,10 @@ fun BloodPressureScreen(
                                 .width(IntrinsicSize.Min)
                                 .padding(vertical = 18.dp)
                         )
-                        Text(text = "Tam thu")
+                        Text(
+                            text = "Tam thu",
+                            fontSize = 14.sp
+                        )
                     }
                     Column(
                         modifier = Modifier
@@ -170,7 +173,10 @@ fun BloodPressureScreen(
                                 .width(IntrinsicSize.Min)
                                 .padding(vertical = 18.dp, horizontal = 20.dp)
                         )
-                        Text(text = "Tam truong")
+                        Text(
+                            text = "Tam truong",
+                            fontSize = 14.sp
+                        )
                     }
                     Column(
                         modifier = Modifier
@@ -190,17 +196,21 @@ fun BloodPressureScreen(
                         BasicTextField(
                             value = nhiptim,
                             onValueChange = {
-                                if (it.length <= 2) {
+                                if (it.length <= 3) {
                                     nhiptim = it
                                 }
                             },
+
                             singleLine = true,
                             textStyle = TextStyle(fontSize = 30.sp, textAlign = TextAlign.Start),
                             modifier = Modifier
                                 .width(IntrinsicSize.Min)
                                 .padding(vertical = 18.dp, horizontal = 20.dp)
                         )
-                        Text(text = "Nhip tim")
+                        Text(
+                            text = "Nhip tim",
+                            fontSize = 14.sp
+                        )
                     }
                 }
             }

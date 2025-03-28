@@ -46,6 +46,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -107,7 +108,8 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Bữa ăn",
                         image = R.drawable.reshot_icon_running_shoes_nfc659ujds,
                         navController = navController,
-                        route = "addfood"
+                        route = "addfood",
+                        mota = stringResource(R.string.motabuan)
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
@@ -117,7 +119,8 @@ fun HealthBookScreen(navController: NavHostController) {
                         navController = navController,
                         route = "weighingscreen",
                         value = ((weight * 100).toInt() / 100f).toString(),
-                        unit = "kg"
+                        unit = "kg",
+                        mota = stringResource(R.string.motacannang)
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
@@ -125,7 +128,8 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Giấc ngủ",
                         image = R.drawable.reshot_icon_sleeping_x2ekjbl3yq,
                         navController = navController,
-                        route = "addsleep"
+                        route = "addsleep",
+                        mota = stringResource(R.string.motagiacngu)
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
@@ -133,7 +137,8 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Lượng nước tiêu thụ",
                         image = R.drawable.reshot_icon_water_bottle_pzw3g8afsq,
                         navController = navController,
-                        route = "addwater"
+                        route = "addwater",
+                        mota = stringResource(R.string.motaluongnuoc)
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
@@ -141,7 +146,8 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Huyết áp",
                         image = R.drawable.reshot_icon_blood_pressure_zvjhstxe8u,
                         navController = navController,
-                        route = "bloodpressurescreen"
+                        route = "bloodpressurescreen",
+                        mota = stringResource(R.string.motahuyetap)
                     )
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
@@ -149,7 +155,8 @@ fun HealthBookScreen(navController: NavHostController) {
                         title = "Nhiệt độ cơ thể",
                         image = R.drawable.temperature,
                         navController = navController,
-                        route = "addtemperaturescreen"
+                        route = "addtemperaturescreen",
+                        mota = stringResource(R.string.motanhietdo)
                     )
                 }
             }
@@ -166,7 +173,7 @@ fun TopBar(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.08f)
-            .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
+            .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
