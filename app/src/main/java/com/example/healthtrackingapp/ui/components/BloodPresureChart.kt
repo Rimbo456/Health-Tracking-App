@@ -6,11 +6,18 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
@@ -70,11 +77,40 @@ private fun JetpackComposeBasicLineChart(
 @Composable
 fun JetpackComposeBasicLineChart(modifier: Modifier = Modifier) {
     val modelProducer = remember { CartesianChartModelProducer() }
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+    var dataPointTamthu = remember { mutableStateListOf<Int>() }
+    var dataPointTamtruong = remember { mutableStateListOf<Int>() }
     LaunchedEffect(Unit) {
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("blood_pressure")
+            .get()
+            .addOnSuccessListener { documents ->
+                dataPointTamthu.clear()
+                dataPointTamtruong.clear()
+                for (document in documents) {
+                    document.getString("tamthu")?.let { dataPointTamthu.add(it.toInt()) }
+                    document.getString("tamtruong")?.let { dataPointTamtruong.add(it.toInt()) }
+                }
+            }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: $exception")
+            }
+    }
+    LaunchedEffect(dataPointTamthu.toList()) {
         modelProducer.runTransaction {
             // Learn more: https://patrykandpatrick.com/vmml6t.
-            lineSeries { series(13, 8, 7, 12, 0, 1, 12, 12, 0, 11, 6, 12, 0, 11, 12, 11,0,0,0,0,0,0,0,0,14) }
-            lineSeries { series(10, 4, 8, 2, 3, 7, 9, 10, 12, 11, 6, 12, 0, 11, 12, 11) }
+            if (dataPointTamthu.isNotEmpty()) { // Kiểm tra danh sách không rỗng trước khi vẽ
+                lineSeries { series(dataPointTamthu.map { it.toInt() }) }
+            } else {
+                lineSeries { series(0) }
+            }
+            if (dataPointTamtruong.isNotEmpty()) { // Kiểm tra danh sách không rỗng trước khi vẽ
+                lineSeries { series(dataPointTamtruong.map { it.toInt() }) }
+            } else {
+                lineSeries { series(0) }
+            }
         }
     }
     PreviewBox { JetpackComposeBasicLineChart(modelProducer, modifier) }

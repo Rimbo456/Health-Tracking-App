@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.TopBarForAdd
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -231,9 +232,137 @@ private fun BottomBarForAdd(
                             "tamthu" to tamthu,
                             "tamtruong" to tamtruong,
                             "nhiptim" to nhiptim,
-                            "timestamp" to System.currentTimeMillis()
+                            "timestamp" to Timestamp.now()
                         )
                     )
+                when (true) {
+                    ((nhiptim.toInt() >= 60) and (nhiptim.toInt() <= 100)) -> {
+                        db.collection("users")
+                            .document(user.uid)
+                            .collection("notification")
+                            .add(
+                                hashMapOf(
+                                    "title" to "Nhịp tim của bạn",
+                                    "description" to "Nhịp tim của bạn hiện tại là $nhiptim, tốt cho sức khỏe",
+                                    "icon" to "Favorite",
+                                    "color" to "0xFFBD2E4B",
+                                    "timestamp" to Timestamp.now(),
+                                    "unread" to true
+                                )
+                            )
+                    }
+
+                    (nhiptim.toInt() > 100) -> {
+                        db.collection("users")
+                            .document(user.uid)
+                            .collection("notification")
+                            .add(
+                                hashMapOf(
+                                    "title" to "Cảnh báo nhịp tim",
+                                    "description" to "Nhịp tim của bạn hiện tại là $nhiptim, cao bất thường",
+                                    "icon" to "Favorite",
+                                    "color" to "0xFFBD2E4B",
+                                    "timestamp" to Timestamp.now(),
+                                    "unread" to true
+                                )
+                            )
+                    }
+
+                    else -> {
+                        db.collection("users")
+                            .document(user.uid)
+                            .collection("notification")
+                            .add(
+                                hashMapOf(
+                                    "title" to "Cảnh báo nhịp tim",
+                                    "description" to "Nhịp tim của bạn hiện tại là $nhiptim, nhịp tim thấp bất thường",
+                                    "icon" to "Favorite",
+                                    "color" to "0xFFBD2E4B",
+                                    "timestamp" to Timestamp.now(),
+                                    "unread" to true
+                                )
+                            )
+                    }
+                }
+                when (true) {
+                    (((tamthu.toInt() >= 90) and (tamthu.toInt() <= 120)) and ((tamtruong.toInt() >= 60) and (tamtruong.toInt() <= 80))) -> {
+                        db.collection("users")
+                            .document(user.uid)
+                            .collection("notification")
+                            .add(
+                                hashMapOf(
+                                    "title" to "Huyết áp của bạn",
+                                    "description" to "Huyết áp của bạn hiện tại là $tamthu/$tamtruong, không có gì bất thường",
+                                    "icon" to "MonitorHeart",
+                                    "color" to "0xFFBD2E4B",
+                                    "timestamp" to Timestamp.now(),
+                                    "unread" to true
+                                )
+                            )
+                    }
+
+                    (((tamthu.toInt() < 90)) and ((tamtruong.toInt() < 60))) -> {
+                        db.collection("users")
+                            .document(user.uid)
+                            .collection("notification")
+                            .add(
+                                hashMapOf(
+                                    "title" to "Cảnh báo huyết áp",
+                                    "description" to "Huyết áp của bạn hiện tại là $tamthu/$tamtruong. Huyết áp thấp, cảnh báo có thể gây chóng mặt, ngất xỉu",
+                                    "icon" to "MonitorHeart",
+                                    "color" to "0xFFBD2E4B",
+                                    "timestamp" to Timestamp.now(),
+                                    "unread" to true
+                                )
+                            )
+                    }
+                    (((tamthu.toInt() >= 121) and (tamthu.toInt() <= 139)) and ((tamtruong.toInt() >= 81) and (tamtruong.toInt() <= 89))) -> {
+                        db.collection("users")
+                            .document(user.uid)
+                            .collection("notification")
+                            .add(
+                                hashMapOf(
+                                    "title" to "Cảnh báo huyết áp",
+                                    "description" to "Huyết áp của bạn hiện tại là $tamthu/$tamtruong. Cảnh báo tiền cao huyết áp",
+                                    "icon" to "MonitorHeart",
+                                    "color" to "0xFFBD2E4B",
+                                    "timestamp" to Timestamp.now(),
+                                    "unread" to true
+                                )
+                            )
+                    }
+                    (((tamthu.toInt() >= 140) and (tamthu.toInt() <= 159)) and ((tamtruong.toInt() >= 90) and (tamtruong.toInt() <= 99))) -> {
+                        db.collection("users")
+                            .document(user.uid)
+                            .collection("notification")
+                            .add(
+                                hashMapOf(
+                                    "title" to "Cảnh báo huyết áp",
+                                    "description" to "Huyết áp của bạn hiện tại là $tamthu/$tamtruong. Cảnh báo cao huyết áp cấp độ 1, cần được điều trị",
+                                    "icon" to "MonitorHeart",
+                                    "color" to "0xFFBD2E4B",
+                                    "timestamp" to Timestamp.now(),
+                                    "unread" to true
+                                )
+                            )
+                    }
+
+                    else -> {
+                        db.collection("users")
+                            .document(user.uid)
+                            .collection("notification")
+                            .add(
+                                hashMapOf(
+                                    "title" to "Cảnh báo huyết áp",
+                                    "description" to "Huyết áp của bạn hiện tại là $tamthu/$tamtruong. Cảnh báo cao huyết áp cấp độ 2, có thể gây nguy hiểm tới tính mạng",
+                                    "icon" to "MonitorHeart",
+                                    "color" to "0xFFBD2E4B",
+                                    "timestamp" to Timestamp.now(),
+                                    "unread" to true
+                                )
+                            )
+                    }
+                }
                 navController.popBackStack()
             },
         verticalAlignment = Alignment.CenterVertically,

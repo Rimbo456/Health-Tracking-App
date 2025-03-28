@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity2 extends AppCompatActivity {
-    TableRow tbrHoSo;
+    TableRow tbrHoSo, tbrHoTro, tbrVeChungToi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +24,30 @@ public class MainActivity2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        tbrHoTro = findViewById(R.id.tbrHoTro);
+        tbrVeChungToi = findViewById(R.id.tbrVeChungToi);
+
         tbrHoSo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity2.this, HoSoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tbrHoTro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity2.this, HoTroVaThongTinActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tbrVeChungToi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity2.this, GioiThieuActivity.class);
                 startActivity(intent);
             }
         });

@@ -41,7 +41,7 @@ fun ItemBook(
     title: String,
     navController: NavHostController,
     route: String,
-    value: String? = "Khong co du lieu",
+    value: String? = "",
     unit: String? = ""
 ) {
     Card(
@@ -85,11 +85,11 @@ fun ItemBook(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
+                    /*Text(
                         text = "khong on",
                         fontSize = 16.sp,
                         modifier = Modifier.padding(end = 5.dp)
-                    )
+                    )*/
                     Icon(
                         imageVector = Icons.Default.ArrowForwardIos,
                         contentDescription = null

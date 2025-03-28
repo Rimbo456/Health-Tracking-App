@@ -94,7 +94,7 @@ fun ItemNof(
                 text = description,
                 color = Color.White.copy(alpha = 0.7f),
                 fontSize = 14.sp,
-                maxLines = 2,
+                maxLines = 4,
                 overflow = TextOverflow.Ellipsis
             )
 

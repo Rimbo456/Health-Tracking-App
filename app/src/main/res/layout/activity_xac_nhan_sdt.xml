@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_xac_nhan_sdt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/nen_app"
     android:gravity="center_horizontal"
     tools:context=".XacNhanSDTActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:gravity="end">
-        <ImageView
-            android:id="@+id/imgDong"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_close_90"/>
-    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
         android:text="Nhập mã xác thực"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -58,6 +48,7 @@
             android:layout_width="50dp"
             android:layout_height="70dp"
             android:gravity="center"
+            android:maxLength="1"
             android:inputType="number"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -69,6 +60,7 @@
             android:layout_height="70dp"
             android:layout_marginStart="6dp"
             android:gravity="center"
+            android:maxLength="1"
             android:inputType="number"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -80,6 +72,7 @@
             android:layout_height="70dp"
             android:layout_marginStart="6dp"
             android:gravity="center"
+            android:maxLength="1"
             android:inputType="number"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -92,6 +85,7 @@
             android:layout_marginStart="6dp"
             android:gravity="center"
             android:inputType="number"
+            android:maxLength="1"
             android:textSize="22sp"
             android:textStyle="bold"
             android:background="@drawable/rounded_corner"/>
@@ -103,6 +97,7 @@
             android:layout_marginStart="6dp"
             android:gravity="center"
             android:inputType="number"
+            android:maxLength="1"
             android:textSize="22sp"
             android:textStyle="bold"
             android:background="@drawable/rounded_corner"/>
@@ -111,6 +106,7 @@
             android:id="@+id/otp_6"
             android:layout_width="50dp"
             android:layout_height="70dp"
+            android:maxLength="1"
             android:layout_marginStart="6dp"
             android:gravity="center"
             android:inputType="number"
@@ -139,5 +135,5 @@
         android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:background="@drawable/custom_button"/>
+        android:background="@drawable/cus_button_indigo"/>
 </LinearLayout>

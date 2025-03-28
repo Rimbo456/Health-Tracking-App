@@ -72,6 +72,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -95,6 +98,9 @@ fun SymptomEntryDialog(
     var newMedication by remember { mutableStateOf("") }
     var showTimeOptions by remember { mutableStateOf(false) }
     var customTime by remember { mutableStateOf("") }
+
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
     val timeOptions = listOf(
         "Vừa mới",
@@ -594,6 +600,21 @@ fun SymptomEntryDialog(
                                 currentStep++
                             } else {
                                 onSubmit(symptomData)
+                                var temp = ""
+                                symptomData.medications.forEach { i ->
+                                    temp = temp + i +", "
+                                }
+                                db.collection("users")
+                                    .document(user!!.uid)
+                                    .collection("symptom")
+                                    .add(
+                                        hashMapOf(
+                                            "description" to symptomData.description,
+                                            "severity" to symptomData.severity,
+                                            "time" to symptomData.time,
+                                            "medications" to symptomData.medications
+                                        )
+                                    )
                             }
                         },
                         enabled = when (currentStep) {

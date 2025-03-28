@@ -43,13 +43,22 @@
             android:layout_weight="1"
             android:inputType="number"
             android:gravity="center"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="90dp"
             android:text="Nhập chiều cao"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/Gray"
             android:background="@null"
             tools:ignore="HardcodedText"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="Cm"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/Gray"/>
 
         <ImageView
             android:id="@+id/imgXoaChu"
@@ -67,9 +76,9 @@
         android:background="@color/black"/>
 
     <TextView
+        android:id="@+id/txtKtr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chiều cao của bạn có vẻ không đúng lắm"
         android:textSize="12sp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
@@ -86,5 +95,5 @@
         android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:background="@drawable/custom_button"/>
+        android:background="@drawable/cus_button_indigo"/>
 </LinearLayout>

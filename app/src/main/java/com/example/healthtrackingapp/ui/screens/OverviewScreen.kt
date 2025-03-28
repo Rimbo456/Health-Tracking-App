@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.screens
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -55,6 +56,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -66,6 +68,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -76,7 +79,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.BloodGlucoseChart
 import com.example.healthtrackingapp.ui.components.BloodOxygenLevelChart
@@ -91,6 +98,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -110,8 +118,10 @@ private val accentGradient = Brush.linearGradient(
 fun OverviewScreen(
     navController: NavHostController
 ) {
+    val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
     var lastSymptomData by remember { mutableStateOf<SymptomData?>(null) }
+    var symptomDatas by remember { mutableStateOf(listOf<SymptomData>()) }
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var usedFood by remember { mutableStateOf("") }
     var usedFoodAno by remember { mutableStateOf("") }
@@ -127,12 +137,16 @@ fun OverviewScreen(
     var sleep by remember { mutableStateOf("") }
     var sleepEfficiency by remember { mutableStateOf("") }
     var feedbackSleep by remember { mutableStateOf("") }
+    var waterInput by remember { mutableStateOf("") }
+    var heartRate by remember { mutableStateOf("") }
+    var tamthu by remember { mutableStateOf("") }
+    var tamtruong by remember { mutableStateOf("") }
 
 
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(selectedDate) {
         // Xác định timestamp đầu và cuối ngày
         val calendar = Calendar.getInstance()
         calendar.set(
@@ -169,20 +183,26 @@ fun OverviewScreen(
             .whereLessThanOrEqualTo("timestamp", endOfDay)
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    document.getString("foodInput")?.takeIf { it.isNotEmpty() }?.let { foodList.add(it) }
+                if (documents.isEmpty) {
+                    usedFood = "Chưa có dữ liệu"
+                    usedFoodAno = "Chưa có dữ liệu"
+                    buoian = listOf("Chưa có dữ liệu")
+                } else {
+                    for (document in documents) {
+                        document.getString("foodInput")?.takeIf { it.isNotEmpty() }?.let { foodList.add(it) }
 
-                    val supplements = listOfNotNull(
-                        document.getString("vitaminInput"),
-                        document.getString("milkInput"),
-                        document.getString("supplementInput")
-                    ).filter { it.isNotEmpty() }
+                        val supplements = listOfNotNull(
+                            document.getString("vitaminInput"),
+                            document.getString("milkInput"),
+                            document.getString("supplementInput")
+                        ).filter { it.isNotEmpty() }
 
-                    if (supplements.isNotEmpty()) {
-                        foodAnoList.addAll(supplements)
+                        if (supplements.isNotEmpty()) {
+                            foodAnoList.addAll(supplements)
+                        }
+
+                        document.getString("mealType")?.takeIf { it.isNotEmpty() }?.let { mealTypeList.add(it) }
                     }
-
-                    document.getString("mealType")?.takeIf { it.isNotEmpty() }?.let { mealTypeList.add(it) }
                 }
 
                 // Cập nhật biến trạng thái sau khi có kết quả
@@ -202,12 +222,35 @@ fun OverviewScreen(
             .whereLessThanOrEqualTo("timestamp", endOfDay)
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    mood = document.getString("moodLevel") ?: ""
+                if (documents.isEmpty) {
+                    mood = "Chưa có dữ liệu"
+                } else {
+                    for (document in documents) {
+                        mood = document.getString("moodLevel") ?: ""
+                    }
                 }
             }
             .addOnFailureListener { e ->
                 Log.e("FirestoreError", "Error getting mood documents: ${e.message}")
+            }
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("water")
+            .whereGreaterThanOrEqualTo("timestamp", startOfDay)
+            .whereLessThanOrEqualTo("timestamp", endOfDay)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    waterInput = "Chưa có dữ liệu"
+                } else {
+                    for (document in documents) {
+                        waterInput = document.getString("luongnuoc") ?: ""
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting water documents: ${e.message}")
             }
 
         db.collection("users")
@@ -217,13 +260,19 @@ fun OverviewScreen(
             .whereLessThanOrEqualTo("timestamp", endOfDay)
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val workout = mapOf(
-                        "type" to (document.getString("workoutType") ?: ""),
-                        "duration" to (document.getString("duration") ?: ""),
-                        "intensity" to (document.getString("intensityValue") ?: "")
-                    )
-                    workoutList.add(workout)
+                if (documents.isEmpty) {
+                    workoutType = "Chưa có dữ liệu"
+                    durationWorkout = "Chưa có dữ liệu"
+                    intensityValue = "Chưa có dữ liệu"
+                } else {
+                    for (document in documents) {
+                        val workout = mapOf(
+                            "type" to (document.getString("workoutType") ?: ""),
+                            "duration" to (document.getString("duration") ?: ""),
+                            "intensity" to (document.getString("intensityValue") ?: "")
+                        )
+                        workoutList.add(workout)
+                    }
                 }
 
                 // Nếu có dữ liệu tập luyện, sử dụng mục đầu tiên (hoặc xử lý nhiều mục nếu cần)
@@ -253,18 +302,23 @@ fun OverviewScreen(
         db.collection("users")
             .document(user!!.uid)
             .collection("sleep")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .whereGreaterThanOrEqualTo("timestamp", startOfDay)
+            .whereLessThanOrEqualTo("timestamp", endOfDay)
             .limit(1)
             .get()
             .addOnSuccessListener { result ->
-                for (document in result) {
-                    sleep = document.getString("giacngu") ?: ""
-                    val sleepInt = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0
-                    val efficencyIndex = (sleepInt / 1.5) * 100
-                    sleepEfficiency = when (true) {
-                        (efficencyIndex >= 85) -> "Giấc ngủ tốt"
-                        (efficencyIndex >= 75) and (efficencyIndex <= 85) -> "Giấc ngủ tốt"
-                        else -> "Giấc ngủ kém"
+                if (result.isEmpty) {
+                    sleep = "Chưa có dữ liệu"
+                } else {
+                    for (document in result) {
+                        sleep = document.getString("giacngu") ?: ""
+                        val sleepInt = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0
+                        val efficencyIndex = (sleepInt / 1.5) * 100
+                        sleepEfficiency = when (true) {
+                            (efficencyIndex >= 85) -> "Giấc ngủ tốt"
+                            (efficencyIndex >= 75) and (efficencyIndex <= 85) -> "Giấc ngủ tốt"
+                            else -> "Giấc ngủ kém"
+                        }
                     }
                 }
             }
@@ -272,6 +326,50 @@ fun OverviewScreen(
                 Log.e("FirestoreError", "Error getting sleep", e)
                 // Xử lý lỗi ở đây
             }
+
+        /*db.collection("users")
+            .document(user!!.uid)
+            .collection("blood_pressure")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                if (result.isEmpty) {
+                    tamthu = "Chưa có dữ liệu"
+                    tamtruong = "Chưa có dữ liệu"
+                    heartRate = "Chưa có dữ liệu"
+                } else {
+                    for (document in result) {
+                        tamthu = document.getString("tamthu") ?: ""
+                        tamtruong = document.getString("tamtruong") ?: ""
+                        heartRate = document.getString("nhiptim") ?: ""
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting blood_presure", e)
+                // Xử lý lỗi ở đây
+            }*/
+
+
+        val symptomList = mutableListOf<SymptomData>()
+
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("symptom")
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    symptomList.clear()
+                } else {
+                    for (document in documents) {
+                        val symptomData = document.toObject(SymptomData::class.java)
+                        symptomList.add(symptomData)
+                    }
+                }
+                symptomDatas = symptomList
+            }
+
     }
 
     Scaffold(
@@ -312,7 +410,8 @@ fun OverviewScreen(
                 // Card for Symptoms
                 SymptomsSection(
                     lastSymptomData = lastSymptomData,
-                    onAddSymptom = { showDialog = true }
+                    onAddSymptom = { showDialog = true },
+                    symptomDatas = symptomDatas
                 )
 
                 ExpandableContainer(
@@ -417,7 +516,7 @@ fun OverviewScreen(
                             unit = "°C",
                             colorEle = Color(red = 218, green = 115, blue = 35, alpha = 255),
                             content = {
-                                BodyTemperatureChart(LocalDate.now().dayOfMonth)
+                                BodyTemperatureChart()
                             }
                         )
 
@@ -434,7 +533,7 @@ fun OverviewScreen(
 
                         // Heart Rate
                         ExpandCard(
-                            title = "Bắn tym",
+                            title = "Nhịp tim",
                             value = 80.0,
                             unit = "BPM",
                             colorEle = Color(red = 255, green = 32, blue = 32, alpha = 255),
@@ -532,7 +631,7 @@ fun OverviewScreen(
                         // Thông tin dinh dưỡng
                         NutritionInfoItem(
                             label = "Lượng nước đã uống",
-                            value = "2 lít",
+                            value = waterInput,
                             icon = Icons.Filled.Check
                         )
 
@@ -626,11 +725,11 @@ fun OverviewScreen(
                             icon = Icons.Filled.Check
                         )
 
-                        NutritionInfoItem(
+                        /*NutritionInfoItem(
                             label = "Nguyên nhân ảnh hưởng",
                             value = "Chuỗi thua 5",
                             icon = Icons.Filled.Check
-                        )
+                        )*/
 
                         NutritionInfoItem(
                             label = "Ghi chú cá nhân",
@@ -711,15 +810,24 @@ fun OverviewScreen(
 
                         Divider(thickness = 1.dp, color = Color.Black)
 
-
-                        Image(
-                            painter = painterResource(R.drawable.nen_app),
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        val file = File(context.filesDir, "processed_image.jpg")
+                        if (file.exists()) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(context)
+                                    .data(file)
+                                    .build(),
+                                contentDescription = "Processed Image",
+                                modifier = Modifier.fillMaxWidth()
+                                    .background(Color.Gray),
+                                contentScale = ContentScale.FillWidth
+                            )
+                        } else {
+                            Text(text = "Không tìm thấy ảnh", modifier = Modifier.padding(16.dp))
+                        }
+                        val texttxt = File(context.filesDir, "texttxt.txt")
                         NutritionInfoItem(
                             label = "Kết quả",
-                            value = "Không có",
+                            value =if (texttxt.exists()) texttxt.readText() else "Không có",
                             icon = null
                         )
                     }
@@ -775,7 +883,8 @@ fun HeaderSection() {
 @Composable
 fun SymptomsSection(
     lastSymptomData: SymptomData?,
-    onAddSymptom: () -> Unit
+    onAddSymptom: () -> Unit,
+    symptomDatas: List<SymptomData>
 ) {
     Card(
         modifier = Modifier
@@ -838,6 +947,25 @@ fun SymptomsSection(
                         shape = RoundedCornerShape(1.dp)
                     )
             )
+
+            symptomDatas?.forEach { i ->
+                SymptomCard(i)
+            } ?: run {
+                // Empty state
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Chưa có triệu chứng nào được ghi nhận",
+                        color = textSecondaryColor,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
 
             // Symptoms display
             lastSymptomData?.let { data ->
@@ -1172,7 +1300,7 @@ fun Temp() {
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut()
             ) {
-                BodyTemperatureChart(LocalDate.now().dayOfMonth)
+                BodyTemperatureChart()
             }
         }
     }
