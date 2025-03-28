@@ -52,6 +52,7 @@
             android:text="Ứng dụng giúp theo dõi sức khỏe và dự đoán bệnh dựa trên AI."
             android:textSize="18sp"
             android:gravity="center"
+            android:textColor="@color/Gray"
             android:layout_marginTop="15dp"
             android:paddingBottom="10dp" />
 
@@ -62,6 +63,7 @@
             android:layout_marginTop="20dp"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:background="@drawable/cus_button_light_gray"
             android:text="Liên hệ hỗ trợ" />
 
         <Button
@@ -69,6 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
+            android:background="@drawable/cus_button_light_gray"
             android:textSize="14sp"
             android:text="Chính sách bảo mật"
             android:layout_marginTop="10dp"/>

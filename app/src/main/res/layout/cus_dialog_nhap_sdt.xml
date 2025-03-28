@@ -80,6 +80,6 @@
         android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:background="@drawable/custom_button"
+        android:background="@drawable/cus_button_indigo"
         tools:ignore="HardcodedText" />
 </LinearLayout>

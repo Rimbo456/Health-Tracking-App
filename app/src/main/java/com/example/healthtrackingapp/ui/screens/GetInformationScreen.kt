@@ -161,7 +161,7 @@ fun GetInformationScreen(navController: NavHostController) {
                 SliderCustom(
                     sliderPosition = (weighth * 100).toInt() / 100f,
                     onValueChange = { weighth = it },
-                    valueRange = 20f..80f,
+                    valueRange = 20f..300f,
                     unit = "kg",
                     title = stringResource(id = R.string.weight),
                 )

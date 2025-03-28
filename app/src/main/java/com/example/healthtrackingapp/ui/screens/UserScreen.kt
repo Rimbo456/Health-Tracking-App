@@ -14,7 +14,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.healthtrackingapp.GioiThieuActivity
 import com.example.healthtrackingapp.HoSoActivity
+import com.example.healthtrackingapp.HoTroVaThongTinActivity
 import com.example.healthtrackingapp.R
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
@@ -55,8 +57,18 @@ fun UserScreen() {
             val avt = view.findViewById<ShapeableImageView>(R.id.imgAvatar)
 
             val tbrHoSo = view.findViewById<TableRow>(R.id.tbrHoSo)
+            val tbrHoTro = view.findViewById<TableRow>(R.id.tbrHoTro)
+            val tbrVeChungToi = view.findViewById<TableRow>(R.id.tbrVeChungToi)
             tbrHoSo.setOnClickListener {
                 val intent = Intent(context, HoSoActivity::class.java)
+                context.startActivity(intent)
+            }
+            tbrHoTro.setOnClickListener {
+                val intent = Intent(context, HoTroVaThongTinActivity::class.java)
+                context.startActivity(intent)
+            }
+            tbrVeChungToi.setOnClickListener {
+                val intent = Intent(context, GioiThieuActivity::class.java)
                 context.startActivity(intent)
             }
             view

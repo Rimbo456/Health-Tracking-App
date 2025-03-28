@@ -67,7 +67,7 @@ import java.io.File
 
 // 2. Tạo Retrofit client một cách tốt hơn (thêm vào file khác)
 object RetrofitClient {
-    private const val BASE_URL = "http://192.168.1.7:5000"
+    private const val BASE_URL = "http://192.168.1.14:5000"
 
     val apiService: ApiServiceUNao by lazy {
         Retrofit.Builder()
