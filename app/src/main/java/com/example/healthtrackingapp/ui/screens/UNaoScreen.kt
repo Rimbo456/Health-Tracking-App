@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -64,6 +65,9 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.TopBarForAdd
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // 2. Tạo Retrofit client một cách tốt hơn (thêm vào file khác)
 object RetrofitClient {
@@ -80,6 +84,7 @@ object RetrofitClient {
 
 // 3. Sửa hàm uploadImage để sử dụng coroutines tốt hơn
 suspend fun uploadImage(apiService: ApiServiceUNao, uri: Uri, context: Context): Pair<Uri?, String?> {
+    val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     return withContext(Dispatchers.IO) {
         try {
             Log.d("UPLOAD", "Bắt đầu tải ảnh lên: $uri")
@@ -105,7 +110,7 @@ suspend fun uploadImage(apiService: ApiServiceUNao, uri: Uri, context: Context):
             Log.d("UPLOAD", "Nhận dữ liệu thành công!")
 
             // Chuyển danh sách bbox thành chuỗi để hiển thị
-            val predictionsText = responseBody.predictions.joinToString("\n") {
+            /*val predictionsText = responseBody.predictions.joinToString("\n") {
                 if (responseBody.predictions.isEmpty()) {
                     "Không có kết quả"
                 } else {
@@ -115,10 +120,17 @@ suspend fun uploadImage(apiService: ApiServiceUNao, uri: Uri, context: Context):
                         "Không u não"
                     }
                 }
-//                "Class: ${it.`class`}, Confidence: ${(it.confidence * 100).toInt()}%, BBox: ${it.bbox}"
+                "Class: ${it.`class`}, Confidence: ${(it.confidence * 100).toInt()}%, BBox: ${it.bbox}"
+            }*/
+            val predictionsText = if (responseBody.predictions.isEmpty()) {
+                "Không có kết quả"
+            } else {
+                responseBody.predictions.joinToString("\n") {
+                    if (it.`class` == 1) "U não" else "Không u não"
+                }.ifBlank { "Không có kết quả" } // Kiểm tra chuỗi rỗng
             }
 
-            val texttxt = File(context.filesDir, "texttxt.txt")
+            val texttxt = File(context.filesDir, "${timestamp}.txt")
             texttxt.writeText(predictionsText)
 
             // Giải mã ảnh từ hex
@@ -127,7 +139,7 @@ suspend fun uploadImage(apiService: ApiServiceUNao, uri: Uri, context: Context):
                 .toByteArray()
 
             // Lưu ảnh vào cache
-            val file = File(context.filesDir, "processed_image.jpg")
+            val file = File(context.filesDir, "${timestamp}.jpg")
             file.writeBytes(decodedBytes)
 
             return@withContext Pair(Uri.fromFile(file), predictionsText)
@@ -292,7 +304,9 @@ fun UNaoScreen(navController: NavHostController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .padding(top = 10.dp)
+                    .padding(top = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 IconButton(
                     onClick = {
@@ -302,6 +316,18 @@ fun UNaoScreen(navController: NavHostController) {
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowBackIosNew,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        navController.navigate("unaohistory")
+                    },
+                    colors = IconButtonDefaults.iconButtonColors(Color(0xFF2196F3)),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.History,
                         contentDescription = null,
                         tint = Color.White
                     )

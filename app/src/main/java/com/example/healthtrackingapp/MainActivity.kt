@@ -1,6 +1,12 @@
 package com.example.healthtrackingapp
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,10 +20,12 @@ import com.example.healthtrackingapp.ui.screens.AddFoodScreen
 import com.example.healthtrackingapp.ui.screens.AddSleepScreen
 import com.example.healthtrackingapp.ui.screens.AddTemperatureScreen
 import com.example.healthtrackingapp.ui.screens.AddWaterScreen
+import com.example.healthtrackingapp.ui.screens.AlarmScreen
 import com.example.healthtrackingapp.ui.screens.BloodPressureScreen
 import com.example.healthtrackingapp.ui.screens.GetInformationScreen
 import com.example.healthtrackingapp.ui.screens.GoalScreen
 import com.example.healthtrackingapp.ui.screens.HealthBookScreen
+import com.example.healthtrackingapp.ui.screens.HistoryUNao
 import com.example.healthtrackingapp.ui.screens.LoginScreen
 import com.example.healthtrackingapp.ui.screens.MainScreen
 import com.example.healthtrackingapp.ui.screens.OverviewScreen
@@ -30,7 +38,7 @@ import com.google.firebase.FirebaseApp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        requestExactAlarmPermission(this)
         FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
         setContent {
@@ -252,8 +260,21 @@ class MainActivity : ComponentActivity() {
                         }
                     ) { OverviewScreen(navController) }
                     composable("unao") { UNaoScreen(navController) }
+                    composable("unaohistory") { HistoryUNao(navController) }
+                    composable("alarmscreen") { AlarmScreen(navController) }
                 }
             }
+        }
+    }
+}
+
+@SuppressLint("ServiceCast")
+fun requestExactAlarmPermission(context: Context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        if (!alarmManager.canScheduleExactAlarms()) {
+            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+            context.startActivity(intent)
         }
     }
 }

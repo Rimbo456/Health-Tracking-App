@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.EmojiEvents
@@ -74,9 +75,12 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import androidx.core.graphics.toColorInt
+import androidx.navigation.NavHostController
 
 @Composable
-fun NotificationScreen() {
+fun NotificationScreen(
+    navController: NavHostController
+) {
     var currentTime by remember { mutableStateOf(getTime()) }
     var showNotifications by remember { mutableStateOf(false) }
     var showWorkout by remember { mutableStateOf(false) }
@@ -137,16 +141,29 @@ fun NotificationScreen() {
                     color = Color.Black,
                     fontWeight = FontWeight.Bold
                 )
-                IconButton(onClick = { showNotifications = !showNotifications }) {
-                    Image(
-                        painter = if (showNotifications) {
-                            painterResource(id = R.drawable.ic_bell_touch_420)
-                        } else {
-                            painterResource(id = R.drawable.ic_bell_no_touch_420)
-                        },
-                        contentDescription = "Notifications",
-                        modifier = Modifier.size(30.dp)
-                    )
+                Row {
+                    IconButton(
+                        onClick = {
+                            navController.navigate("alarmscreen")
+                        }
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_remind_no_touch_96),
+                            contentDescription = "Alarm",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+                    IconButton(onClick = { showNotifications = !showNotifications }) {
+                        Image(
+                            painter = if (showNotifications) {
+                                painterResource(id = R.drawable.ic_bell_touch_420)
+                            } else {
+                                painterResource(id = R.drawable.ic_bell_no_touch_420)
+                            },
+                            contentDescription = "Notifications",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
                 }
             }
 
