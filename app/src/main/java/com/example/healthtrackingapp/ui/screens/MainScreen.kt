@@ -48,7 +48,7 @@ fun MainScreen(
         ) {
             composable("dashboard") { DashboardScreen(mainNavController) }
             composable("graph") { ModelScreen(mainNavController) }
-            composable("notification") { NotificationScreen() }
+            composable("notification") { NotificationScreen(mainNavController) }
             composable(
                 "user",
                 deepLinks = listOf(navDeepLink { uriPattern = "myapp://main/user" })
