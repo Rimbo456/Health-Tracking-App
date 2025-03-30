@@ -1,6 +1,5 @@
 package com.example.healthtrackingapp;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ public class XacNhanSDTActivity extends Activity {
     String userId = user.getUid(), name, phone;
     DocumentReference userInfo = db.collection("users").document(userId);
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +85,7 @@ public class XacNhanSDTActivity extends Activity {
             }
         });
     }
-    // Hàm chuyển sang ô tiếp theo sau khi nhập số
+
     private void setupOtpAutoMove(EditText current, EditText next) {
         current.addTextChangedListener(new TextWatcher() {
             @Override
@@ -96,7 +94,7 @@ public class XacNhanSDTActivity extends Activity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() >= 1) {
-                    next.requestFocus(); // Chuyển đến ô tiếp theo
+                    next.requestFocus();
                 }
             }
 
@@ -106,10 +104,9 @@ public class XacNhanSDTActivity extends Activity {
             }
         });
 
-        // Nếu người dùng nhấn "Backspace" trên bàn phím, quay lại ô trước
         current.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
-                current.setText(""); // Xóa số hiện tại
+                current.setText("");
                 current.clearFocus();
                 return true;
             }

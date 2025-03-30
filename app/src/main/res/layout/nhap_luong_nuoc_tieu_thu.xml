@@ -14,18 +14,20 @@
             android:id="@+id/imgDong"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:contentDescription="@string/thoat"
             android:src="@drawable/ic_close_90"/>
     </LinearLayout>
     
     <ImageView
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:background="@drawable/warter"/>
+        android:background="@drawable/warter"
+        android:contentDescription="@string/nuoc_uong" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nhập lượng nước tiêu thụ của bạn trong hôm nay"
+        android:text="@string/nhap_lung_nuoc_trong_ngay"
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
@@ -43,7 +45,7 @@
         android:layout_marginEnd="90dp"
         android:inputType="number"
         android:padding="10dp"
-        android:hint="ml"
+        android:hint="@string/ml"
         android:gravity="center"
         android:textSize="22sp"
         android:background="@drawable/cus_edittext"/>

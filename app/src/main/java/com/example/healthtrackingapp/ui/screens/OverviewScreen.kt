@@ -33,7 +33,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -635,13 +634,13 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Lượng nước đã uống",
                             value = waterInput,
-                            icon = Icons.Filled.Check
+                            icon = null
                         )
 
                         NutritionInfoItem(
                             label = "Thực phẩm đã tiêu thụ",
                             value = usedFood,
-                            icon = Icons.Filled.Check
+                            icon = null
                         )
 
                         NutritionInfoItem(
@@ -680,13 +679,13 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Loại hình tập luyện",
                             value = workoutType,
-                            icon = Icons.Filled.Check
+                            icon = null
                         )
 
                         NutritionInfoItem(
                             label = "Thời gian tập luyện",
                             value = durationWorkout,
-                            icon = Icons.Filled.Check
+                            icon = null
                         )
 
                         NutritionInfoItem(
@@ -725,13 +724,13 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Cảm xúc trong ngày",
                             value = mood,
-                            icon = Icons.Filled.Check
+                            icon = null
                         )
 
                         /*NutritionInfoItem(
                             label = "Nguyên nhân ảnh hưởng",
                             value = "Chuỗi thua 5",
-                            icon = Icons.Filled.Check
+                            icon = null
                         )*/
 
                         NutritionInfoItem(
@@ -772,13 +771,13 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Tổng thời gian ngủ",
                             value = sleep,
-                            icon = Icons.Filled.Check
+                            icon = null
                         )
 
                         NutritionInfoItem(
                             label = "Hiệu suất giấc ngủ",
                             value = sleepEfficiency,
-                            icon = Icons.Filled.Check
+                            icon = null
                         )
 
                         NutritionInfoItem(

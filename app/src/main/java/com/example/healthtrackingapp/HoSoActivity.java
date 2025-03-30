@@ -230,16 +230,16 @@ public class HoSoActivity extends Activity {
                         setUserInfo();
                         dialog.dismiss();
                     } else {
-                        txtKtra.setText("Chiều cao không hợp lệ!");
-                        Toast.makeText(HoSoActivity.this, "Chiều cao không hợp lệ!", Toast.LENGTH_SHORT).show();
+                        txtKtra.setText(R.string.chieu_cao_khong_hop_le);
+                        Toast.makeText(HoSoActivity.this, R.string.chieu_cao_khong_hop_le, Toast.LENGTH_SHORT).show();
                     }
                 } catch (NumberFormatException e) {
-                    txtKtra.setText("Vui lòng nhập chiều cao hợp lệ!");
-                    Toast.makeText(HoSoActivity.this, "Vui lòng nhập chiều cao hợp lệ!", Toast.LENGTH_SHORT).show();
+                    txtKtra.setText(R.string.vui_long_nhap_chieu_cao_hop_le);
+                    Toast.makeText(HoSoActivity.this, R.string.vui_long_nhap_chieu_cao_hop_le, Toast.LENGTH_SHORT).show();
                 }
             } else {
-                txtKtra.setText("Vui lòng nhập chiều cao!");
-                Toast.makeText(HoSoActivity.this, "Vui lòng nhập chiều cao!", Toast.LENGTH_SHORT).show();
+                txtKtra.setText(R.string.vui_long_nhap_chieu_cao);
+                Toast.makeText(HoSoActivity.this, R.string.vui_long_nhap_chieu_cao, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -270,16 +270,16 @@ public class HoSoActivity extends Activity {
                         setUserInfo();
                         dialog.dismiss();
                     } else {
-                        txtKtr.setText("Cân nặng không hợp lệ!");
-                        Toast.makeText(HoSoActivity.this, "Cân nặng không hợp lệ!", Toast.LENGTH_SHORT).show();
+                        txtKtr.setText(R.string.can_nang_khong_hop_le);
+                        Toast.makeText(HoSoActivity.this, R.string.can_nang_khong_hop_le, Toast.LENGTH_SHORT).show();
                     }
                 } catch (NumberFormatException e) {
-                    txtKtr.setText("Vui lòng nhập cân nặng hợp lệ!");
-                    Toast.makeText(HoSoActivity.this, "Vui lòng nhập cân nặng hợp lệ!", Toast.LENGTH_SHORT).show();
+                    txtKtr.setText(R.string.vui_long_nhap_can_nang_hop_le);
+                    Toast.makeText(HoSoActivity.this, R.string.vui_long_nhap_can_nang_hop_le, Toast.LENGTH_SHORT).show();
                 }
             } else {
-                txtKtr.setText("Vui lòng nhập cân nặng!");
-                Toast.makeText(HoSoActivity.this, "Vui lòng nhập cân nặng!", Toast.LENGTH_SHORT).show();
+                txtKtr.setText(R.string.vui_long_nhap_can_nang);
+                Toast.makeText(HoSoActivity.this, R.string.vui_long_nhap_can_nang, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -314,16 +314,16 @@ public class HoSoActivity extends Activity {
                         setUserInfo();
                         dialog.dismiss();
                     } else {
-                        txtKtra.setText("Năm sinh không hợp lệ!");
-                        Toast.makeText(HoSoActivity.this, "Năm sinh không hợp lệ!", Toast.LENGTH_SHORT).show();
+                        txtKtra.setText(R.string.nam_sinh_khong_hop_le);
+                        Toast.makeText(HoSoActivity.this, R.string.nam_sinh_khong_hop_le, Toast.LENGTH_SHORT).show();
                     }
                 } catch (NumberFormatException e) {
-                    txtKtra.setText("Vui lòng nhập năm sinh hợp lệ!");
-                    Toast.makeText(HoSoActivity.this, "Vui lòng nhập năm sinh hợp lệ!", Toast.LENGTH_SHORT).show();
+                    txtKtra.setText(R.string.vui_long_nhap_nam_sinh_hop_le);
+                    Toast.makeText(HoSoActivity.this, R.string.vui_long_nhap_nam_sinh_hop_le, Toast.LENGTH_SHORT).show();
                 }
             } else {
-                txtKtra.setText("Vui lòng nhập năm sinh!");
-                Toast.makeText(HoSoActivity.this, "Vui lòng nhập năm sinh!", Toast.LENGTH_SHORT).show();
+                txtKtra.setText(R.string.vui_long_nhap_nam_sinh);
+                Toast.makeText(HoSoActivity.this, R.string.vui_long_nhap_nam_sinh, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -334,36 +334,36 @@ public class HoSoActivity extends Activity {
         if (name != null && !name.isEmpty())
             txtTen.setText(name);
         else
-            txtTen.setText("Chưa nhập");
+            txtTen.setText(R.string.chua_nhap);
 
         if (email != null && !name.isEmpty())
             txtEmail.setText(email);
         else
-            txtEmail.setText("Chưa nhập");
+            txtEmail.setText(R.string.chua_nhap);
 
         if (phone != null && !phone.isEmpty())
             txtSDT.setText(phone);
         else
-            txtSDT.setText("Chưa nhập");
+            txtSDT.setText(R.string.chua_nhap);
 
         if (gender != null)
             txtGioiTinh.setText(gender ? "Nam" : "Nữ");
         else
-            txtGioiTinh.setText("Chưa chọn");
+            txtGioiTinh.setText(R.string.chua_nhap);
 
         if (height > 0)
             txtChieuCao.setText(String.format("%.1f cm", height));
         else
-            txtChieuCao.setText("Chưa nhập");
+            txtChieuCao.setText(R.string.chua_nhap);
 
         if (weight > 0)
             txtCanNang.setText(String.format("%.1f kg", weight));
         else
-            txtCanNang.setText("Chưa nhập");
+            txtCanNang.setText(R.string.chua_nhap);
 
         if (birthYear > 0)
             txtNamSinh.setText(String.valueOf(birthYear));
         else
-            txtNamSinh.setText("Chưa nhập");
+            txtNamSinh.setText(R.string.chua_nhap);
     }
 }

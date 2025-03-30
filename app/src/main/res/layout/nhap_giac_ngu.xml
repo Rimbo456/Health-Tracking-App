@@ -31,7 +31,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:gravity="center"
-        android:text="Hôm qua bạn ngủ được bao nhiêu giờ ?"
+        android:text="@string/toi_qua_ngu_bao_nhieu_gio"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold" />
@@ -65,8 +65,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="4dp"
-                android:text="Chất lượng giấc ngủ của bạn như thế nào?"
+                android:text="@string/chat_lung_giac_ngu"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <RadioGroup
@@ -78,25 +79,29 @@
                     android:id="@+id/radio_good"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ngủ sâu, ít bị thức giấc giữa đêm" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/chat_lung_giac_ngu_mot" />
 
                 <RadioButton
                     android:id="@+id/radio_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Có thể thức giấc 1-2 lần nhưng không kéo dài" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/chat_lung_giac_ngu_hai" />
 
                 <RadioButton
                     android:id="@+id/radio_poor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thức giấc nhiều lần trong đêm, khó quay lại giấc ngủ" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/chat_lung_giac_ngu_ba" />
 
                 <RadioButton
                     android:id="@+id/radioor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Có thể kèm theo hiện tượng ngủ không sâu, ác mộng" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/chat_lung_giac_ngu_bon" />
             </RadioGroup>
 
             <TextView
@@ -104,8 +109,9 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="4dp"
-                android:text="Bạn cảm thấy như thế nào vào mỗi sáng thức dậy?"
+                android:text="@string/ban_cam_thay_ntn_moi_sang"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <RadioGroup
@@ -117,25 +123,29 @@
                     android:id="@+id/radio_awake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thức dậy cảm thấy sảng khoái, tỉnh táo" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/ban_cam_thay_ntn_moi_sang_mot" />
 
                 <RadioButton
                     android:id="@+id/radio_tired"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thức dậy cảm thấy tương đối thoải mái, không mệt mỏi nhiều" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/ban_cam_thay_ntn_moi_sang_hai" />
 
                 <RadioButton
                     android:id="@+id/radio_fine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thức dậy hơi mệt mỏi, cần thời gian để tỉnh táo" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/ban_cam_thay_ntn_moi_sang_ba" />
 
                 <RadioButton
                     android:id="@+id/radio_t"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thức dậy cảm thấy uể oải, mệt mỏi, buồn ngủ cả ngày" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/ban_cam_thay_ntn_moi_sang_bon" />
             </RadioGroup>
 
             <TextView
@@ -143,8 +153,9 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="4dp"
-                android:text="Bạn có dễ dàng đi vào giấc ngủ không?"
+                android:text="@string/bon_co_de_ngu_khong"
                 android:textSize="18sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <RadioGroup
@@ -156,25 +167,29 @@
                     android:id="@+id/radio_easy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dễ dàng đi vào giấc ngủ trong vòng 10-20 phút" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/bon_co_de_ngu_khong_mot" />
 
                 <RadioButton
                     android:id="@+id/radio_ium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Bình thường" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/bon_co_de_ngu_khong_hai" />
 
                 <RadioButton
                     android:id="@+id/radio_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Khó đi vào giấc ngủ" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/bon_co_de_ngu_khong_ba" />
 
                 <RadioButton
                     android:id="@+id/radio_hard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rất khó ngủ, trằn trọc" />
+                    android:textColor="@color/Gray"
+                    android:text="@string/bon_co_de_ngu_khong_bon" />
             </RadioGroup>
 
             <Button
@@ -187,9 +202,8 @@
                 android:background="@drawable/cus_button_indigo"
                 android:text="@string/save"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

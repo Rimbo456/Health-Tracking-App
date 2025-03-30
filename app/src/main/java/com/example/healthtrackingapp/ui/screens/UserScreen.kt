@@ -18,6 +18,7 @@ import com.example.healthtrackingapp.GioiThieuActivity
 import com.example.healthtrackingapp.HoSoActivity
 import com.example.healthtrackingapp.HoTroVaThongTinActivity
 import com.example.healthtrackingapp.R
+import com.example.healthtrackingapp.TinhTrangSucKhoeActivity
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -57,16 +58,24 @@ fun UserScreen() {
             val avt = view.findViewById<ShapeableImageView>(R.id.imgAvatar)
 
             val tbrHoSo = view.findViewById<TableRow>(R.id.tbrHoSo)
+            val tbrTinhTrangSK = view.findViewById<TableRow>(R.id.tbrTinhTrangSK)
             val tbrHoTro = view.findViewById<TableRow>(R.id.tbrHoTro)
             val tbrVeChungToi = view.findViewById<TableRow>(R.id.tbrVeChungToi)
             tbrHoSo.setOnClickListener {
                 val intent = Intent(context, HoSoActivity::class.java)
                 context.startActivity(intent)
             }
+
+            tbrTinhTrangSK.setOnClickListener {
+                val intent = Intent(context, TinhTrangSucKhoeActivity::class.java)
+                context.startActivity(intent)
+            }
+
             tbrHoTro.setOnClickListener {
                 val intent = Intent(context, HoTroVaThongTinActivity::class.java)
                 context.startActivity(intent)
             }
+
             tbrVeChungToi.setOnClickListener {
                 val intent = Intent(context, GioiThieuActivity::class.java)
                 context.startActivity(intent)

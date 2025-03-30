@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="20dp"
+    android:padding="20dp"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@drawable/nen_app">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_margin="20dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -17,6 +18,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/todo"
             android:src="@drawable/ic_arrow_left_96"/>
 
         <View
@@ -35,7 +37,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_margin="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,8 +48,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Về Chúng Tôi – Health Tracking"
-                android:layout_marginTop="30dp"
+                android:text="@string/ve_chung_toi_health_tracking"
+                android:layout_marginTop="10dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -57,7 +60,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sứ mệnh của chúng tôi"
+                android:text="@string/su_menh"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -68,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Health Tracking được phát triển với mục tiêu giúp mọi người, đặc biệt là người lớn tuổi, theo dõi sức khỏe một cách dễ dàng và chính xác. Chúng tôi tin rằng việc quản lý sức khỏe không chỉ dành cho những lúc ốm đau mà còn là một phần quan trọng để duy trì cuộc sống khỏe mạnh và hạnh phúc."
+                android:text="@string/mo_ta_su_menh"
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:paddingBottom="10dp"/>
@@ -76,7 +79,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Chúng tôi làm gì?"
+                android:text="@string/chung_toi_lam_gi"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -87,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="🔹 Ghi lại và theo dõi các chỉ số sức khỏe quan trọng như huyết áp, nhịp tim, cân nặng,..."
+                android:text="@string/chung_toi_lam_gi_mot"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
 
@@ -95,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="🔹 Nhận phân tích và dự đoán nguy cơ bệnh lý thông qua công nghệ AI tiên tiến."
+                android:text="@string/chung_toi_lam_gi_hai"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
 
@@ -103,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="🔹 Xây dựng và duy trì thói quen lành mạnh với hệ thống nhắc nhở thông minh."
+                android:text="@string/chung_toi_lam_gi_ba"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
 
@@ -111,14 +114,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="🔹 Dễ dàng xem lại lịch sử sức khỏe để hỗ trợ chẩn đoán và điều trị kịp thời."
+                android:text="@string/chung_toi_lam_gi_bon"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tại sao chọn Health Tracking?"
+                android:text="@string/tai_sao_chon_health_tracking"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -129,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="✅ Dễ sử dụng – Giao diện trực quan, phù hợp với mọi đối tượng, đặc biệt là người lớn tuổi."
+                android:text="@string/tai_sao_chon_health_tracking_mot"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
 
@@ -137,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="✅ Công nghệ tiên tiến – AI phân tích dữ liệu sức khỏe và đưa ra gợi ý hữu ích."
+                android:text="@string/tai_sao_chon_health_tracking_hai"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
 
@@ -145,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="✅ Bảo mật cao – Thông tin cá nhân của bạn luôn được bảo vệ an toàn."
+                android:text="@string/tai_sao_chon_health_tracking_ba"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
         </LinearLayout>

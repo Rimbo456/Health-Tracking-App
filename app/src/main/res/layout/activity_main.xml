@@ -16,7 +16,8 @@
             android:id="@+id/imgBanner"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@drawable/banner_app"/>
+            android:background="@drawable/banner_app"
+            android:contentDescription="@string/todo" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgAvatar"
@@ -71,14 +72,12 @@
             android:padding="5dp"
             android:stretchColumns="1">
 
-            <TableRow
-                android:id="@+id/tbrHoSo"
-                android:clickable="true"
-                android:focusable="true">
+            <TableRow android:id="@+id/tbrHoSo">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/profile"
                     android:padding="5dp"
                     android:src="@drawable/ic_user_blu_100" />
 
@@ -97,13 +96,15 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="6dp"
                 android:layout_marginVertical="3dp"
-                android:background="@color/light_blu" />
+                android:background="@color/light_blu"
+                android:importantForAccessibility="no" />
 
-            <TableRow>
+            <TableRow android:id="@+id/tbrTinhTrangSK">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/health_condition"
                     android:padding="5dp"
                     android:src="@drawable/ic_star_of_life_512" />
 
@@ -122,13 +123,15 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="6dp"
                 android:layout_marginVertical="3dp"
-                android:background="@color/light_blu" />
+                android:background="@color/light_blu"
+                android:importantForAccessibility="no" />
 
             <TableRow android:id="@+id/tbrThongBao">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/notification_settings"
                     android:padding="5dp"
                     android:src="@drawable/ic_bell_ringg_100" />
 
@@ -147,13 +150,15 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="6dp"
                 android:layout_marginVertical="3dp"
-                android:background="@color/light_blu" />
+                android:background="@color/light_blu"
+                android:importantForAccessibility="no" />
 
             <TableRow android:id="@+id/tbrBaoMat">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/data_security"
                     android:padding="5dp"
                     android:src="@drawable/ic_data_security_100" />
 
@@ -172,13 +177,15 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="6dp"
                 android:layout_marginVertical="3dp"
-                android:background="@color/light_blu" />
+                android:background="@color/light_blu"
+                android:importantForAccessibility="no" />
 
             <TableRow android:id="@+id/tbrHoTro">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/support_info"
                     android:padding="5dp"
                     android:src="@drawable/ic_feedback_240" />
 
@@ -197,13 +204,15 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="6dp"
                 android:layout_marginVertical="3dp"
-                android:background="@color/light_blu" />
+                android:background="@color/light_blu"
+                android:importantForAccessibility="no" />
 
             <TableRow android:id="@+id/tbrChuDe">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/theme_appearance"
                     android:padding="5dp"
                     android:src="@drawable/ic_theme_100" />
 
@@ -222,13 +231,15 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="6dp"
                 android:layout_marginVertical="3dp"
-                android:background="@color/light_blu" />
+                android:background="@color/light_blu"
+                android:importantForAccessibility="no" />
 
             <TableRow android:id="@+id/tbrNgonNgu">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/language"
                     android:padding="5dp"
                     android:src="@drawable/ic_language_480" />
 
@@ -247,13 +258,15 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="6dp"
                 android:layout_marginVertical="3dp"
-                android:background="@color/light_blu" />
+                android:background="@color/light_blu"
+                android:importantForAccessibility="no" />
 
             <TableRow android:id="@+id/tbrLuuTru">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:contentDescription="@string/cloud"
                     android:padding="5dp"
                     android:src="@drawable/ic_cloud_100" />
 
@@ -272,7 +285,8 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="6dp"
                 android:layout_marginVertical="3dp"
-                android:background="@color/light_blu" />
+                android:background="@color/light_blu"
+                android:importantForAccessibility="no" />
 
             <TableRow android:id="@+id/tbrVeChungToi">
 

@@ -41,6 +41,7 @@ firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "fireb
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.3.2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

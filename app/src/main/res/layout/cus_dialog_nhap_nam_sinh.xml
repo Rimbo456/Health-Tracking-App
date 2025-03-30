@@ -18,17 +18,17 @@
             android:layout_weight="1"
             android:gravity="center"
             android:layout_marginStart="35dp"
-            android:text="Năm sinh của tôi"
+            android:text="@string/nam_sinh_cua_toi"
             android:textColor="@color/black"
             android:textSize="22sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText"/>
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/imgDong"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:background="@drawable/ic_close_90"/>
+            android:background="@drawable/ic_close_90"
+            android:contentDescription="@string/thoat" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,25 +38,25 @@
         android:gravity="center">
         <EditText
             android:id="@+id/edtNhapNam"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="number"
             android:gravity="center"
             android:layout_marginStart="50dp"
-            android:text="Nhập năm"
+            android:text="@string/nhap_nam"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@color/Gray"
-            android:background="@null"
-            tools:ignore="HardcodedText"/>
+            android:background="@null"/>
 
         <ImageView
             android:id="@+id/imgXoaChu"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/ic_close_90"/>
+            android:background="@drawable/ic_close_90"
+            android:contentDescription="@string/xoa" />
     </LinearLayout>
 
     <ImageView
@@ -64,7 +64,8 @@
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/black"/>
+        android:background="@color/black"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/txtKtr"
@@ -82,7 +83,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:text="Lưu"
+        android:text="@string/save"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="18sp"

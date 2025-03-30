@@ -18,6 +18,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/todo"
             android:src="@drawable/ic_arrow_left_96"/>
 
         <View
@@ -38,11 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Thông tin cơ bản"
+        android:text="@string/thong_tin_co_ban"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="22sp"
-        tools:ignore="HardcodedText" />
+        android:textSize="22sp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,10 +67,9 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Tên"
+                    android:text="@string/ten"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="18sp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -82,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center|end"
-                    android:text="Tên"
+                    android:text="@string/ten"
                     android:textSize="18sp" />
 
                 <ImageView
@@ -106,9 +105,8 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Địa chỉ email"
-                    android:textSize="18sp"
-                    tools:ignore="HardcodedText" />
+                    android:text="@string/dia_chi_email"
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/txtEmail"
@@ -119,9 +117,8 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textSize="18sp"
-                    android:text="email"
-                    android:layout_gravity="center|start"
-                    tools:ignore="HardcodedText" />
+                    android:text="@string/email"
+                    android:layout_gravity="center|start"/>
             </TableRow>
 
             <ImageView
@@ -137,10 +134,9 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Số di động"
+                    android:text="@string/so_di_dong"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="18sp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -152,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Chưa nhập"
+                    android:text="@string/chua_nhap"
                     android:layout_gravity="center|end"/>
 
                 <ImageView
@@ -175,10 +171,9 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Gới tính"
+                    android:text="@string/goi_tinh"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="18sp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -190,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Chưa nhập"
+                    android:text="@string/chua_nhap"
                     android:layout_gravity="center|end"/>
 
                 <ImageView
@@ -213,10 +208,9 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Chiều cao"
+                    android:text="@string/chi_u_cao"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="18sp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -228,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Chưa nhập"
+                    android:text="@string/chua_nhap"
                     android:layout_gravity="center|end"/>
 
                 <ImageView
@@ -251,10 +245,9 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Cân nặng"
+                    android:text="@string/c_n_nang"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="18sp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -266,7 +259,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Chưa Nhập"
+                    android:text="@string/chua_nhap"
                     android:layout_gravity="center|end"/>
 
                 <ImageView
@@ -289,10 +282,9 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:text="Năm sinh"
+                    android:text="@string/n_m_sinh"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    tools:ignore="HardcodedText" />
+                    android:textSize="18sp"/>
 
                 <View
                     android:layout_width="0dp"
@@ -304,7 +296,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Chưa Nhập"
+                    android:text="@string/chua_nhap"
                     android:layout_gravity="center|end"/>
 
                 <ImageView

@@ -14,18 +14,20 @@
             android:id="@+id/imgDong"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:contentDescription="@string/thoat"
             android:src="@drawable/ic_close_90"/>
     </LinearLayout>
 
     <ImageView
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:background="@drawable/temperature"/>
+        android:background="@drawable/temperature"
+        android:contentDescription="@string/nhiet_do" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nhập nhiệt độ cơ thể hiện tại"
+        android:text="@string/nhap_nhiet_do_co_the_hien_tai"
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
@@ -43,7 +45,7 @@
         android:layout_marginEnd="90dp"
         android:inputType="number"
         android:padding="10dp"
-        android:hint="°C"
+        android:hint="@string/do_c"
         android:gravity="center"
         android:textSize="22sp"
         android:background="@drawable/cus_edittext"/>

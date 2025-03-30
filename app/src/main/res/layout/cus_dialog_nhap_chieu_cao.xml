@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
     android:layout_height="330dp"
-    android:layout_margin="20dp"
     android:layout_gravity="center"
-    android:padding="6dp"
-    android:orientation="vertical">
+    android:layout_margin="20dp"
+    android:orientation="vertical"
+    android:padding="6dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginStart="35dp"
-            android:text="Chiều cao của tôi"
+            android:text="@string/chieu_cao_cua_toi"
             android:textColor="@color/black"
             android:textSize="22sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imgDong"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/ic_close_90"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_close_90"
+            android:contentDescription="@string/thoat" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,36 +37,37 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="90dp"
         android:gravity="center">
+
         <EditText
             android:id="@+id/edtNhapChieuCao"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="number"
-            android:gravity="center"
             android:layout_marginStart="90dp"
-            android:text="Nhập chiều cao"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/Gray"
+            android:layout_weight="1"
             android:background="@null"
-            tools:ignore="HardcodedText"/>
+            android:gravity="center"
+            android:inputType="number"
+            android:text="@string/nhap_chieu_cao"
+            android:textColor="@color/Gray"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:text="Cm"
+            android:text="@string/cm"
+            android:textColor="@color/Gray"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/Gray"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imgXoaChu"
-            android:layout_width="20dp"
+            android:layout_width="15dp"
             android:layout_height="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/ic_close_90"/>
+            android:background="@drawable/ic_close_90"
+            android:contentDescription="@string/xoa" />
     </LinearLayout>
 
     <ImageView
@@ -73,27 +75,28 @@
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/black"/>
+        android:background="@color/black"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/txtKtr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:textColor="@color/red"/>
+        android:textColor="@color/red"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/btnLuuChieuCao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
-        android:text="Lưu"
-        android:textStyle="bold"
+        android:background="@drawable/cus_button_indigo"
+        android:text="@string/save"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:background="@drawable/cus_button_indigo"/>
+        android:textStyle="bold" />
 </LinearLayout>
