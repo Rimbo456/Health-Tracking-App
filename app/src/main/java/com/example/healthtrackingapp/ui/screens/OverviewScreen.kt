@@ -130,6 +130,7 @@ fun OverviewScreen(
 ) {
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
+    var showEditSymptom by remember { mutableStateOf(false) }
     var lastSymptomData by remember { mutableStateOf<SymptomData?>(null) }
     var symptomDatas by remember { mutableStateOf(listOf<SymptomData>()) }
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
@@ -152,12 +153,17 @@ fun OverviewScreen(
     var heartRate by remember { mutableStateOf("") }
     var tamthu by remember { mutableStateOf("") }
     var tamtruong by remember { mutableStateOf("") }
+    var refreshSymptom by remember { mutableStateOf(0) }
 
 
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
 
     LaunchedEffect(selectedDate) {
+        workoutSessions = mutableListOf()
+        symptomDatas = mutableListOf()
+        lastSymptomData = null
+        refreshSymptom++
         // Xác định timestamp đầu và cuối ngày
         val calendar = Calendar.getInstance()
         calendar.set(
@@ -369,6 +375,30 @@ fun OverviewScreen(
                 // Xử lý lỗi ở đây
             }*/
 
+    }
+
+    LaunchedEffect(refreshSymptom) {
+        // Xác định timestamp đầu và cuối ngày
+        val calendar = Calendar.getInstance()
+        calendar.set(
+            selectedDate.year,
+            selectedDate.monthValue - 1,
+            selectedDate.dayOfMonth,
+            0,
+            0,
+            0
+        )
+        val startOfDay = calendar.timeInMillis
+
+        calendar.set(
+            selectedDate.year,
+            selectedDate.monthValue - 1,
+            selectedDate.dayOfMonth,
+            23,
+            59,
+            59
+        )
+        val endOfDay = calendar.timeInMillis
 
         val symptomList = mutableListOf<SymptomData>()
 
@@ -383,8 +413,10 @@ fun OverviewScreen(
                     symptomList.clear()
                 } else {
                     for (document in documents) {
-                        val symptomData = document.toObject(SymptomData::class.java)
-                        symptomList.add(symptomData)
+                        val symptomData = document.toObject(SymptomData::class.java)?.copy(id = document.id)
+                        if (symptomData != null) {
+                            symptomList.add(symptomData)
+                        }
                     }
                 }
                 symptomDatas = symptomList
@@ -432,7 +464,10 @@ fun OverviewScreen(
                 SymptomsSection(
                     lastSymptomData = lastSymptomData,
                     onAddSymptom = { showDialog = true },
-                    symptomDatas = symptomDatas
+                    symptomDatas = symptomDatas,
+                    onRefresh = {
+                        refreshSymptom++
+                    }
                 )
 
                 ExpandableContainer(
@@ -860,6 +895,15 @@ fun OverviewScreen(
                 }
             )
         }
+        if (showEditSymptom) {
+            SymptomEntryDialog(
+                onDismiss = { showDialog = false },
+                onSubmit = { symptomData ->
+                    lastSymptomData = symptomData
+                    showDialog = false
+                }
+            )
+        }
     }
 }
 
@@ -896,8 +940,12 @@ fun HeaderSection() {
 fun SymptomsSection(
     lastSymptomData: SymptomData?,
     onAddSymptom: () -> Unit,
-    symptomDatas: List<SymptomData>
+    symptomDatas: List<SymptomData>,
+    onRefresh: () -> Unit
 ) {
+    val db = FirebaseFirestore.getInstance()
+    var user by remember { mutableStateOf(Firebase.auth.currentUser) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -961,7 +1009,19 @@ fun SymptomsSection(
             )
 
             symptomDatas?.forEach { i ->
-                SymptomCard(i)
+                SymptomCard(
+                    i,
+                    onDeleted = {
+                        db.collection("users")
+                            .document(user!!.uid)
+                            .collection("symptom")
+                            .document(i.id)
+                            .delete()
+                            .addOnSuccessListener {
+                                onRefresh()
+                            }
+                    }
+                )
             } ?: run {
                 // Empty state
                 Box(
@@ -981,7 +1041,22 @@ fun SymptomsSection(
 
             // Symptoms display
             lastSymptomData?.let { data ->
-                SymptomCard(data)
+                SymptomCard(
+                    data,
+                    onDeleted = {
+                        db.collection("users")
+                            .document(user!!.uid)
+                            .collection("symptom")
+                            .document(data.id)
+                            .delete()
+                            .addOnSuccessListener {
+                                onRefresh()
+                            }
+                    },
+                    onEdit = {
+
+                    }
+                )
             } ?: run {
                 // Empty state
                 Box(
@@ -1003,7 +1078,11 @@ fun SymptomsSection(
 }
 
 @Composable
-fun SymptomCard(data: SymptomData) {
+fun SymptomCard(
+    data: SymptomData,
+    onDeleted: () -> Unit = {},
+    onEdit: () -> Unit = {}
+) {
     var expanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
@@ -1122,7 +1201,7 @@ fun SymptomCard(data: SymptomData) {
                         horizontalArrangement = Arrangement.End
                     ) {
                         Button(
-                            onClick = { /* Edit action */ },
+                            onClick = { onEdit() },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = primaryColor
                             ),
@@ -1130,6 +1209,16 @@ fun SymptomCard(data: SymptomData) {
                             modifier = Modifier.padding(end = 8.dp)
                         ) {
                             Text("Chỉnh sửa")
+                        }
+                        Button(
+                            onClick = { onDeleted() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFF03E3E)
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.padding(end = 8.dp)
+                        ) {
+                            Text("Xóa")
                         }
                     }
                 }
