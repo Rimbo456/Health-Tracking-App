@@ -33,9 +33,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Fastfood
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.LocalDining
+import androidx.compose.material.icons.filled.Mood
+import androidx.compose.material.icons.filled.Restaurant
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.SportsMartialArts
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -66,6 +76,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -132,6 +143,7 @@ fun OverviewScreen(
     var workoutType by remember { mutableStateOf("") }
     var durationWorkout by remember { mutableStateOf("") }
     var intensityValue by remember { mutableStateOf("") }
+    var workoutSessions by remember { mutableStateOf(listOf<WorkoutSession>()) }
     var mood by remember { mutableStateOf("") }
     var sleep by remember { mutableStateOf("") }
     var sleepEfficiency by remember { mutableStateOf("") }
@@ -276,6 +288,13 @@ fun OverviewScreen(
 
                 // Nếu có dữ liệu tập luyện, sử dụng mục đầu tiên (hoặc xử lý nhiều mục nếu cần)
                 if (workoutList.isNotEmpty()) {
+                    workoutSessions = workoutList.map {
+                        WorkoutSession(
+                            workoutType = it["type"] ?: "",
+                            duration = it["duration"] ?: "",
+                            intensity = it["intensity"] ?: ""
+                        )
+                    }
                     workoutType = workoutList[0]["type"] ?: ""
                     durationWorkout = workoutList[0]["duration"] ?: ""
                     intensityValue = workoutList[0]["intensity"] ?: ""
@@ -568,6 +587,7 @@ fun OverviewScreen(
                     }
                 }
 
+                //Card bữa ăn
                 Card(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -581,15 +601,28 @@ fun OverviewScreen(
                             .padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        // Tiêu đề
-                        Text(
-                            text = "Bữa ăn trong ngày",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        // Tiêu đề với biểu tượng
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Restaurant,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Bữa ăn trong ngày",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
 
-                        Divider(thickness = 1.dp, color = Color.Black)
+                        Divider(thickness = 1.dp, color = Color.LightGray)
 
                         // Khu vực bữa ăn
                         Row(
@@ -634,13 +667,13 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Lượng nước đã uống",
                             value = waterInput,
-                            icon = null
+                            icon = Icons.Filled.WaterDrop
                         )
 
                         NutritionInfoItem(
                             label = "Thực phẩm đã tiêu thụ",
                             value = usedFood,
-                            icon = null
+                            icon = Icons.Filled.LocalDining
                         )
 
                         NutritionInfoItem(
@@ -651,50 +684,7 @@ fun OverviewScreen(
                     }
                 }
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(Color.White),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        // Tiêu đề
-                        Text(
-                            text = "Vận động và tập luyện",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-
-                        Divider(thickness = 1.dp, color = Color.Black)
-
-
-                        // Thông tin dinh dưỡng
-                        NutritionInfoItem(
-                            label = "Loại hình tập luyện",
-                            value = workoutType,
-                            icon = null
-                        )
-
-                        NutritionInfoItem(
-                            label = "Thời gian tập luyện",
-                            value = durationWorkout,
-                            icon = null
-                        )
-
-                        NutritionInfoItem(
-                            label = "Cường độ tập luyện",
-                            value = intensityValue,
-                            icon = null
-                        )
-                    }
-                }
+                WorkoutSessionsCard(workoutSessions)
 
                 Card(
                     modifier = Modifier
@@ -709,18 +699,29 @@ fun OverviewScreen(
                             .padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        // Tiêu đề
-                        Text(
-                            text = "Tâm trạng và cảm xúc",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        // Tiêu đề với biểu tượng
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Mood,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Tâm trạng và cảm xúc",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
 
-                        Divider(thickness = 1.dp, color = Color.Black)
+                        Divider(thickness = 1.dp, color = Color.LightGray)
 
-
-                        // Thông tin dinh dưỡng
                         NutritionInfoItem(
                             label = "Cảm xúc trong ngày",
                             value = mood,
@@ -741,8 +742,6 @@ fun OverviewScreen(
                     }
                 }
 
-
-                // Chat luong giac ngu
                 Card(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -756,18 +755,29 @@ fun OverviewScreen(
                             .padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        // Tiêu đề
-                        Text(
-                            text = "Chất lượng giấc ngủ",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        // Tiêu đề với biểu tượng
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Bedtime,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Chất lượng giấc ngủ",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
 
-                        Divider(thickness = 1.dp, color = Color.Black)
+                        Divider(thickness = 1.dp, color = Color.LightGray)
 
-
-                        // Thông tin dinh dưỡng
                         NutritionInfoItem(
                             label = "Tổng thời gian ngủ",
                             value = sleep,
@@ -1528,7 +1538,7 @@ fun VerticalDivider(
     )
 }
 
-@Composable
+/*@Composable
 fun NutritionInfoItem(
     label: String,
     value: String,
@@ -1557,4 +1567,180 @@ fun NutritionInfoItem(
             )
         }
     }
+}*/
+
+@Composable
+fun WorkoutSessionsCard(
+    workoutSessions: List<WorkoutSession>
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Tiêu đề với biểu tượng
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.FitnessCenter,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Vận động và tập luyện",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "${workoutSessions.size} buổi tập",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Divider(thickness = 1.dp, color = Color.LightGray)
+
+            // Danh sách các buổi tập
+            workoutSessions.forEachIndexed { index, session ->
+                WorkoutSessionItem(session = session)
+
+                // Thêm đường phân cách giữa các buổi tập, không thêm ở cuối
+                if (index < workoutSessions.size - 1) {
+                    Divider(
+                        thickness = 1.dp,
+                        color = Color.LightGray.copy(alpha = 0.5f),
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+            }
+        }
+    }
 }
+
+@Composable
+fun WorkoutSessionItem(session: WorkoutSession) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = Color(0xFFF5F9FF),
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(12.dp)
+    ) {
+        // Tiêu đề buổi tập với ngày
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = session.workoutType,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        NutritionInfoItem(
+            label = "Thời gian tập luyện",
+            value = session.duration,
+            icon = Icons.Filled.Timer
+        )
+
+        NutritionInfoItem(
+            label = "Cường độ tập luyện",
+            value = session.intensity,
+            icon = Icons.Filled.Speed
+        )
+
+        /*// Hiển thị thông tin bổ sung nếu có
+        if (session.additionalInfo.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(4.dp))
+            session.additionalInfo.forEach { (key, value) ->
+                NutritionInfoItem(
+                    label = key,
+                    value = value,
+                    icon = null
+                )
+            }
+        }*/
+    }
+}
+
+@Composable
+fun NutritionInfoItem(
+    label: String,
+    value: String,
+    icon: ImageVector?
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(vertical = 4.dp)
+    ) {
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+
+        Text(
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                    append("$label: ")
+                }
+                withStyle(style = SpanStyle(color = Color.DarkGray)) {
+                    append(value)
+                }
+            },
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+// Data class để lưu trữ thông tin buổi tập
+data class WorkoutSession(
+    val workoutType: String,
+    val duration: String,
+    val intensity: String,
+)
+
+// Dữ liệu mẫu
+val sampleWorkoutSessions = listOf(
+    WorkoutSession(
+        workoutType = "Cardio",
+        duration = "45 phút",
+        intensity = "Trung bình",
+    ),
+    WorkoutSession(
+        workoutType = "Tạ tự do",
+        duration = "60 phút",
+        intensity = "Cao",
+    ),
+    WorkoutSession(
+        workoutType = "Yoga",
+        duration = "30 phút",
+        intensity = "Thấp",
+    )
+)

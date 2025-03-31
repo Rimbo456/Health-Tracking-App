@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +52,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import showNotification
 
 @Composable
 fun BloodPressureScreen(
@@ -227,6 +229,7 @@ private fun BottomBarForAdd(
     nhiptim: String,
     navController: NavHostController
 ) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -260,6 +263,12 @@ private fun BottomBarForAdd(
                                     "unread" to true
                                 )
                             )
+                        context.showNotification(
+                            channelId = "heart_chanel",
+                            notificationId = 3,
+                            title = "Nhịp tim của bạn",
+                            content = "Nhịp tim của bạn hiện tại là $nhiptim, tốt cho sức khỏe"
+                        )
                     }
 
                     (nhiptim.toInt() > 100) -> {
@@ -276,6 +285,12 @@ private fun BottomBarForAdd(
                                     "unread" to true
                                 )
                             )
+                        context.showNotification(
+                            channelId = "heart_chanel",
+                            notificationId = 3,
+                            title = "Cảnh báo nhịp tim",
+                            content = "Nhịp tim của bạn hiện tại là $nhiptim, cao bất thường"
+                        )
                     }
 
                     else -> {
@@ -292,6 +307,12 @@ private fun BottomBarForAdd(
                                     "unread" to true
                                 )
                             )
+                        context.showNotification(
+                            channelId = "heart_chanel",
+                            notificationId = 3,
+                            title = "Cảnh báo nhịp tim",
+                            content = "Nhịp tim của bạn hiện tại là $nhiptim, nhịp tim thấp bất thường"
+                        )
                     }
                 }
                 when (true) {

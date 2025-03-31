@@ -1,17 +1,27 @@
 package com.example.healthtrackingapp
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.runtime.LaunchedEffect
+import androidx.core.app.NotificationCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -34,6 +44,7 @@ import com.example.healthtrackingapp.ui.screens.UNaoScreen
 import com.example.healthtrackingapp.ui.screens.WeighingScreen
 import com.example.healthtrackingapp.ui.theme.HealthTrackingAppTheme
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,9 +55,30 @@ class MainActivity : ComponentActivity() {
         setContent {
             HealthTrackingAppTheme {
                 val navController = rememberNavController()
+                val firebaseAuth = FirebaseAuth.getInstance()
+                val currentUser = firebaseAuth.currentUser
+
+                //xin quyền thông báo
+                val requestPermissionLauncher = rememberLauncherForActivityResult(
+                    ActivityResultContracts.RequestPermission()
+                ) { isGranted: Boolean ->
+                    if (isGranted) {
+                        // Quyền đã được cấp, có thể hiển thị thông báo
+                    } else {
+                        // Xử lý khi người dùng từ chối quyền
+                        println("Notification permission denied in ScreenA")
+                    }
+                }
+
+                LaunchedEffect(Unit) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                }
+
                 NavHost(
                     navController = navController,
-                    startDestination = "start"
+                    startDestination = if (currentUser != null) "main" else "start"
                 ) {
                     composable(
                         "start",

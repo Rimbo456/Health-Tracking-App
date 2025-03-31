@@ -1,11 +1,15 @@
 package com.example.healthtrackingapp.ui.screens
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -16,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.R
@@ -23,6 +28,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import showNotification
 
 @SuppressLint("MissingInflatedId")
 @Composable
@@ -46,6 +52,11 @@ fun AddWaterScreen(
             }
     }
 
+    // xin quyền thông báo
+    val context = LocalContext.current
+
+    // Xử lý xin quyền nếu cần
+
     Scaffold { innerPadding ->
         AndroidView(
             modifier = Modifier
@@ -64,6 +75,7 @@ fun AddWaterScreen(
 
                 val btnSave = view.findViewById<Button>(R.id.btnXacNhanOTP)
                 btnSave.setOnClickListener {
+
                     db.collection("users")
                         .document(user!!.uid)
                         .collection("water")
@@ -73,7 +85,8 @@ fun AddWaterScreen(
                                 "timestamp" to Timestamp.now()
                             )
                         )
-                    val luongnuoc = edtLuongNuoc.text.toString().filter { it.isDigit() }.toInt()/1000
+                    val luongnuoc =
+                        edtLuongNuoc.text.toString().filter { it.isDigit() }.toInt() / 1000
                     val luongnuocNeed = 0.033 * weight
                     when (true) {
                         (luongnuoc < luongnuocNeed) -> {
@@ -91,7 +104,14 @@ fun AddWaterScreen(
                                         "unread" to true
                                     )
                                 )
+                            context.showNotification(
+                                channelId = "water_chanel",
+                                notificationId = 1,
+                                title = "Bạn cần uống nước",
+                                content = "Bạn đã không uống đủ lượng nước ngày hôm nay, cơ thể bạn còn thiếu $thieu ml để hoạt động tốt"
+                            )
                         }
+
                         else -> {
                             db.collection("users")
                                 .document(user!!.uid)
@@ -106,6 +126,12 @@ fun AddWaterScreen(
                                         "unread" to true
                                     )
                                 )
+                            context.showNotification(
+                                channelId = "water_chanel",
+                                notificationId = 1,
+                                title = "Đã uống đủ nước",
+                                content = "Chúc mừng bạn đã uống đủ nước cho hôm nay"
+                            )
                         }
                     }
                     navController.popBackStack()
