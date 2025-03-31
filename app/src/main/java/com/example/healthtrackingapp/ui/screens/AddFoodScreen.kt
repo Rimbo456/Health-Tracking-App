@@ -95,6 +95,7 @@ fun AddFoodScreen(navController: NavHostController) {
             // Chọn loại bữa ăn
             Card(
                 modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(Color.White),
                 shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
@@ -145,6 +146,7 @@ fun AddFoodScreen(navController: NavHostController) {
             // Nhập thông tin thức ăn
             Card(
                 modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(Color.White),
                 shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
@@ -175,6 +177,7 @@ fun AddFoodScreen(navController: NavHostController) {
             // Nhập thông tin bổ sung
             Card(
                 modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(Color.White),
                 shape = RoundedCornerShape(12.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
