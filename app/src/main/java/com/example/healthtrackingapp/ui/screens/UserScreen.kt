@@ -17,12 +17,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavHostController
 import com.example.healthtrackingapp.AlarmActivity
 import com.example.healthtrackingapp.GioiThieuActivity
 import com.example.healthtrackingapp.HoSoActivity
 import com.example.healthtrackingapp.HoTroVaThongTinActivity
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.TinhTrangSucKhoeActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -33,6 +36,7 @@ fun showLogoutDialog(context: Context, onConfirm: () -> Unit) {
     val builder = AlertDialog.Builder(context)
     val inflater = LayoutInflater.from(context)
     val dialogView = inflater.inflate(R.layout.cus_dialog_xac_nha_dang_xuat, null)
+    val googleSignInClient = GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN)
 
     builder.setView(dialogView)
     val dialog = builder.create()
@@ -42,7 +46,9 @@ fun showLogoutDialog(context: Context, onConfirm: () -> Unit) {
 
     btnYes.setOnClickListener {
         FirebaseAuth.getInstance().signOut()
+        googleSignInClient.signOut()
         dialog.dismiss()
+        onConfirm()
     }
 
     btnNo.setOnClickListener {
@@ -53,7 +59,7 @@ fun showLogoutDialog(context: Context, onConfirm: () -> Unit) {
 }
 
 @Composable
-fun UserScreen() {
+fun UserScreen(navController: NavHostController) {
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
     val db = FirebaseFirestore.getInstance()
     var name by remember { mutableStateOf("") }
@@ -111,7 +117,9 @@ fun UserScreen() {
             }
 
             tbrDangXuat.setOnClickListener {
-                showLogoutDialog(context){}
+                showLogoutDialog(context){
+                    navController.navigate("login")
+                }
             }
             view
         },

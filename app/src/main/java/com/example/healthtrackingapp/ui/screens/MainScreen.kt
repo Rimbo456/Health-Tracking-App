@@ -52,8 +52,7 @@ fun MainScreen(
             composable(
                 "user",
                 deepLinks = listOf(navDeepLink { uriPattern = "myapp://main/user" })
-            ) { UserScreen() }
+            ) { UserScreen(mainNavController) }
         }
     }
 }
-

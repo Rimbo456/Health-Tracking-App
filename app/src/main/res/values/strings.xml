@@ -124,4 +124,6 @@
     <string name="khong">Không</string>
     <string name="tinh_trang_suc_khoe">Tình trạng sức khỏe</string>
     <string name="mo_ta_yeu_cau_nhap_tinh_trang_suc_khoe">Thêm các tình trạng hiện tại của bạn để chúng tôi có thể đưa ra các chuẩn đoán chính xác hơn về tình hình sức khỏe của bạn.</string>
+    <string name="motaduonghuyet">Ghi nhận chỉ số đường huyết để theo dõi sức khỏe và kiểm soát nguy cơ tiểu đường.</string>
+    <string name="motaoxy">Theo dõi SpO₂ để kiểm soát sức khỏe hô hấp và tim mạch.</string>
 </resources>
