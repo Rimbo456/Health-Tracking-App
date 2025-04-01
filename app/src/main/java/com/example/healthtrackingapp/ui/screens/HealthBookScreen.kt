@@ -158,6 +158,24 @@ fun HealthBookScreen(navController: NavHostController) {
                         route = "addtemperaturescreen",
                         mota = stringResource(R.string.motanhietdo)
                     )
+                    ItemBook(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.White,
+                        title = "Đường huyết",
+                        image = R.drawable.temperature,
+                        navController = navController,
+                        route = "addbloodglucose",
+                        mota = stringResource(R.string.motaduonghuyet)
+                    )
+                    ItemBook(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.White,
+                        title = "Nồng độ oxygen trong máu",
+                        image = R.drawable.temperature,
+                        navController = navController,
+                        route = "addoxygen",
+                        mota = stringResource(R.string.motaoxy)
+                    )
                 }
             }
         }

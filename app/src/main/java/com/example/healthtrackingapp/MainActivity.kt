@@ -26,7 +26,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
+import com.example.healthtrackingapp.ui.screens.AddBloodGlucose
 import com.example.healthtrackingapp.ui.screens.AddFoodScreen
+import com.example.healthtrackingapp.ui.screens.AddOxygen
 import com.example.healthtrackingapp.ui.screens.AddSleepScreen
 import com.example.healthtrackingapp.ui.screens.AddTemperatureScreen
 import com.example.healthtrackingapp.ui.screens.AddWaterScreen
@@ -275,6 +277,36 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ) { AddTemperatureScreen(navController) }
+                    composable(
+                        "addbloodglucose",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { AddBloodGlucose(navController) }
+                    composable(
+                        "addoxygen",
+                        enterTransition = {
+                            slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Up,
+                                tween(500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Down,
+                                tween(500)
+                            )
+                        }
+                    ) { AddOxygen(navController) }
                     composable("goalscreen") { GoalScreen(navController = navController) }
                     composable(
                         "overviewscreen",
