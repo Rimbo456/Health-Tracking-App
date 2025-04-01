@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_bao_thuc"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="40dp"
+    android:background="@drawable/nen_app"
+    tools:context=".BaoThucActivity"
+    app:layoutDescription="@xml/scene">
+
+    <TextView
+        android:id="@+id/tvTieuDeBaoThuc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Tiêu đề báo thức"
+        android:gravity="center"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="@color/indigo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvThoiGian" />
+
+    <TextView
+        android:id="@+id/tvThoiGian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thời gian"
+        android:textSize="30sp"
+        android:textColor="@color/indigo"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tvTieuDeBaoThuc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/swipeButton"/>
+
+    <Button
+        android:id="@+id/swipeButton"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/ic_arrow_left_red_80"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

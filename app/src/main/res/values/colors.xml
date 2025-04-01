@@ -2,7 +2,8 @@
 <resources>
     <color name="Gray">#3E3E3E</color>
     <color name="light_gray">#DEDEDE</color>
-    <color name="blu">#091C4E</color>
+    <color name="dark_blu">#091C4E</color>
+    <color name="indigo">#1E044E</color>
     <color name="red">#FF0000</color>
     <color name="light_blu">#B7DBFF</color>
     <color name="llight_blu">#E0EEFF</color>
