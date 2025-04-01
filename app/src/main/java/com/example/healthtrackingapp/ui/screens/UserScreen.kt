@@ -1,8 +1,11 @@
 package com.example.healthtrackingapp.ui.screens
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +28,29 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+
+fun showLogoutDialog(context: Context, onConfirm: () -> Unit) {
+    val builder = AlertDialog.Builder(context)
+    val inflater = LayoutInflater.from(context)
+    val dialogView = inflater.inflate(R.layout.cus_dialog_xac_nha_dang_xuat, null)
+
+    builder.setView(dialogView)
+    val dialog = builder.create()
+
+    val btnYes = dialogView.findViewById<Button>(R.id.btnYes)
+    val btnNo = dialogView.findViewById<Button>(R.id.btnNo)
+
+    btnYes.setOnClickListener {
+        FirebaseAuth.getInstance().signOut()
+        dialog.dismiss()
+    }
+
+    btnNo.setOnClickListener {
+        dialog.dismiss()
+    }
+
+    dialog.show()
+}
 
 @Composable
 fun UserScreen() {
@@ -62,6 +88,8 @@ fun UserScreen() {
             val tbrTinhTrangSK = view.findViewById<TableRow>(R.id.tbrTinhTrangSK)
             val tbrHoTro = view.findViewById<TableRow>(R.id.tbrHoTro)
             val tbrVeChungToi = view.findViewById<TableRow>(R.id.tbrVeChungToi)
+            val tbrDangXuat = view.findViewById<TableRow>(R.id.tbrDangXuat)
+
             tbrHoSo.setOnClickListener {
                 val intent = Intent(context, HoSoActivity::class.java)
                 context.startActivity(intent)
@@ -80,6 +108,10 @@ fun UserScreen() {
             tbrVeChungToi.setOnClickListener {
                 val intent = Intent(context, GioiThieuActivity::class.java)
                 context.startActivity(intent)
+            }
+
+            tbrDangXuat.setOnClickListener {
+                showLogoutDialog(context){}
             }
             view
         },

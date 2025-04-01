@@ -118,4 +118,8 @@
     <string name="vui_long_nhap_nam_sinh_hop_le">Vui lòng nhập năm sinh hợp lệ!</string>
     <string name="vui_long_nhap_nam_sinh">Vui lòng nhập năm sinh!</string>
     <string name="item_name">Item Name</string>
+    <string name="log_out">Đăng xuất</string>
+    <string name="ban_co_chac_chan_muon_dang_xuat_khong">Bạn có chắc chắn muốn đăng xuất không ?</string>
+    <string name="co">Có</string>
+    <string name="khong">Không</string>
 </resources>
