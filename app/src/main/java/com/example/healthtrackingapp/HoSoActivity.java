@@ -3,7 +3,6 @@ package com.example.healthtrackingapp;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -14,8 +13,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -65,9 +62,7 @@ public class HoSoActivity extends Activity {
         txtCanNang = findViewById(R.id.txtCanNang);
         txtNamSinh = findViewById(R.id.txtNamSinh);
 
-        imgQuayLai.setOnClickListener(view -> {
-            finish();
-        });
+        imgQuayLai.setOnClickListener(view -> onBackPressed());
 
         userInfo.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
