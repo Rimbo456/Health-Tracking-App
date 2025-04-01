@@ -122,4 +122,6 @@
     <string name="ban_co_chac_chan_muon_dang_xuat_khong">Bạn có chắc chắn muốn đăng xuất không ?</string>
     <string name="co">Có</string>
     <string name="khong">Không</string>
+    <string name="tinh_trang_suc_khoe">Tình trạng sức khỏe</string>
+    <string name="mo_ta_yeu_cau_nhap_tinh_trang_suc_khoe">Thêm các tình trạng hiện tại của bạn để chúng tôi có thể đưa ra các chuẩn đoán chính xác hơn về tình hình sức khỏe của bạn.</string>
 </resources>
