@@ -11,6 +11,8 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -20,6 +22,10 @@ import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowLeft
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Numbers
@@ -65,6 +71,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.Popup
 import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.ui.components.Calendar
@@ -632,7 +639,7 @@ fun NotificationScreen(
                                             )
                                             Text(
                                                 text = option,
-                                                fontSize = 12.sp,
+                                                fontSize = 11.sp,
                                                 textAlign = TextAlign.Center,
                                                 color = Color(0xFF555555)
                                             )
@@ -979,7 +986,7 @@ fun WorkoutTimerScreen() {
     var showTimePicker by remember { mutableStateOf(false) }
 
     if (showTimePicker) {
-        TimePickerDialog(
+        /*TimePickerDialog(
             LocalContext.current,
             { _, hour, minute ->
                 selectedMinutes = hour * 60 + minute
@@ -989,7 +996,24 @@ fun WorkoutTimerScreen() {
             selectedMinutes / 60,
             selectedMinutes % 60,
             true
-        ).show()
+        ).show()*/
+        Dialog(
+            onDismissRequest = { showTimePicker = false }
+        ) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surface
+            ) {
+                CustomMinutePicker(
+                    selectedMinutes = selectedMinutes,
+                    onMinutesSelected = { newMinutes ->
+                        selectedMinutes = newMinutes
+                        workoutTime = selectedMinutes * 60
+                        showTimePicker = false  // Đóng dialog sau khi xác nhận
+                    }
+                )
+            }
+        }
     }
 
     Column(
@@ -1141,6 +1165,160 @@ fun WorkoutTimerScreen() {
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(if (isTimerRunning) "Dừng" else "Bắt đầu")
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomMinutePicker(
+    selectedMinutes: Int,
+    onMinutesSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val maxMinutes = 120
+    val minMinutes = 1
+
+    // State cho số phút được chọn (giá trị tạm thời)
+    var tempMinutes by remember { mutableStateOf(selectedMinutes) }
+
+    // Hàm để áp dụng giới hạn giá trị
+    fun updateMinutes(newValue: Int) {
+        tempMinutes = newValue.coerceIn(minMinutes, maxMinutes)
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Thời gian tập luyện",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Hiển thị số phút được chọn
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "$tempMinutes",
+                style = MaterialTheme.typography.displayLarge,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Text(
+            text = "phút",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
+        // Bộ điều khiển tăng/giảm
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Nút giảm nhanh (-10)
+            FilledIconButton(
+                onClick = { updateMinutes(tempMinutes - 10) },
+                enabled = tempMinutes > minMinutes + 9
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardDoubleArrowLeft,
+                    contentDescription = "Giảm 10 phút"
+                )
+            }
+
+            // Nút giảm (-1)
+            FilledIconButton(
+                onClick = { updateMinutes(tempMinutes - 1) },
+                enabled = tempMinutes > minMinutes
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    contentDescription = "Giảm 1 phút"
+                )
+            }
+
+            // Nút tăng (+1)
+            FilledIconButton(
+                onClick = { updateMinutes(tempMinutes + 1) },
+                enabled = tempMinutes < maxMinutes
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Tăng 1 phút"
+                )
+            }
+
+            // Nút tăng nhanh (+10)
+            FilledIconButton(
+                onClick = { updateMinutes(tempMinutes + 10) },
+                enabled = tempMinutes < maxMinutes - 9
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardDoubleArrowRight,
+                    contentDescription = "Tăng 10 phút"
+                )
+            }
+        }
+
+        // Thanh trượt phụ để điều chỉnh nhanh
+        Slider(
+            value = tempMinutes.toFloat(),
+            onValueChange = { updateMinutes(it.toInt()) },
+            valueRange = minMinutes.toFloat()..maxMinutes.toFloat(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 24.dp)
+        )
+
+        // Các giá trị phổ biến
+        Text(
+            text = "Thời gian phổ biến",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        // Các nút shortcut cho các giá trị phổ biến
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp)
+        ) {
+            items(listOf(5, 10, 15, 20, 30, 45, 60)) { value ->
+                SuggestionChip(
+                    onClick = { updateMinutes(value) },
+                    label = { Text("$value") }
+                )
+            }
+        }
+
+        // Các nút hủy và xác nhận
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlinedButton(
+                onClick = { onMinutesSelected(selectedMinutes) }, // Trả về giá trị cũ và đóng dialog
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Hủy")
+            }
+
+            Button(
+                onClick = { onMinutesSelected(tempMinutes) }, // Áp dụng giá trị mới
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Xác nhận")
             }
         }
     }

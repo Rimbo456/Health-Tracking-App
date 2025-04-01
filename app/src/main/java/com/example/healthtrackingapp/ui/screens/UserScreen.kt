@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.healthtrackingapp.BaoThucActivity
+import com.example.healthtrackingapp.AlarmActivity
 import com.example.healthtrackingapp.GioiThieuActivity
 import com.example.healthtrackingapp.HoSoActivity
 import com.example.healthtrackingapp.HoTroVaThongTinActivity
@@ -78,7 +78,7 @@ fun UserScreen() {
             }
 
             tbrVeChungToi.setOnClickListener {
-                val intent = Intent(context, BaoThucActivity::class.java)
+                val intent = Intent(context, GioiThieuActivity::class.java)
                 context.startActivity(intent)
             }
             view

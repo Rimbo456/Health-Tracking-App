@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application
         android:allowBackup="true"
@@ -23,8 +25,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".BaoThucActivity"
-            android:exported="false" />
+            android:name=".AlarmActivity"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:showOnLockScreen="true"
+            android:theme="@style/Theme.HealthTrackingApp" />
         <activity
             android:name=".GioiThieuActivity"
             android:exported="false"
@@ -59,6 +64,7 @@
 
         <receiver
             android:name=".viewmodels.AlarmReceiver"
+            android:enabled="true"
             android:exported="false" />
     </application>
 
