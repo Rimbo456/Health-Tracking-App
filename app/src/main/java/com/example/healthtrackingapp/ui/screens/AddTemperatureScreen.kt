@@ -23,6 +23,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import showNotification
 
 @SuppressLint("MissingInflatedId")
 @Composable
@@ -75,6 +76,12 @@ fun AddTemperatureScreen(
                                         "unread" to true
                                     )
                                 )
+                            context.showNotification(
+                                channelId = "temperature_chanel",
+                                notificationId = 2,
+                                title = "Nhiệt độ cơ thể",
+                                content = "Nhiệt độ cơ thể bạn là "+temperature+" độ C, không có gì bất thường."
+                            )
                         }
                         (temperature < 36.1) -> {
                             db.collection("users")
@@ -90,6 +97,12 @@ fun AddTemperatureScreen(
                                         "unread" to true
                                     )
                                 )
+                            context.showNotification(
+                                channelId = "temperature_chanel",
+                                notificationId = 2,
+                                title = "Nhiệt độ cơ thể",
+                                content = "Nhiệt độ cơ thể bạn là "+temperature+" độ C, cảnh báo nhiệt độ thấp."
+                            )
                         }
                         else -> {
                             db.collection("users")
@@ -105,6 +118,12 @@ fun AddTemperatureScreen(
                                         "unread" to true
                                     )
                                 )
+                            context.showNotification(
+                                channelId = "temperature_chanel",
+                                notificationId = 2,
+                                title = "Nhiệt độ cơ thể",
+                                content = "Nhiệt độ cơ thể bạn là "+temperature+" độ C, bạn đang bị sốt.",
+                            )
                         }
                     }
                     navController.popBackStack()

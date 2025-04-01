@@ -28,7 +28,7 @@ fun ItemGoal(
     modifier: Modifier = Modifier,
     onClicked: () -> Unit = {}
 ) {
-    val cardColor = if (isChecked) Color.LightGray else Color.White
+    val cardColor = if (isChecked) Color.LightGray else Color(0xFFE8F1FD)
     val textColor = if (isChecked) Color.Gray else Color.Black
     val textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None
 

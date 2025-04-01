@@ -1,5 +1,6 @@
 package com.example.healthtrackingapp.ui.screens
 
+import android.app.TimePickerDialog
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -22,7 +23,10 @@ import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Numbers
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Check
@@ -51,6 +55,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -391,7 +396,7 @@ fun NotificationScreen(
                                 Spacer(modifier = Modifier.height(8.dp))
 
                                 // Hiển thị đồng hồ đếm ngược
-                                Box(
+                                /*Box(
                                     modifier = Modifier
                                         .size(140.dp)
                                         .padding(8.dp)
@@ -491,7 +496,8 @@ fun NotificationScreen(
                                             fontWeight = FontWeight.Medium
                                         )
                                     }
-                                }
+                                }*/
+                                WorkoutTimerScreen()
                             }
                         }
                     }
@@ -962,5 +968,180 @@ fun hexStringToComposeColor(hexString: String): Color {
     } catch (e: Exception) {
         Log.e("Color", "Invalid color format: $hexString", e)
         Color.Gray // Màu mặc định nếu lỗi
+    }
+}
+
+@Composable
+fun WorkoutTimerScreen() {
+    var workoutTime by remember { mutableStateOf(60) }
+    var selectedMinutes by remember { mutableStateOf(1) }
+    var isTimerRunning by remember { mutableStateOf(false) }
+    var showTimePicker by remember { mutableStateOf(false) }
+
+    if (showTimePicker) {
+        TimePickerDialog(
+            LocalContext.current,
+            { _, hour, minute ->
+                selectedMinutes = hour * 60 + minute
+                workoutTime = selectedMinutes * 60
+                showTimePicker = false
+            },
+            selectedMinutes / 60,
+            selectedMinutes % 60,
+            true
+        ).show()
+    }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(
+            "THỜI GIAN TẬP LUYỆN",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF7F7FD5),
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+
+        Button(
+            onClick = { showTimePicker = true },
+            shape = RoundedCornerShape(24.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7F7FD5)),
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(50.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Timer,
+                    contentDescription = "Timer",
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    "Chọn thời gian: ${selectedMinutes} phút",
+                    fontSize = 16.sp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Improved timer display
+        Box(
+            modifier = Modifier
+                .size(200.dp)
+                .shadow(8.dp, CircleShape)
+                .background(Color.White, CircleShape)
+                .padding(8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            // Background circle
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFFF5F5F5), CircleShape)
+            )
+
+            // Progress indicator
+            CircularProgressIndicator(
+                progress = workoutTime / (selectedMinutes * 60f),
+                modifier = Modifier.fillMaxSize(),
+                color = when {
+                    workoutTime <= 10 -> Color(0xFFE53935)
+                    workoutTime <= 30 -> Color(0xFFFFA000)
+                    else -> Color(0xFF7F7FD5)
+                },
+                strokeWidth = 12.dp
+            )
+
+            // Time display
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                val minutes = workoutTime / 60
+                val seconds = workoutTime % 60
+
+                Text(
+                    text = String.format("%02d:%02d", minutes, seconds),
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = when {
+                        workoutTime <= 10 -> Color(0xFFE53935)
+                        workoutTime <= 30 -> Color(0xFFFFA000)
+                        else -> Color(0xFF7F7FD5)
+                    }
+                )
+
+                Text(
+                    text = if (isTimerRunning) "Đang chạy" else "Sẵn sàng",
+                    fontSize = 16.sp,
+                    color = Color.Gray
+                )
+            }
+        }
+
+        LaunchedEffect(isTimerRunning) {
+            while (isTimerRunning && workoutTime > 0) {
+                delay(1000L)
+                workoutTime--
+            }
+            if (workoutTime == 0 && isTimerRunning) {
+                isTimerRunning = false
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxWidth(0.9f)
+        ) {
+            OutlinedButton(
+                onClick = {
+                    workoutTime = selectedMinutes * 60
+                    isTimerRunning = false
+                },
+                shape = RoundedCornerShape(24.dp),
+                border = BorderStroke(2.dp, Color.Gray),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Refresh,
+                    contentDescription = "Reset",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Đặt lại")
+            }
+
+            Button(
+                onClick = { isTimerRunning = !isTimerRunning },
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isTimerRunning) Color(0xFFE53935) else Color(0xFF4CAF50)
+                ),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp)
+            ) {
+                Icon(
+                    imageVector = if (isTimerRunning) Icons.Filled.Pause else Icons.Filled.PlayArrow,
+                    contentDescription = if (isTimerRunning) "Pause" else "Play",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(if (isTimerRunning) "Dừng" else "Bắt đầu")
+            }
+        }
     }
 }
