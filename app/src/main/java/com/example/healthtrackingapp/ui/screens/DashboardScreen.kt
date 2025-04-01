@@ -354,7 +354,7 @@ fun DashboardScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .fillMaxHeight(0.6f),
+                .fillMaxHeight(0.9f),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Row(

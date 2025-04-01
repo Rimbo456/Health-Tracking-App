@@ -54,32 +54,7 @@ fun AlarmScreen(navController: NavHostController) {
     val context = LocalContext.current
     var alarms by remember {
         mutableStateOf(
-            listOf(
-                AlarmItem(
-                    id = 1,
-                    hour = 6,
-                    minute = 30,
-                    enabled = true,
-                    repeatDays = setOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY),
-                    label = "Thức dậy"
-                ),
-                AlarmItem(
-                    id = 2,
-                    hour = 7,
-                    minute = 0,
-                    enabled = true,
-                    repeatDays = setOf(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY),
-                    label = "Tập thể dục"
-                ),
-                AlarmItem(
-                    id = 3,
-                    hour = 22,
-                    minute = 0,
-                    enabled = false,
-                    repeatDays = DayOfWeek.values().toSet(),
-                    label = "Đi ngủ"
-                )
-            )
+            listOf<AlarmItem>()
         )
     }
 
