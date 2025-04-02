@@ -34,9 +34,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 import com.example.healthtrackingapp.requestExactAlarmPermission
 import com.example.healthtrackingapp.viewmodels.AlarmReceiver
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.Calendar
 
 data class AlarmItem(
@@ -47,15 +50,76 @@ data class AlarmItem(
     val repeatDays: Set<DayOfWeek>,
     val label: String
 )
+// 1. Thêm các hàm tiện ích để chuyển đổi giữa Set<DayOfWeek> và JSONArray
+fun dayOfWeekSetToJsonArray(repeatDays: Set<DayOfWeek>): JSONArray {
+    val jsonArray = JSONArray()
+    repeatDays.forEach { day ->
+        jsonArray.put(day.name)
+    }
+    return jsonArray
+}
+fun jsonArrayToDayOfWeekSet(jsonArray: JSONArray?): Set<DayOfWeek> {
+    if (jsonArray == null) return emptySet()
+
+    val repeatDaysSet = mutableSetOf<DayOfWeek>()
+    for (i in 0 until jsonArray.length()) {
+        try {
+            val dayString = jsonArray.getString(i)
+            repeatDaysSet.add(DayOfWeek.valueOf(dayString))
+        } catch (e: Exception) {
+            Log.e("AlarmApp", "Lỗi khi chuyển đổi ngày: ${e.message}")
+        }
+    }
+    return repeatDaysSet
+}
+
+// 2. Sửa lại hàm loadAlarms để xử lý dữ liệu đúng
+fun loadAlarms(context: Context, onAlarmsLoaded: (List<AlarmItem>) -> Unit) {
+    val sharedPref = context.getSharedPreferences("AlarmPrefs", Context.MODE_PRIVATE)
+    val alarmList = mutableListOf<AlarmItem>()
+
+    sharedPref.all.forEach { (key, value) ->
+        if (key.startsWith("alarm_") && value is String) {
+            try {
+                val alarmJson = JSONObject(value)
+
+                // Đọc danh sách ngày lặp lại
+                val repeatDaysArray = alarmJson.optJSONArray("repeatDays")
+                val repeatDaysSet = jsonArrayToDayOfWeekSet(repeatDaysArray)
+
+                val alarm = AlarmItem(
+                    id = key.removePrefix("alarm_").toInt(),
+                    hour = alarmJson.getInt("hour"),
+                    minute = alarmJson.getInt("minute"),
+                    enabled = alarmJson.optBoolean("enabled", false),
+                    repeatDays = repeatDaysSet,
+                    label = alarmJson.optString("label", "Báo thức")
+                )
+                alarmList.add(alarm)
+            } catch (e: Exception) {
+                Log.e("AlarmApp", "Lỗi khi đọc báo thức từ SharedPreferences: ${e.message}")
+            }
+        }
+    }
+
+    onAlarmsLoaded(alarmList)
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmScreen(navController: NavHostController) {
     val context = LocalContext.current
+
     var alarms by remember {
         mutableStateOf(
             listOf<AlarmItem>()
         )
+    }
+    LaunchedEffect(Unit) {
+        loadAlarms(context) { loadedAlarms ->
+            alarms = loadedAlarms // Cập nhật biến trạng thái
+        }
     }
 
     var showAddAlarmDialog by remember { mutableStateOf(false) }
@@ -124,8 +188,23 @@ fun AlarmScreen(navController: NavHostController) {
                         AlarmItemCard(
                             alarm = alarm,
                             onToggleEnabled = { enabled ->
-                                alarms = alarms.map {
+                                // Cập nhật trạng thái trong danh sách
+                                val updatedAlarms = alarms.map {
                                     if (it.id == alarm.id) it.copy(enabled = enabled) else it
+                                }
+                                alarms = updatedAlarms
+
+                                // Cập nhật trạng thái trong SharedPreferences
+                                val updatedAlarm = updatedAlarms.find { it.id == alarm.id }
+                                if (updatedAlarm != null) {
+                                    saveAlarm(context, updatedAlarm)
+
+                                    // Cập nhật hoặc hủy báo thức
+                                    if (enabled) {
+                                        setAlarm(context, updatedAlarm)
+                                    } else {
+                                        cancelAlarm(context, updatedAlarm)
+                                    }
                                 }
                             },
                             onEditClick = {
@@ -133,7 +212,14 @@ fun AlarmScreen(navController: NavHostController) {
                                 showAddAlarmDialog = true
                             },
                             onDeleteClick = {
+                                // Xóa báo thức khỏi danh sách
                                 alarms = alarms.filter { it.id != alarm.id }
+
+                                // Hủy báo thức
+                                cancelAlarm(context, alarm)
+
+                                // Xóa khỏi SharedPreferences
+                                deleteAlarm(context, alarm.id)
                             }
                         )
                     }
@@ -142,6 +228,7 @@ fun AlarmScreen(navController: NavHostController) {
         }
     }
 
+    // Trong AlarmScreen, phần xử lý khi lưu báo thức cần được cập nhật
     if (showAddAlarmDialog) {
         AlarmDialog(
             alarm = selectedAlarm,
@@ -151,14 +238,27 @@ fun AlarmScreen(navController: NavHostController) {
                     // Hủy báo thức cũ trước khi cập nhật
                     cancelAlarm(context, selectedAlarm!!)
 
-                    // Cập nhật báo thức
-                    alarms = alarms.map { if (it.id == alarm.id) alarm else it }
-                    setAlarm(context, alarm)
+                    // Cập nhật báo thức với ID giữ nguyên
+                    val updatedAlarm = alarm.copy(id = selectedAlarm!!.id)
+                    alarms = alarms.map { if (it.id == updatedAlarm.id) updatedAlarm else it }
+
+                    // Lưu vào SharedPreferences sau khi cập nhật danh sách
+                    saveAlarm(context, updatedAlarm)
+
+                    // Đặt báo thức
+                    setAlarm(context, updatedAlarm)
                 } else {
-                    // Thêm báo thức mới
+                    // Đây là báo thức mới, tạo ID mới
                     val newId = if (alarms.isEmpty()) 1 else alarms.maxOf { it.id } + 1
                     val newAlarm = alarm.copy(id = newId)
+
+                    // Cập nhật danh sách báo thức
                     alarms = alarms + newAlarm
+
+                    // Lưu vào SharedPreferences sau khi đã tạo ID mới
+                    saveAlarm(context, newAlarm)
+
+                    // Đặt báo thức
                     setAlarm(context, newAlarm)
                 }
                 showAddAlarmDialog = false
@@ -309,7 +409,9 @@ fun AlarmItemCard(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = onDeleteClick) {
+                IconButton(
+                    onClick = onDeleteClick
+                ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Xóa báo thức",
@@ -336,6 +438,7 @@ fun AlarmDialog(
     onDismiss: () -> Unit,
     onSave: (AlarmItem) -> Unit
 ) {
+    val context = LocalContext.current
     val initialHour = alarm?.hour ?: 7
     val initialMinute = alarm?.minute ?: 0
 
@@ -472,16 +575,18 @@ fun AlarmDialog(
 
                     Spacer(modifier = Modifier.width(8.dp))
 
+                    // LƯU Ý: Đối với báo thức mới, KHÔNG lưu trực tiếp ở đây với ID = 0
                     Button(
                         onClick = {
                             val newAlarm = AlarmItem(
-                                id = alarm?.id ?: 0,
+                                id = alarm?.id ?: 0, // Vẫn giữ ID = 0 cho báo thức mới tạm thời
                                 hour = hour,
                                 minute = minute,
                                 enabled = alarm?.enabled ?: true,
                                 repeatDays = repeatDays,
                                 label = label.trim()
                             )
+                            // Không lưu vào SharedPreferences ở đây, mà chỉ trả về đối tượng báo thức
                             onSave(newAlarm)
                         }
                     ) {
@@ -490,6 +595,59 @@ fun AlarmDialog(
                 }
             }
         }
+    }
+}
+
+// 4. Tạo hàm saveAlarm riêng biệt
+fun saveAlarm(context: Context, alarm: AlarmItem) {
+    val sharedPref = context.getSharedPreferences("AlarmPrefs", Context.MODE_PRIVATE)
+
+    val alarmData = JSONObject().apply {
+        put("id", alarm.id)
+        put("hour", alarm.hour)
+        put("minute", alarm.minute)
+        put("enabled", alarm.enabled)
+        put("repeatDays", dayOfWeekSetToJsonArray(alarm.repeatDays))
+        put("label", alarm.label)
+    }.toString()
+
+    with(sharedPref.edit()) {
+        putString("alarm_${alarm.id}", alarmData)
+        apply()
+    }
+}
+
+// 5. Thêm hàm để xóa báo thức khỏi SharedPreferences
+fun deleteAlarm(context: Context, alarmId: Int) {
+    val sharedPref = context.getSharedPreferences("AlarmPrefs", Context.MODE_PRIVATE)
+
+    with(sharedPref.edit()) {
+        remove("alarm_$alarmId")
+        apply()
+    }
+
+    // Cũng cần hủy báo thức đã cài đặt
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val intent = Intent(context, AlarmReceiver::class.java)
+
+    val pendingIntentFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    } else {
+        PendingIntent.FLAG_UPDATE_CURRENT
+    }
+
+    val pendingIntent = PendingIntent.getBroadcast(context, alarmId, intent, pendingIntentFlag)
+    alarmManager.cancel(pendingIntent)
+
+    // Hủy báo thức cho từng ngày trong tuần
+    for (day in DayOfWeek.values()) {
+        val dayPendingIntent = PendingIntent.getBroadcast(
+            context,
+            alarmId * 10 + day.ordinal,
+            intent,
+            pendingIntentFlag
+        )
+        alarmManager.cancel(dayPendingIntent)
     }
 }
 

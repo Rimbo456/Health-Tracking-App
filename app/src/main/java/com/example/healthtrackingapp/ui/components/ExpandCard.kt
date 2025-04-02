@@ -86,7 +86,7 @@ fun ExpandCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = title+": " + value.toString()+unit,
+                    text = title/*+": " + value.toString()+unit*/,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
                     color = textPrimaryColor

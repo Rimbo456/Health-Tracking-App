@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -33,6 +34,7 @@ import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
 
 @Composable
 private fun JetpackComposeBasicLineChart(
@@ -49,6 +51,19 @@ private fun JetpackComposeBasicLineChart(
                                 LineCartesianLayer.LineFill.single(
                                     fill(
                                         Color.Red
+                                    )
+                                )
+                            )
+                        }
+                    ),
+                ),
+                rememberLineCartesianLayer(
+                    lineProvider = LineCartesianLayer.LineProvider.series(
+                        vicoTheme.lineCartesianLayerColors.map { color ->
+                            LineCartesianLayer.rememberLine(
+                                LineCartesianLayer.LineFill.single(
+                                    fill(
+                                        Color.Transparent
                                     )
                                 )
                             )
@@ -74,15 +89,41 @@ private fun JetpackComposeBasicLineChart(
 }
 
 @Composable
-fun HeartRateChart(modifier: Modifier = Modifier) {
+fun HeartRateChart(modifier: Modifier = Modifier,selectedDate: LocalDate) {
     val modelProducer = remember { CartesianChartModelProducer() }
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
     var dataPointss = remember { mutableStateListOf<Int>() }
-    LaunchedEffect(Unit) {
+    LaunchedEffect(selectedDate) {
+        // Xác định timestamp đầu và cuối ngày
+        val calendar = java.util.Calendar.getInstance()
+        calendar.set(
+            selectedDate.year,
+            selectedDate.monthValue - 1,
+            selectedDate.dayOfMonth,
+            0,
+            0,
+            0
+        )
+        val startOfDay = calendar.time
+
+        calendar.set(
+            selectedDate.year,
+            selectedDate.monthValue - 1,
+            selectedDate.dayOfMonth,
+            23,
+            59,
+            59
+        )
+        val endOfDay = calendar.time
+        // Chuyển đổi Date thành Timestamp của Firestore
+        val startTimestamp = Timestamp(startOfDay)
+        val endTimestamp = Timestamp(endOfDay)
         db.collection("users")
             .document(user!!.uid)
             .collection("blood_pressure")
+            .whereGreaterThanOrEqualTo("timestamp", startTimestamp)
+            .whereLessThanOrEqualTo("timestamp", endTimestamp)
             .get()
             .addOnSuccessListener { documents ->
                 dataPointss.clear()
@@ -100,7 +141,7 @@ fun HeartRateChart(modifier: Modifier = Modifier) {
             if (dataPointss.isNotEmpty()) { // Kiểm tra danh sách không rỗng trước khi vẽ
                 lineSeries { series(dataPointss.map { it.toInt() }) }
             } else {
-                lineSeries { series(0) }
+                lineSeries { series(130) }
             }
         }
     }

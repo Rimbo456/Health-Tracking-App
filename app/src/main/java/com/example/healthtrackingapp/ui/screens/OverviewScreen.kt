@@ -568,55 +568,55 @@ fun OverviewScreen(
                         // Card for Temperature
                         ExpandCard(
                             title = "Nhiệt độ cơ thể",
-                            value = 37.5,
+                            value = null,
                             unit = "°C",
                             colorEle = Color(red = 218, green = 115, blue = 35, alpha = 255),
                             content = {
-                                BodyTemperatureChart()
+                                BodyTemperatureChart(selectedDate = selectedDate)
                             }
                         )
 
                         // Card for Blood Presure
                         ExpandCard(
                             title = "Huyết áp",
-                            value = 117.0,
+                            value = null,
                             unit = "mmHg",
                             colorEle = Color(red = 255, green = 32, blue = 32, alpha = 255),
                             content = {
-                                JetpackComposeBasicLineChart()
+                                JetpackComposeBasicLineChart(selectedDate = selectedDate)
                             }
                         )
 
                         // Heart Rate
                         ExpandCard(
                             title = "Nhịp tim",
-                            value = 80.0,
+                            value = null,
                             unit = "BPM",
                             colorEle = Color(red = 255, green = 32, blue = 32, alpha = 255),
                             content = {
-                                HeartRateChart()
+                                HeartRateChart(selectedDate = selectedDate)
                             }
                         )
 
                         // blood glucose
                         ExpandCard(
                             title = "Đường huyết",
-                            value = 140.0,
+                            value = null,
                             unit = "mg/dL",
                             colorEle = Color(red = 177, green = 255, blue = 32, alpha = 255),
                             content = {
-                                BloodGlucoseChart()
+                                BloodGlucoseChart(selectedDate = selectedDate)
                             }
                         )
 
                         //blood oxygen levels
                         ExpandCard(
                             title = "Nồng độ oxygen trong máu",
-                            value = 95.0,
+                            value = null,
                             unit = "%",
                             colorEle = Color(red = 32, green = 229, blue = 255, alpha = 255),
                             content = {
-                                BloodOxygenLevelChart()
+                                BloodOxygenLevelChart(selectedDate = selectedDate)
                             }
                         )
                     }
@@ -1339,71 +1339,6 @@ fun SymptomDetailRow(label: String, value: String) {
             text = value,
             color = textSecondaryColor
         )
-    }
-}
-
-@Composable
-fun Temp() {
-    var expanded by remember { mutableStateOf(false) }
-    val rotationState by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f,
-        label = "rotation"
-    )
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(
-                elevation = 6.dp,
-                shape = RoundedCornerShape(16.dp),
-                spotColor = secondaryColor
-            ),
-        colors = CardDefaults.cardColors(
-            containerColor = cardBackgroundColor
-        ),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            // Header
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .background(Color.Transparent),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Nhiệt độ cơ thể: 37.5°C",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp,
-                    color = textPrimaryColor
-                )
-
-                IconButton(
-                    onClick = { expanded = !expanded },
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ExpandMore,
-                        contentDescription = if (expanded) "Show less" else "Show more",
-                        tint = secondaryColor,
-                        modifier = Modifier.rotate(rotationState)
-                    )
-                }
-            }
-
-            // Expandable content
-            AnimatedVisibility(
-                visible = expanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
-            ) {
-                BodyTemperatureChart()
-            }
-        }
     }
 }
 
