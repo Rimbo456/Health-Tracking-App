@@ -833,52 +833,7 @@ fun OverviewScreen(
                     }
                 }
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(Color.White),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
 
-                        // Tiêu đề
-                        Text(
-                            text = "Chuẩn đoán u não",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-
-                        Divider(thickness = 1.dp, color = Color.Black)
-
-                        val file = File(context.filesDir, "processed_image.jpg")
-                        if (file.exists()) {
-                            AsyncImage(
-                                model = ImageRequest.Builder(context)
-                                    .data(file)
-                                    .build(),
-                                contentDescription = "Processed Image",
-                                modifier = Modifier.fillMaxWidth()
-                                    .background(Color.Gray),
-                                contentScale = ContentScale.FillWidth
-                            )
-                        } else {
-                            Text(text = "Không tìm thấy ảnh", modifier = Modifier.padding(16.dp))
-                        }
-                        val texttxt = File(context.filesDir, "texttxt.txt")
-                        NutritionInfoItem(
-                            label = "Kết quả",
-                            value =if (texttxt.exists()) texttxt.readText() else "Không có",
-                            icon = null
-                        )
-                    }
-                }
 
                 // Spacer for bottom padding
                 Spacer(modifier = Modifier.height(16.dp))

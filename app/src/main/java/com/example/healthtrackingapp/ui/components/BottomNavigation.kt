@@ -34,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +49,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.healthtrackingapp.R
 
 @Composable
@@ -57,6 +59,19 @@ fun BottomNavigation(
 ) {
 
     var position by remember { mutableStateOf(1) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    // Cập nhật position dựa trên route hiện tại
+    LaunchedEffect(currentRoute) {
+        position = when (currentRoute) {
+            "dashboard" -> 1
+            "graph" -> 2
+            "notification" -> 3
+            "user" -> 4
+            else -> 1 // Giá trị mặc định
+        }
+    }
 
     Box(
         modifier = Modifier

@@ -105,7 +105,7 @@ fun NotificationScreen(
     var selectedFatigue by remember { mutableStateOf(-1) }
     var noteText by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("") }
-    var fatigueOptions = listOf("Thoải mái", "Hơi mệt", "Mệt", "Kiệt sức")
+    var fatigueOptions = listOf("Thư giãn", "Hơi mệt", "Mệt", "Kiệt sức")
 
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
@@ -504,7 +504,7 @@ fun NotificationScreen(
                                         )
                                     }
                                 }*/
-                                WorkoutTimerScreen()
+                                WorkoutTimerScreen(selectedWorkout = selectedWorkout)
                             }
                         }
                     }
@@ -979,7 +979,9 @@ fun hexStringToComposeColor(hexString: String): Color {
 }
 
 @Composable
-fun WorkoutTimerScreen() {
+fun WorkoutTimerScreen(
+    selectedWorkout: String,
+) {
     var workoutTime by remember { mutableStateOf(60) }
     var selectedMinutes by remember { mutableStateOf(1) }
     var isTimerRunning by remember { mutableStateOf(false) }
@@ -1035,7 +1037,7 @@ fun WorkoutTimerScreen() {
             shape = RoundedCornerShape(24.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7F7FD5)),
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth(1f)
                 .height(50.dp)
         ) {
             Row(
@@ -1050,7 +1052,7 @@ fun WorkoutTimerScreen() {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     "Chọn thời gian: ${selectedMinutes} phút",
-                    fontSize = 16.sp
+                    fontSize = 15.sp
                 )
             }
         }
@@ -1125,8 +1127,8 @@ fun WorkoutTimerScreen() {
         Spacer(modifier = Modifier.height(32.dp))
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxWidth(0.9f)
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.fillMaxWidth(1f)
         ) {
             OutlinedButton(
                 onClick = {
@@ -1149,6 +1151,7 @@ fun WorkoutTimerScreen() {
             }
 
             Button(
+                enabled = if (selectedWorkout == "Chọn bài tập") false else true,
                 onClick = { isTimerRunning = !isTimerRunning },
                 shape = RoundedCornerShape(24.dp),
                 colors = ButtonDefaults.buttonColors(

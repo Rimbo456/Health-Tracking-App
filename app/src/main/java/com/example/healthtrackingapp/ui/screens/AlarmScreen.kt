@@ -510,9 +510,18 @@ fun AlarmDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    val dayNames = mapOf(
+                        DayOfWeek.MONDAY to "2",
+                        DayOfWeek.TUESDAY to "3",
+                        DayOfWeek.WEDNESDAY to "4",
+                        DayOfWeek.THURSDAY to "5",
+                        DayOfWeek.FRIDAY to "6",
+                        DayOfWeek.SATURDAY to "7",
+                        DayOfWeek.SUNDAY to "C"
+                    )
                     DayOfWeek.values().forEach { day ->
                         val isSelected = repeatDays.contains(day)
-                        val dayName = day.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+                        val dayName = dayNames[day] ?: "" // Lấy ký tự theo danh sách cố định
 
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -535,7 +544,7 @@ fun AlarmDialog(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = dayName.first().toString(),
+                                    text = dayName, // Sử dụng tên ngày từ danh sách cố định
                                     color = if (isSelected) Color.White else Color.Black,
                                     fontWeight = FontWeight.Bold
                                 )

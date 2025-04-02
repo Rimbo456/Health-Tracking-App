@@ -494,7 +494,7 @@ fun FeelingDialog(onDismiss: () -> Unit,onButtonClick: () -> Unit) {
                             )
                             CircularCheckboxWithIcon(
                                 isChecked = indexx == index,
-                                onCheckedChange = { indexx = index }
+                                onCheckedChange = { indexx = index },
                             )
                         }
                     }
