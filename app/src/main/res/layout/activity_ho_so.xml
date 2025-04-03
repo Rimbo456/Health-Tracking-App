@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/nen_app"
     android:padding="20dp"
     tools:context=".HoSoActivity">
     <LinearLayout
@@ -97,7 +98,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_gray"
+                android:background="@color/light_blu"
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
@@ -128,7 +129,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_gray"
+                android:background="@color/light_blu"
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
@@ -166,7 +167,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_gray"
+                android:background="@color/light_blu"
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
@@ -204,7 +205,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_gray"
+                android:background="@color/light_blu"
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
@@ -242,7 +243,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_gray"
+                android:background="@color/light_blu"
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 
@@ -280,7 +281,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_gray"
+                android:background="@color/light_blu"
                 android:layout_marginVertical="3dp"
                 android:layout_marginHorizontal="12dp"/>
 

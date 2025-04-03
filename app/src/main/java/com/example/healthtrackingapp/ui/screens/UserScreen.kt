@@ -23,6 +23,7 @@ import com.example.healthtrackingapp.GioiThieuActivity
 import com.example.healthtrackingapp.HoSoActivity
 import com.example.healthtrackingapp.HoTroVaThongTinActivity
 import com.example.healthtrackingapp.R
+import com.example.healthtrackingapp.ThongBaoActivity
 import com.example.healthtrackingapp.TinhTrangSucKhoeActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -92,6 +93,7 @@ fun UserScreen(navController: NavHostController) {
 
             val tbrHoSo = view.findViewById<TableRow>(R.id.tbrHoSo)
             val tbrTinhTrangSK = view.findViewById<TableRow>(R.id.tbrTinhTrangSK)
+            val tbrThongBao = view.findViewById<TableRow>(R.id.tbrThongBao)
             val tbrHoTro = view.findViewById<TableRow>(R.id.tbrHoTro)
             val tbrVeChungToi = view.findViewById<TableRow>(R.id.tbrVeChungToi)
             val tbrDangXuat = view.findViewById<TableRow>(R.id.tbrDangXuat)
@@ -103,6 +105,11 @@ fun UserScreen(navController: NavHostController) {
 
             tbrTinhTrangSK.setOnClickListener {
                 val intent = Intent(context, TinhTrangSucKhoeActivity::class.java)
+                context.startActivity(intent)
+            }
+
+            tbrThongBao.setOnClickListener {
+                val intent = Intent(context, ThongBaoActivity::class.java)
                 context.startActivity(intent)
             }
 
