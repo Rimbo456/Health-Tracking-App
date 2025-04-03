@@ -1,8 +1,6 @@
 package com.example.healthtrackingapp;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
