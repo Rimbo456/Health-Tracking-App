@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginBottom="40dp"
-    android:layout_gravity="bottom"
+    android:layout_marginBottom="60dp"
+    android:layout_gravity="bottom|center_horizontal"
     android:background="@drawable/border_radius"
     android:orientation="vertical">
 
@@ -14,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="@string/log_out"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -24,23 +22,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:text="@string/ban_co_chac_chan_muon_dang_xuat_khong"
         android:textSize="18sp"
         android:textColor="@color/Gray"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginTop="40dp">
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="25dp">
         <Button
             android:id="@+id/btnYes"
-            android:layout_width="100dp"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/red"
             android:text="@string/co"
@@ -55,7 +52,7 @@
 
         <Button
             android:id="@+id/btnNo"
-            android:layout_width="100dp"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/blu"
             android:text="@string/khong"

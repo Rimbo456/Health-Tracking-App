@@ -95,7 +95,7 @@ class AlarmActivity : ComponentActivity() {
 
     private fun startAlarmSound() {
         try {
-            mediaPlayer = MediaPlayer.create(this, R.raw.alarm_sound)
+            mediaPlayer = MediaPlayer.create(this, R.raw.iphone_sound)
             mediaPlayer?.isLooping = true
             mediaPlayer?.start()
         } catch (e: Exception) {

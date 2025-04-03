@@ -35,7 +35,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import com.example.healthtrackingapp.R
 import com.example.healthtrackingapp.requestExactAlarmPermission
 import com.example.healthtrackingapp.viewmodels.AlarmReceiver
 import org.json.JSONArray
@@ -164,6 +168,12 @@ fun AlarmScreen(navController: NavHostController) {
             }
         }
     ) { innerPadding ->
+        Image(
+            painter = painterResource(id = R.drawable.nen_app),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
         Box(
             modifier = Modifier
                 .padding(innerPadding)

@@ -24,7 +24,7 @@ class AlarmReceiver : BroadcastReceiver() {
             else -> showFullScreenNotification(context, alarmId, alarmLabel)
         }
     }
-    val alarmSound = Uri.parse("android.resource://com.example.healthtrackingapp/raw/alarm_sound")
+    val alarmSound = Uri.parse("android.resource://com.example.healthtrackingapp/raw/iphone_sound")
 
     @SuppressLint("ServiceCast")
     private fun showFullScreenNotification(context: Context, alarmId: Long, alarmLabel: String) {

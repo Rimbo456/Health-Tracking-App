@@ -44,7 +44,7 @@ public class HoTroVaThongTinActivity extends AppCompatActivity {
         });
 
         btnBaoMat.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://yourapp.com/privacy"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://haucankcntt.com"));
             Toast.makeText(HoTroVaThongTinActivity.this, "Chưa có", Toast.LENGTH_SHORT);
             startActivity(browserIntent);
         });
