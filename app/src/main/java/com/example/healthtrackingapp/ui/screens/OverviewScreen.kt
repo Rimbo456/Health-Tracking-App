@@ -76,6 +76,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -206,7 +207,8 @@ fun OverviewScreen(
                     buoian = listOf("Chưa có dữ liệu")
                 } else {
                     for (document in documents) {
-                        document.getString("foodInput")?.takeIf { it.isNotEmpty() }?.let { foodList.add(it) }
+                        document.getString("foodInput")?.takeIf { it.isNotEmpty() }
+                            ?.let { foodList.add(it) }
 
                         val supplements = listOfNotNull(
                             document.getString("vitaminInput"),
@@ -218,7 +220,8 @@ fun OverviewScreen(
                             foodAnoList.addAll(supplements)
                         }
 
-                        document.getString("mealType")?.takeIf { it.isNotEmpty() }?.let { mealTypeList.add(it) }
+                        document.getString("mealType")?.takeIf { it.isNotEmpty() }
+                            ?.let { mealTypeList.add(it) }
                     }
                 }
 
@@ -337,12 +340,13 @@ fun OverviewScreen(
                     for (document in result) {
                         sleep = document.getString("giacngu") ?: ""
                         val sleepInt = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0
-                        val efficencyIndex = (sleepInt / 1.5) * 100
+                        val efficencyIndex = ((sleepInt - 1.5) / sleepInt) * 100
                         sleepEfficiency = when (true) {
                             (efficencyIndex >= 85) -> "Giấc ngủ tốt"
-                            (efficencyIndex >= 75) and (efficencyIndex <= 85) -> "Giấc ngủ tốt"
+                            (efficencyIndex >= 75) and (efficencyIndex <= 85) -> "Giấc ngủ khá"
                             else -> "Giấc ngủ kém"
                         }
+                        feedbackSleep = document.getString("quality") ?: ""
                     }
                 }
             }
@@ -413,7 +417,8 @@ fun OverviewScreen(
                     symptomList.clear()
                 } else {
                     for (document in documents) {
-                        val symptomData = document.toObject(SymptomData::class.java)?.copy(id = document.id)
+                        val symptomData =
+                            document.toObject(SymptomData::class.java)?.copy(id = document.id)
                         if (symptomData != null) {
                             symptomList.add(symptomData)
                         }
@@ -702,19 +707,19 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Lượng nước đã uống",
                             value = waterInput,
-                            icon = Icons.Filled.WaterDrop
+                            icon = painterResource(R.drawable.ic_water_100)
                         )
 
                         NutritionInfoItem(
                             label = "Thực phẩm đã tiêu thụ",
                             value = usedFood,
-                            icon = Icons.Filled.LocalDining
+                            icon = painterResource(R.drawable.ic_hot_dog_100)
                         )
 
                         NutritionInfoItem(
                             label = "Vitamin/sữa/thuốc bổ",
                             value = usedFoodAno,
-                            icon = null
+                            icon = painterResource(R.drawable.ic_medicine)
                         )
                     }
                 }
@@ -760,7 +765,7 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Cảm xúc trong ngày",
                             value = mood,
-                            icon = null
+                            icon = painterResource(R.drawable.ic_wedding_day_100)
                         )
 
                         /*NutritionInfoItem(
@@ -772,7 +777,7 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Ghi chú cá nhân",
                             value = "Không có",
-                            icon = null
+                            icon = painterResource(R.drawable.ic_notee_100)
                         )
                     }
                 }
@@ -816,23 +821,22 @@ fun OverviewScreen(
                         NutritionInfoItem(
                             label = "Tổng thời gian ngủ",
                             value = sleep,
-                            icon = null
+                            icon = painterResource(R.drawable.ic_time_240)
                         )
 
                         NutritionInfoItem(
                             label = "Hiệu suất giấc ngủ",
                             value = sleepEfficiency,
-                            icon = null
+                            icon = painterResource(R.drawable.ic_sleep_100)
                         )
 
                         NutritionInfoItem(
                             label = "Đánh giá giấc ngủ",
-                            value = "Không có",
-                            icon = null
+                            value = feedbackSleep,
+                            icon = painterResource(R.drawable.ic_assessment_100)
                         )
                     }
                 }
-
 
 
                 // Spacer for bottom padding
@@ -963,37 +967,6 @@ fun SymptomsSection(
                     )
             )
 
-            symptomDatas?.forEach { i ->
-                SymptomCard(
-                    i,
-                    onDeleted = {
-                        db.collection("users")
-                            .document(user!!.uid)
-                            .collection("symptom")
-                            .document(i.id)
-                            .delete()
-                            .addOnSuccessListener {
-                                onRefresh()
-                            }
-                    }
-                )
-            } ?: run {
-                // Empty state
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Chưa có triệu chứng nào được ghi nhận",
-                        color = textSecondaryColor,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-
             // Symptoms display
             lastSymptomData?.let { data ->
                 SymptomCard(
@@ -1012,7 +985,8 @@ fun SymptomsSection(
 
                     }
                 )
-            } ?: run {
+                onRefresh()
+            } /*?: run {
                 // Empty state
                 Box(
                     modifier = Modifier
@@ -1025,6 +999,39 @@ fun SymptomsSection(
                         color = textSecondaryColor,
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center
+                    )
+                }
+            }*/
+
+            if (symptomDatas.isNullOrEmpty()) {
+                // Empty state
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Chưa có triệu chứng nào được ghi nhận",
+                        color = textSecondaryColor,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                symptomDatas.forEach { i ->
+                    SymptomCard(
+                        i,
+                        onDeleted = {
+                            db.collection("users")
+                                .document(user!!.uid)
+                                .collection("symptom")
+                                .document(i.id)
+                                .delete()
+                                .addOnSuccessListener {
+                                    onRefresh()
+                                }
+                        }
                     )
                 }
             }
@@ -1641,13 +1648,13 @@ fun WorkoutSessionItem(session: WorkoutSession) {
         NutritionInfoItem(
             label = "Thời gian tập luyện",
             value = session.duration,
-            icon = Icons.Filled.Timer
+            icon = painterResource(R.drawable.ic_hourglass_100)
         )
 
         NutritionInfoItem(
             label = "Cường độ tập luyện",
             value = session.intensity,
-            icon = Icons.Filled.Speed
+            icon = painterResource(R.drawable.ic_strength_100)
         )
 
         /*// Hiển thị thông tin bổ sung nếu có
@@ -1668,16 +1675,16 @@ fun WorkoutSessionItem(session: WorkoutSession) {
 fun NutritionInfoItem(
     label: String,
     value: String,
-    icon: ImageVector?
+    icon: Painter?
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(vertical = 4.dp)
     ) {
         if (icon != null) {
             Icon(
-                imageVector = icon,
+                painter = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(20.dp)

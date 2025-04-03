@@ -327,7 +327,7 @@ fun UNaoScreen(navController: NavHostController) {
                     colors = IconButtonDefaults.iconButtonColors(Color(0xFF2196F3)),
                 ) {
                     Icon(
-                        imageVector = Icons.Default.History,
+                        painter = painterResource(R.drawable.ic_history_blu_100),
                         contentDescription = null,
                         tint = Color.White
                     )

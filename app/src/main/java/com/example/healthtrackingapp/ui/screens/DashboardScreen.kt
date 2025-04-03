@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Hotel
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -91,6 +92,7 @@ fun DashboardScreen(
     var workoutDuration by remember { mutableStateOf("") }
     var mood by remember { mutableStateOf("") }
     var isReload by remember { mutableStateOf(false) }
+    var tempeture by remember { mutableStateOf("") }
 
     val db = FirebaseFirestore.getInstance()
     var user by remember { mutableStateOf(Firebase.auth.currentUser) }
@@ -206,6 +208,21 @@ fun DashboardScreen(
             .addOnSuccessListener { result ->
                 for (document in result) {
                     workoutDuration = document.getString("duration") ?: ""
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirestoreError", "Error getting workout", e)
+                // Xử lý lỗi ở đây
+            }
+        db.collection("users")
+            .document(user!!.uid)
+            .collection("temperature")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    tempeture = document.getString("nhietdo") ?: ""
                 }
             }
             .addOnFailureListener { e ->
@@ -401,14 +418,14 @@ fun DashboardScreen(
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(1f),
-                    title = stringResource(id = R.string.walking),
-                    value = 10,
-                    unit = "km",
-                    icon = Icons.Filled.Flag,
+                    title = stringResource(id = R.string.temperature),
+                    value = tempeture.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0,
+                    unit = "°C",
+                    icon = Icons.Filled.Thermostat,
                     color = CardDefaults.cardColors(
-                        Color(red = 203, green = 248, blue = 248, alpha = 255)
+                        Color(red = 252, green = 231, blue = 221, alpha = 255)
                     ),
-                    textColor = Color(red = 59, green = 155, blue = 131, alpha = 255)
+                    textColor = Color(red = 250, green = 92, blue = 18, alpha = 191)
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 CardDashboard(

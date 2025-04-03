@@ -2,6 +2,7 @@ package com.example.healthtrackingapp.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -77,7 +78,7 @@ fun HealthBookScreen(navController: NavHostController) {
 
     Scaffold(
         modifier = Modifier.padding(WindowInsets.systemBars.asPaddingValues()),
-        topBar = { TopBar(navController, title = "Suc khoe cua ban") }
+        topBar = { TopBar(navController, title = stringResource(R.string.suckhoecuaban)) }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -105,8 +106,8 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Bữa ăn",
-                        image = R.drawable.reshot_icon_running_shoes_nfc659ujds,
+                        title = stringResource(R.string.meal),
+                        image = R.drawable.ic_hot_dog_100,
                         navController = navController,
                         route = "addfood",
                         mota = stringResource(R.string.motabuan)
@@ -114,8 +115,8 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Cân nặng",
-                        image = R.drawable.reshot_icon_weighing_scale_pzrhsgv7y6,
+                        title = stringResource(R.string.weight),
+                        image = R.drawable.ic_weight_100,
                         navController = navController,
                         route = "weighingscreen",
                         value = ((weight * 100).toInt() / 100f).toString(),
@@ -125,8 +126,8 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Giấc ngủ",
-                        image = R.drawable.reshot_icon_sleeping_x2ekjbl3yq,
+                        title = stringResource(R.string.sleep),
+                        image = R.drawable.ic_sleep_100,
                         navController = navController,
                         route = "addsleep",
                         mota = stringResource(R.string.motagiacngu)
@@ -134,8 +135,8 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Lượng nước tiêu thụ",
-                        image = R.drawable.reshot_icon_water_bottle_pzw3g8afsq,
+                        title = stringResource(R.string.water),
+                        image = R.drawable.ic_water_100,
                         navController = navController,
                         route = "addwater",
                         mota = stringResource(R.string.motaluongnuoc)
@@ -144,7 +145,7 @@ fun HealthBookScreen(navController: NavHostController) {
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
                         title = "Huyết áp",
-                        image = R.drawable.reshot_icon_blood_pressure_zvjhstxe8u,
+                        image = R.drawable.ic_sphygmomanometer_100,
                         navController = navController,
                         route = "bloodpressurescreen",
                         mota = stringResource(R.string.motahuyetap)
@@ -152,8 +153,8 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Nhiệt độ cơ thể",
-                        image = R.drawable.temperature,
+                        title = stringResource(R.string.temperature),
+                        image = R.drawable.ic_warm_100,
                         navController = navController,
                         route = "addtemperaturescreen",
                         mota = stringResource(R.string.motanhietdo)
@@ -161,8 +162,8 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Đường huyết",
-                        image = R.drawable.temperature,
+                        title = stringResource(R.string.glucose),
+                        image = R.drawable.ic_glucometer_100,
                         navController = navController,
                         route = "addbloodglucose",
                         mota = stringResource(R.string.motaduonghuyet)
@@ -170,8 +171,8 @@ fun HealthBookScreen(navController: NavHostController) {
                     ItemBook(
                         modifier = Modifier.fillMaxWidth(),
                         color = Color.White,
-                        title = "Nồng độ oxygen trong máu",
-                        image = R.drawable.temperature,
+                        title = stringResource(R.string.blood_oxy),
+                        image = R.drawable.ic_pulse_oximeter_100,
                         navController = navController,
                         route = "addoxygen",
                         mota = stringResource(R.string.motaoxy)
@@ -220,13 +221,14 @@ fun TopBar(
                         navController.navigate("overviewscreen")
                     }
                 },
-                colors = IconButtonDefaults.iconButtonColors(Color.White),
+//                colors = IconButtonDefaults.iconButtonColors(Color.White),
                 modifier = Modifier.size(55.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.sotay),
                     contentDescription = null,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .size(60.dp)
                 )
             }
         }

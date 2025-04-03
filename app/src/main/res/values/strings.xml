@@ -9,7 +9,7 @@
     <string name="weight">Cân nặng</string>
     <string name="heartrate">Nhịp tim</string>
     <string name="exercise">Tập luyện</string>
-    <string name="walking">Chạy bộ</string>
+    <string name="temperature">Nhiệt độ</string>
     <string name="sleep">Giấc ngủ</string>
     <string name="overview">Tổng quan</string>
     <string name="goal">Mục tiêu</string>
@@ -129,4 +129,10 @@
     <string name="bao_thuc">Báo thức</string>
     <string name="am_bao">Âm báo</string>
     <string name="rung">Rung</string>
+    <string name="suckhoecuaban">Sức khỏe của bạn</string>
+    <string name="toi_qua_ngu_bao_nhieu_gio_des">Hãy nhập tổng thời gian bạn nằm trên giường.</string>
+    <string name="meal">Bữa ăn</string>
+    <string name="water">Lượng nước</string>
+    <string name="blood_oxy">Nồng độ oxygen trong máu</string>
+    <string name="glucose">Đường huyết</string>
 </resources>

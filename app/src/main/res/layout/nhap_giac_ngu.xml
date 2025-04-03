@@ -35,6 +35,16 @@
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:text="@string/toi_qua_ngu_bao_nhieu_gio_des"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="italic"/>
 
     <EditText
         android:id="@+id/edtGiacNgu"
@@ -76,28 +86,28 @@
                 android:layout_height="wrap_content">
 
                 <RadioButton
-                    android:id="@+id/radio_good"
+                    android:id="@+id/mot_a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/chat_lung_giac_ngu_mot" />
 
                 <RadioButton
-                    android:id="@+id/radio_normal"
+                    android:id="@+id/mot_b"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/chat_lung_giac_ngu_hai" />
 
                 <RadioButton
-                    android:id="@+id/radio_poor"
+                    android:id="@+id/mot_c"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/chat_lung_giac_ngu_ba" />
 
                 <RadioButton
-                    android:id="@+id/radioor"
+                    android:id="@+id/mot_d"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
@@ -120,28 +130,28 @@
                 android:layout_height="wrap_content">
 
                 <RadioButton
-                    android:id="@+id/radio_awake"
+                    android:id="@+id/hai_a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/ban_cam_thay_ntn_moi_sang_mot" />
 
                 <RadioButton
-                    android:id="@+id/radio_tired"
+                    android:id="@+id/hai_b"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/ban_cam_thay_ntn_moi_sang_hai" />
 
                 <RadioButton
-                    android:id="@+id/radio_fine"
+                    android:id="@+id/hai_c"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/ban_cam_thay_ntn_moi_sang_ba" />
 
                 <RadioButton
-                    android:id="@+id/radio_t"
+                    android:id="@+id/hai_d"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
@@ -164,28 +174,28 @@
                 android:layout_height="wrap_content">
 
                 <RadioButton
-                    android:id="@+id/radio_easy"
+                    android:id="@+id/ba_a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/bon_co_de_ngu_khong_mot" />
 
                 <RadioButton
-                    android:id="@+id/radio_ium"
+                    android:id="@+id/ba_b"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/bon_co_de_ngu_khong_hai" />
 
                 <RadioButton
-                    android:id="@+id/radio_medium"
+                    android:id="@+id/ba_c"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"
                     android:text="@string/bon_co_de_ngu_khong_ba" />
 
                 <RadioButton
-                    android:id="@+id/radio_hard"
+                    android:id="@+id/ba_d"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/Gray"

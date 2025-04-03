@@ -194,7 +194,7 @@ fun NotificationScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth(1f)
-                    .padding(16.dp)
+                    .padding(vertical = 10.dp, horizontal = 16.dp)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -366,7 +366,7 @@ fun NotificationScreen(
                                             modifier = Modifier
                                                 .background(Color.White)
                                                 .width(with(LocalDensity.current) {
-                                                    (LocalConfiguration.current.screenWidthDp - 72).dp
+                                                    (LocalConfiguration.current.screenWidthDp - 102).dp
                                                 })
                                         ) {
                                             workoutOptions.forEach { workout ->
@@ -382,17 +382,7 @@ fun NotificationScreen(
                                                         showDropdown = false
                                                     },
                                                     leadingIcon = {
-                                                        Icon(
-                                                            imageVector = when (workout) {
-                                                                "Chạy bộ" -> Icons.Rounded.DirectionsRun
-                                                                "Yoga" -> Icons.Rounded.SelfImprovement
-                                                                "Đạp xe" -> Icons.Rounded.DirectionsBike
-                                                                "Bơi lội" -> Icons.Rounded.Pool
-                                                                else -> Icons.Rounded.FitnessCenter
-                                                            },
-                                                            contentDescription = workout,
-                                                            tint = Color(0xFF7F7FD5)
-                                                        )
+
                                                     }
                                                 )
                                             }
@@ -514,7 +504,7 @@ fun NotificationScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(vertical = 10.dp, horizontal = 16.dp)
             ) {
                 Card(
                     modifier = Modifier
