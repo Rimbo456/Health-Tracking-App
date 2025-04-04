@@ -53,6 +53,16 @@ fun AddFoodScreen(navController: NavHostController) {
     var supplementInput by remember { mutableStateOf("") }
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Nhập thông tin bữa ăn") },
+                navigationIcon = {
+                    IconButton(onClick = { navController?.popBackStack() }) {
+                        Icon(Icons.Default.ArrowDropDown, "Back")
+                    }
+                }
+            )
+        },
         bottomBar = {
             BottomBarForAddFood(
                 db = db,
@@ -65,169 +75,164 @@ fun AddFoodScreen(navController: NavHostController) {
                 supplementInput = supplementInput
             )
         },
-        topBar = {
-            TopAppBar(
-                title = { Text("Nhập thông tin bữa ăn") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowDropDown, "Back")
-                    }
-                }
-            )
-        },
-    ) { paddingValues ->
-        Image(
-            painter = painterResource(id = R.drawable.nen_app),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            contentScale = ContentScale.Crop
-        )
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .padding(16.dp)
-                .fillMaxSize()
-                .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // Chọn loại bữa ăn
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(Color.White),
-                shape = RoundedCornerShape(12.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = "Chọn bữa ăn",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.primary
-                    )
 
-                    Box {
-                        OutlinedTextField(
-                            value = selectedMealType,
-                            onValueChange = { },
-                            modifier = Modifier.fillMaxWidth(),
-                            readOnly = true,
-                            label = { Text("Loại bữa ăn") },
-                            trailingIcon = {
-                                IconButton(onClick = { mealTypeExpanded = true }) {
-                                    Icon(Icons.Default.ArrowDropDown, "Dropdown")
-                                }
-                            }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)  // Quan trọng: áp dụng padding từ Scaffold
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.nen_app),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxSize()
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Chọn loại bữa ăn
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(Color.White),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = "Chọn bữa ăn",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.primary
                         )
 
-                        DropdownMenu(
-                            expanded = mealTypeExpanded,
-                            onDismissRequest = { mealTypeExpanded = false },
-                            modifier = Modifier.fillMaxWidth(0.9f)
-                        ) {
-                            mealTypes.forEach { type ->
-                                DropdownMenuItem(
-                                    text = { Text(type) },
-                                    onClick = {
-                                        selectedMealType = type
-                                        mealTypeExpanded = false
+                        Box {
+                            OutlinedTextField(
+                                value = selectedMealType,
+                                onValueChange = { },
+                                modifier = Modifier.fillMaxWidth(),
+                                readOnly = true,
+                                label = { Text("Loại bữa ăn") },
+                                trailingIcon = {
+                                    IconButton(onClick = { mealTypeExpanded = true }) {
+                                        Icon(Icons.Default.ArrowDropDown, "Dropdown")
                                     }
-                                )
+                                }
+                            )
+
+                            DropdownMenu(
+                                expanded = mealTypeExpanded,
+                                onDismissRequest = { mealTypeExpanded = false },
+                                modifier = Modifier.fillMaxWidth(0.9f)
+                            ) {
+                                mealTypes.forEach { type ->
+                                    DropdownMenuItem(
+                                        text = { Text(type) },
+                                        onClick = {
+                                            selectedMealType = type
+                                            mealTypeExpanded = false
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            // Nhập thông tin thức ăn
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(Color.White),
-                shape = RoundedCornerShape(12.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                // Nhập thông tin thức ăn
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(Color.White),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
-                    Text(
-                        text = "Thông tin thực phẩm đã tiêu thụ",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-
-                    OutlinedTextField(
-                        value = foodInput,
-                        onValueChange = { foodInput = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Thực phẩm đã ăn") },
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences,
-                            imeAction = ImeAction.Next
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = "Thông tin thực phẩm đã tiêu thụ",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.primary
                         )
-                    )
-                }
-            }
 
-            // Nhập thông tin bổ sung
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(Color.White),
-                shape = RoundedCornerShape(12.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                        OutlinedTextField(
+                            value = foodInput,
+                            onValueChange = { foodInput = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Thực phẩm đã ăn") },
+                            keyboardOptions = KeyboardOptions(
+                                capitalization = KeyboardCapitalization.Sentences,
+                                imeAction = ImeAction.Next
+                            )
+                        )
+                    }
+                }
+
+                // Nhập thông tin bổ sung
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(Color.White),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
-                    Text(
-                        text = "Thông tin bổ sung",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-
-                    OutlinedTextField(
-                        value = vitaminInput,
-                        onValueChange = { vitaminInput = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Vitamin (nếu có)") },
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences,
-                            imeAction = ImeAction.Next
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = "Thông tin bổ sung",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.primary
                         )
-                    )
 
-                    OutlinedTextField(
-                        value = milkInput,
-                        onValueChange = { milkInput = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Sữa (nếu có)") },
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences,
-                            imeAction = ImeAction.Next
+                        OutlinedTextField(
+                            value = vitaminInput,
+                            onValueChange = { vitaminInput = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Vitamin (nếu có)") },
+                            keyboardOptions = KeyboardOptions(
+                                capitalization = KeyboardCapitalization.Sentences,
+                                imeAction = ImeAction.Next
+                            )
                         )
-                    )
 
-                    OutlinedTextField(
-                        value = supplementInput,
-                        onValueChange = { supplementInput = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("Thuốc bổ (nếu có)") },
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences,
-                            imeAction = ImeAction.Done
+                        OutlinedTextField(
+                            value = milkInput,
+                            onValueChange = { milkInput = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Sữa (nếu có)") },
+                            keyboardOptions = KeyboardOptions(
+                                capitalization = KeyboardCapitalization.Sentences,
+                                imeAction = ImeAction.Next
+                            )
                         )
-                    )
+
+                        OutlinedTextField(
+                            value = supplementInput,
+                            onValueChange = { supplementInput = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("Thuốc bổ (nếu có)") },
+                            keyboardOptions = KeyboardOptions(
+                                capitalization = KeyboardCapitalization.Sentences,
+                                imeAction = ImeAction.Done
+                            )
+                        )
+                    }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(80.dp)) // Không gian để tránh FAB che phủ nội dung
+                Spacer(modifier = Modifier.height(80.dp)) // Không gian để tránh FAB che phủ nội dung
+            }
         }
     }
 }
@@ -277,4 +282,3 @@ private fun BottomBarForAddFood(
         )
     }
 }
-

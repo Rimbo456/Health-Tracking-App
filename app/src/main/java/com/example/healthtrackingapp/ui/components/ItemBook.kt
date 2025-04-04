@@ -71,9 +71,10 @@ fun ItemBook(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
+                    Icon(
                         painter = painterResource(id = image),
                         contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .size(28.dp)
                             .padding(end = 5.dp)

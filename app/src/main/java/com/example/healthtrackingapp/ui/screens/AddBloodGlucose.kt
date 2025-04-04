@@ -111,7 +111,7 @@ fun AddBloodGlucose(navController: NavHostController) {
                     .fillMaxWidth(0.75f)
                     .height(60.dp)
                     .clip(RoundedCornerShape(20.dp))
-                    .background(Color.LightGray),
+                    .background(Color(red = 185, green = 209, blue = 250, alpha = 168)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {

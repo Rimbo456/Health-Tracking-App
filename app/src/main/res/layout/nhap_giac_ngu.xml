@@ -9,211 +9,274 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="end">
+        android:gravity="end"
+        android:padding="12dp">
 
         <ImageView
             android:id="@+id/imgDong"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_close_90" />
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_close_90"
+            android:contentDescription="Đóng" />
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/sleep" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:gravity="center"
-        android:text="@string/toi_qua_ngu_bao_nhieu_gio"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="bold" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:gravity="center"
-        android:text="@string/toi_qua_ngu_bao_nhieu_gio_des"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:textStyle="italic"/>
-
-    <EditText
-        android:id="@+id/edtGiacNgu"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginBottom="10dp"
-        android:inputType="number"
-        android:background="@drawable/cus_edittext"
+        android:orientation="vertical"
         android:gravity="center"
-        android:padding="5dp"
-        android:textSize="22sp" />
+        android:padding="16dp"
+        android:layout_marginTop="-16dp">
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:background="@drawable/sleep"
+            android:contentDescription="Biểu tượng giấc ngủ" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/toi_qua_ngu_bao_nhieu_gio"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/toi_qua_ngu_bao_nhieu_gio_des"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtGiacNgu"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/cus_edittext"
+            android:gravity="center"
+            android:hint="Nhập số giờ"
+            android:inputType="numberDecimal"
+            android:padding="12dp"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:text="@string/chat_lung_giac_ngu"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/radioGroupSleepQuality"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/mot_a"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/chat_lung_giac_ngu_mot" />
-
-                <RadioButton
-                    android:id="@+id/mot_b"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/chat_lung_giac_ngu_hai" />
-
-                <RadioButton
-                    android:id="@+id/mot_c"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/chat_lung_giac_ngu_ba" />
-
-                <RadioButton
-                    android:id="@+id/mot_d"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/chat_lung_giac_ngu_bon" />
-            </RadioGroup>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp"
-                android:text="@string/ban_cam_thay_ntn_moi_sang"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/radioGroupMorningFeel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/hai_a"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/ban_cam_thay_ntn_moi_sang_mot" />
-
-                <RadioButton
-                    android:id="@+id/hai_b"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/ban_cam_thay_ntn_moi_sang_hai" />
-
-                <RadioButton
-                    android:id="@+id/hai_c"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/ban_cam_thay_ntn_moi_sang_ba" />
-
-                <RadioButton
-                    android:id="@+id/hai_d"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/ban_cam_thay_ntn_moi_sang_bon" />
-            </RadioGroup>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp"
-                android:text="@string/bon_co_de_ngu_khong"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/radioGroupSleepEase"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/ba_a"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/bon_co_de_ngu_khong_mot" />
-
-                <RadioButton
-                    android:id="@+id/ba_b"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/bon_co_de_ngu_khong_hai" />
-
-                <RadioButton
-                    android:id="@+id/ba_c"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/bon_co_de_ngu_khong_ba" />
-
-                <RadioButton
-                    android:id="@+id/ba_d"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/Gray"
-                    android:text="@string/bon_co_de_ngu_khong_bon" />
-            </RadioGroup>
-
-            <Button
-                android:id="@+id/btnXacNhanOTP"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="80dp"
-                android:background="@drawable/cus_button_indigo"
-                android:text="@string/save"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginBottom="16dp"
+                android:elevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lllight_blu"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chat_lung_giac_ngu"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroupSleepQuality"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp">
+
+                        <RadioButton
+                            android:id="@+id/mot_a"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/chat_lung_giac_ngu_mot"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/mot_b"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/chat_lung_giac_ngu_hai"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/mot_c"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/chat_lung_giac_ngu_ba"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/mot_d"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/chat_lung_giac_ngu_bon"
+                            android:textColor="@color/Gray" />
+                    </RadioGroup>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:elevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lllight_blu"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ban_cam_thay_ntn_moi_sang"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroupMorningFeel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp">
+
+                        <RadioButton
+                            android:id="@+id/hai_a"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/ban_cam_thay_ntn_moi_sang_mot"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/hai_b"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/ban_cam_thay_ntn_moi_sang_hai"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/hai_c"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/ban_cam_thay_ntn_moi_sang_ba"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/hai_d"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/ban_cam_thay_ntn_moi_sang_bon"
+                            android:textColor="@color/Gray" />
+                    </RadioGroup>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:elevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lllight_blu"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bon_co_de_ngu_khong"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroupSleepEase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp">
+
+                        <RadioButton
+                            android:id="@+id/ba_a"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/bon_co_de_ngu_khong_mot"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/ba_b"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/bon_co_de_ngu_khong_hai"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/ba_c"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/bon_co_de_ngu_khong_ba"
+                            android:textColor="@color/Gray" />
+
+                        <RadioButton
+                            android:id="@+id/ba_d"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/bon_co_de_ngu_khong_bon"
+                            android:textColor="@color/Gray" />
+                    </RadioGroup>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btnXacNhanOTP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/cus_button_indigo"
+        android:padding="12dp"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 </LinearLayout>

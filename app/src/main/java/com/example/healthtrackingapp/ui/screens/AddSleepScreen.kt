@@ -84,7 +84,9 @@ fun AddSleepScreen(
                         .add(
                             hashMapOf(
                                 "giacngu" to edtGiacnguText,
-                                "quality" to message,
+                                "sleepQuality" to sleepQuality,
+                                "morningFeel" to morningFeel,
+                                "sleepEase" to sleepEase,
                                 "timestamp" to System.currentTimeMillis()
                             )
                         )

@@ -338,15 +338,32 @@ fun OverviewScreen(
                     sleep = "Chưa có dữ liệu"
                 } else {
                     for (document in result) {
+                        val sleepQuality = document.getLong("sleepQuality")?.toInt() ?: 0
+                        val morningFeel = document.getLong("morningFeel")?.toInt() ?: 0
+                        val sleepEase = document.getLong("sleepEase")?.toInt() ?: 0
                         sleep = document.getString("giacngu") ?: ""
                         val sleepInt = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0
-                        val efficencyIndex = ((sleepInt - 1.5) / sleepInt) * 100
-                        sleepEfficiency = when (true) {
-                            (efficencyIndex >= 85) -> "Giấc ngủ tốt"
-                            (efficencyIndex >= 75) and (efficencyIndex <= 85) -> "Giấc ngủ khá"
+                        val efficencyIndex: Double = when (sleepEase) {
+                            1 -> ((sleepInt - 0.25) / sleepInt) * 100
+                            2 -> ((sleepInt - 0.5) / sleepInt) * 100
+                            3 -> ((sleepInt - 1.0) / sleepInt) * 100
+                            else -> ((sleepInt - 2.0) / sleepInt) * 100
+                        }
+                        sleepEfficiency = when {
+                            efficencyIndex >= 85 -> "Giấc ngủ tốt"
+                            efficencyIndex in 75.0..85.0 -> "Giấc ngủ khá"
                             else -> "Giấc ngủ kém"
                         }
-                        feedbackSleep = document.getString("quality") ?: ""
+
+                        val score = sleepQuality + morningFeel + sleepEase
+                        val message = when {
+                            score >= 8 -> "Chất lượng giấc ngủ rất tốt!"
+                            score == 6 || score == 7 -> "Chất lượng giấc ngủ khá ổn."
+                            score == 4 || score == 5 -> "Chất lượng giấc ngủ trung bình"
+                            score == 2 || score == 3 -> "Chất lượng giấc ngủ kém"
+                            else -> "Chất lượng giấc ngủ rất kém"
+                        }
+                        feedbackSleep = message
                     }
                 }
             }

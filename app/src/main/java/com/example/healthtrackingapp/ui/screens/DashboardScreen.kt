@@ -418,20 +418,6 @@ fun DashboardScreen(
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(1f),
-                    title = stringResource(id = R.string.temperature),
-                    value = tempeture.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0,
-                    unit = "°C",
-                    icon = Icons.Filled.Thermostat,
-                    color = CardDefaults.cardColors(
-                        Color(red = 252, green = 231, blue = 221, alpha = 255)
-                    ),
-                    textColor = Color(red = 250, green = 92, blue = 18, alpha = 191)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                CardDashboard(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f),
                     title = stringResource(id = R.string.sleep),
                     value = sleep.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0,
                     unit = "hrs",
@@ -440,6 +426,20 @@ fun DashboardScreen(
                         Color(red = 207, green = 223, blue = 255, alpha = 255)
                     ),
                     textColor = Color(red = 41, green = 96, blue = 155, alpha = 255)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                CardDashboard(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1f),
+                    title = stringResource(id = R.string.temperature),
+                    value = tempeture.takeIf { it.isNotEmpty() }?.toIntOrNull() ?: 0,
+                    unit = "°C",
+                    icon = Icons.Filled.Thermostat,
+                    color = CardDefaults.cardColors(
+                        Color(red = 252, green = 231, blue = 221, alpha = 255)
+                    ),
+                    textColor = Color(red = 250, green = 92, blue = 18, alpha = 191)
                 )
             }
         }
