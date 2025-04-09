@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -100,7 +101,7 @@ fun BloodPressureScreen(
                     .fillMaxWidth()
             )
             Text(
-                text = "Nhap so do huyet ap",
+                text = stringResource(R.string.addpressure),
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(vertical = 20.dp),
@@ -114,6 +115,7 @@ fun BloodPressureScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
+                    // Blood Pressure - Systolic (Tâm thu)
                     Column(
                         modifier = Modifier
                             .weight(0.3f)
@@ -132,21 +134,28 @@ fun BloodPressureScreen(
                         BasicTextField(
                             value = tamthu,
                             onValueChange = {
-                                if (it.length <= 2) {
+                                // Only accept digits and limit to 3 characters
+                                if (it.all { char -> char.isDigit() } && it.length <= 3) {
                                     tamthu = it
                                 }
                             },
                             singleLine = true,
-                            textStyle = TextStyle(fontSize = 30.sp, textAlign = TextAlign.Start),
+                            textStyle = TextStyle(
+                                fontSize = 30.sp,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Medium
+                            ),
                             modifier = Modifier
-                                .width(IntrinsicSize.Min)
+                                .fillMaxWidth()
                                 .padding(vertical = 18.dp)
                         )
                         Text(
-                            text = "Tam thu",
+                            text = "Tâm thu",
                             fontSize = 14.sp
                         )
                     }
+
+                    // Blood Pressure - Diastolic (Tâm trương)
                     Column(
                         modifier = Modifier
                             .weight(0.3f)
@@ -165,21 +174,28 @@ fun BloodPressureScreen(
                         BasicTextField(
                             value = tamtruong,
                             onValueChange = {
-                                if (it.length <= 2) {
+                                // Only accept digits and limit to 3 characters
+                                if (it.all { char -> char.isDigit() } && it.length <= 3) {
                                     tamtruong = it
                                 }
                             },
                             singleLine = true,
-                            textStyle = TextStyle(fontSize = 30.sp, textAlign = TextAlign.Start),
+                            textStyle = TextStyle(
+                                fontSize = 30.sp,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Medium
+                            ),
                             modifier = Modifier
-                                .width(IntrinsicSize.Min)
-                                .padding(vertical = 18.dp, horizontal = 20.dp)
+                                .fillMaxWidth()
+                                .padding(vertical = 18.dp)
                         )
                         Text(
-                            text = "Tam truong",
+                            text = "Tâm trương",
                             fontSize = 14.sp
                         )
                     }
+
+                    // Heart Rate (Nhịp tim)
                     Column(
                         modifier = Modifier
                             .weight(0.3f)
@@ -198,19 +214,23 @@ fun BloodPressureScreen(
                         BasicTextField(
                             value = nhiptim,
                             onValueChange = {
-                                if (it.length <= 3) {
+                                // Only accept digits and limit to 3 characters
+                                if (it.all { char -> char.isDigit() } && it.length <= 3) {
                                     nhiptim = it
                                 }
                             },
-
                             singleLine = true,
-                            textStyle = TextStyle(fontSize = 30.sp, textAlign = TextAlign.Start),
+                            textStyle = TextStyle(
+                                fontSize = 30.sp,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Medium
+                            ),
                             modifier = Modifier
-                                .width(IntrinsicSize.Min)
-                                .padding(vertical = 18.dp, horizontal = 20.dp)
+                                .fillMaxWidth()
+                                .padding(vertical = 18.dp)
                         )
                         Text(
-                            text = "Nhip tim",
+                            text = "Nhịp tim",
                             fontSize = 14.sp
                         )
                     }

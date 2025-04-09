@@ -135,4 +135,6 @@
     <string name="water">Lượng nước</string>
     <string name="blood_oxy">Nồng độ oxygen trong máu</string>
     <string name="glucose">Đường huyết</string>
+    <string name="addweight">Nhập cân nặng của bạn</string>
+    <string name="addpressure">Nhập số đo huyết áp</string>
 </resources>

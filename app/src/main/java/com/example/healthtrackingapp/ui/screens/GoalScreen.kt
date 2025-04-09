@@ -116,7 +116,7 @@ fun GoalScreen(navController: NavHostController) {
     }
 
     Scaffold(
-        topBar = { TopBar(navController, "Goal") },
+        topBar = { TopBar(navController, "Mục tiêu") },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
